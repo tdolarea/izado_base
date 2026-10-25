@@ -5,7 +5,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <meta charset="UTF-8">
-  <title>Izado y Arriado de Bandera · Armada Española</title>
+  <title>Izado y Arriado en Acuartelamientos (IAA) · Armada Española</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#070d1e">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -155,7 +155,7 @@
 
   <script>
     // Forzar purga de caché vieja en móviles
-    const APP_VERSION = 'v1792947248';
+    const APP_VERSION = 'v1792961844';
     if (localStorage.getItem('app_ver') !== APP_VERSION) {
       localStorage.setItem('app_ver', APP_VERSION);
       if ('caches' in window) {
@@ -251,7 +251,7 @@
     <div class="brand" style="justify-content:center;">
       <img src="img/banderaespana.jpg" alt="🇪🇸" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 3 2\'%3E%3Crect width=\'3\' height=\'2\' fill=\'%23c60b1e\'/%3E%3Crect width=\'3\' height=\'1\' y=\'0.5\' fill=\'%23ffc400\'/%3E%3C/svg%3E';" style="width:40px; height:28px; border-radius:4px; object-fit:cover;" />
       <div>
-        <div class="brand-title">Izado y Arriado de Bandera</div>
+        <div class="brand-title">Izado y Arriado en Acuartelamientos</div>
         <div class="brand-sub">PWA Web App</div>
       </div>
     </div>
@@ -275,10 +275,10 @@
             <span>🚢 SITUACIÓN DEL BUQUE:</span>
           </div>
           <div style="display:flex; gap:6px;">
-            <button type="button" class="action-btn primary" id="btnSitPuerto" onclick="setSituacionBuqueIAB('puerto')" style="font-size:11px; padding:5px 10px; min-height:28px;">
+            <button type="button" class="action-btn primary" id="btnSitPuerto" onclick="setSituacionBuqueIAA('puerto')" style="font-size:11px; padding:5px 10px; min-height:28px;">
               ⚓ En Puerto / Fondeo
             </button>
-            <button type="button" class="action-btn" id="btnSitMar" onclick="setSituacionBuqueIAB('mar')" style="font-size:11px; padding:5px 10px; min-height:28px;">
+            <button type="button" class="action-btn" id="btnSitMar" onclick="setSituacionBuqueIAA('mar')" style="font-size:11px; padding:5px 10px; min-height:28px;">
               🌊 Navegando (En la Mar)
             </button>
           </div>
@@ -286,10 +286,10 @@
 
         <!-- SELECTOR DE CEREMONIAL: IZADO VS ARRIADO -->
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:14px;">
-          <button type="button" class="action-btn primary" id="btnModoIzado" onclick="setCeremonialModoIAB('izado')" style="justify-content:center; text-align:center; padding:10px;">
+          <button type="button" class="action-btn primary" id="btnModoIzado" onclick="setCeremonialModoIAA('izado')" style="justify-content:center; text-align:center; padding:10px;">
             <span>🌅 IZADO</span>
           </button>
-          <button type="button" class="action-btn" id="btnModoArriado" onclick="setCeremonialModoIAB('arriado')" style="justify-content:center; text-align:center; padding:10px;">
+          <button type="button" class="action-btn" id="btnModoArriado" onclick="setCeremonialModoIAA('arriado')" style="justify-content:center; text-align:center; padding:10px;">
             <span>🌇 ARRIADO</span>
           </button>
         </div>
@@ -308,14 +308,14 @@
                   <span style="font-size:11.5px; font-weight:800; color:#94a3b8;">🌐 HUSO HORARIO:</span>
                   <span style="font-size:12px; font-weight:900; color:#38bdf8;" id="lblHusoTextoVisible">UTC+2 (Bravo · B)</span>
                 </div>
-                <button type="button" class="action-btn" id="btnToggleHuso" onclick="toggleSelectorHusoIAB()" style="padding:3px 8px; font-size:11px; min-height:26px;">
+                <button type="button" class="action-btn" id="btnToggleHuso" onclick="toggleSelectorHusoIAA()" style="padding:3px 8px; font-size:11px; min-height:26px;">
                   ⚙️ Cambiar
                 </button>
               </div>
 
               <!-- DESPLEGABLE OCULTO (SOLO SI SE OPRIME CAMBIAR) -->
               <div id="boxDesplegableHuso" style="display:none; margin-top:8px; padding-top:8px; border-top:1px dashed #1e3a8a;">
-                <select id="selHusoHorario" style="width:100%; background:#0b152d; border:1.5px solid #38bdf8; border-radius:6px; color:#fff; font-size:12px; font-weight:800; padding:6px 8px;" onchange="onSeleccionarHusoIAB(this.value)">
+                <select id="selHusoHorario" style="width:100%; background:#0b152d; border:1.5px solid #38bdf8; border-radius:6px; color:#fff; font-size:12px; font-weight:800; padding:6px 8px;" onchange="onSeleccionarHusoIAA(this.value)">
                   <option value="auto" selected>📱 Hora del Dispositivo (Auto)</option>
                   <option value="0">UTC +0 (Zulu · Z · GMT)</option>
                   <option value="1">UTC +1 (Alfa · A · Invierno Península)</option>
@@ -340,7 +340,7 @@
             </div>
             <input type="time" id="inputHoraIzado" value="08:00" 
               style="background:#0b152d; border:1.5px solid #38bdf8; border-radius:6px; color:#fff; font-size:16px; font-weight:800; padding:6px 10px; text-align:center;"
-              oninput="actualizarHoraObjetivoIAB(); actualizarTickRelojIAB();" onchange="actualizarHoraObjetivoIAB(); actualizarTickRelojIAB();">
+              oninput="actualizarHoraObjetivoIAA(); actualizarTickRelojIAA();" onchange="actualizarHoraObjetivoIAA(); actualizarTickRelojIAA();">
           </div>
 
           <!-- MODO ARRIADO: MANUAL / LOCALIDAD / GPS -->
@@ -350,16 +350,16 @@
             
             <!-- SELECTOR DE FUENTE DE POSICIÓN: 4 BOTONES -->
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
-              <button type="button" class="action-btn primary" id="btnFuenteBase" onclick="setFuenteOcasoIAB('base')" style="font-size:11px; padding:8px 4px; justify-content:center;">
+              <button type="button" class="action-btn primary" id="btnFuenteBase" onclick="setFuenteOcasoIAA('base')" style="font-size:11px; padding:8px 4px; justify-content:center;">
                 ⚓ Localidad / Base
               </button>
-              <button type="button" class="action-btn" id="btnFuenteGps" onclick="setFuenteOcasoIAB('gps')" style="font-size:11px; padding:8px 4px; justify-content:center;">
+              <button type="button" class="action-btn" id="btnFuenteGps" onclick="setFuenteOcasoIAA('gps')" style="font-size:11px; padding:8px 4px; justify-content:center;">
                 📡 Posición GPS
               </button>
-              <button type="button" class="action-btn" id="btnFuenteCoordManual" onclick="setFuenteOcasoIAB('coord')" style="font-size:11px; padding:8px 4px; justify-content:center;">
+              <button type="button" class="action-btn" id="btnFuenteCoordManual" onclick="setFuenteOcasoIAA('coord')" style="font-size:11px; padding:8px 4px; justify-content:center;">
                 ✏️ Coord. Manuales
               </button>
-              <button type="button" class="action-btn" id="btnFuenteManual" onclick="setFuenteOcasoIAB('manual')" style="font-size:11px; padding:8px 4px; justify-content:center;">
+              <button type="button" class="action-btn" id="btnFuenteManual" onclick="setFuenteOcasoIAA('manual')" style="font-size:11px; padding:8px 4px; justify-content:center;">
                 📝 Hora Manual
               </button>
             </div>
@@ -367,7 +367,7 @@
             <!-- OP 1: POR BASE NAVAL / LOCALIDAD -->
             <div id="subBoxBase" style="display:flex; flex-direction:column; gap:6px; background:#0b152d; padding:10px; border-radius:6px; border:1px solid #1e3a8a;">
               <div style="font-size:11.5px; color:#cbd5e1; font-weight:700;">Seleccionar Base Naval / Localidad:</div>
-              <select id="selBaseNaval" style="width:100%; background:#070d1e; border:1.5px solid #38bdf8; border-radius:6px; color:#fff; font-size:12.5px; font-weight:700; padding:8px;" onchange="calcularOcasoBaseIAB()">
+              <select id="selBaseNaval" style="width:100%; background:#070d1e; border:1.5px solid #38bdf8; border-radius:6px; color:#fff; font-size:12.5px; font-weight:700; padding:8px;" onchange="calcularOcasoBaseIAA()">
                 <option value="Rota">Base Naval de Rota</option>
                 <option value="Ferrol">Arsenal de Ferrol</option>
                 <option value="Cartagena">Arsenal de Cartagena</option>
@@ -388,7 +388,7 @@
             <!-- OP 2: POR GPS EN LA MAR -->
             <div id="subBoxGps" style="display:none; flex-direction:column; gap:6px; background:#0b152d; padding:10px; border-radius:6px; border:1px solid #1e3a8a;">
               <div style="font-size:11.5px; color:#cbd5e1; font-weight:700;">Lectura GPS Satelital del Buque:</div>
-              <button type="button" class="action-btn primary" onclick="obtenerGpsYCalcularOcasoIAB()" style="justify-content:center; font-size:12px; padding:10px; font-weight:800;">
+              <button type="button" class="action-btn primary" onclick="obtenerGpsYCalcularOcasoIAA()" style="justify-content:center; font-size:12px; padding:10px; font-weight:800;">
                 <span>📡 Leer Coordenadas GPS y Calcular Ocaso</span>
               </button>
               <div style="font-size:11px; color:#94a3b8; text-align:center;" id="lblCoordenadasGps">Coordenadas no leídas aún</div>
@@ -402,13 +402,13 @@
                   <div style="font-size:10.5px; color:#94a3b8; margin-bottom:2px;">Latitud (° N / -S):</div>
                   <input type="number" step="0.0001" id="inputCoordLat" value="36.6200" placeholder="Ej: 36.6200"
                     style="width:100%; background:#070d1e; border:1.5px solid #38bdf8; border-radius:6px; color:#fff; font-size:14px; font-weight:800; padding:6px 8px; text-align:center;"
-                    oninput="calcularOcasoCoordManualIAB()">
+                    oninput="calcularOcasoCoordManualIAA()">
                 </div>
                 <div>
                   <div style="font-size:10.5px; color:#94a3b8; margin-bottom:2px;">Longitud (° E / -W):</div>
                   <input type="number" step="0.0001" id="inputCoordLon" value="-6.3500" placeholder="Ej: -6.3500"
                     style="width:100%; background:#070d1e; border:1.5px solid #38bdf8; border-radius:6px; color:#fff; font-size:14px; font-weight:800; padding:6px 8px; text-align:center;"
-                    oninput="calcularOcasoCoordManualIAB()">
+                    oninput="calcularOcasoCoordManualIAA()">
                 </div>
               </div>
               <div style="font-size:10px; color:#64748b; font-style:italic;">Formato decimal (ej. Rota: Lat 36.6200, Lon -6.3500).</div>
@@ -423,7 +423,7 @@
                 </div>
                 <input type="time" id="inputHoraArriadoManual" value="19:30" 
                   style="background:#070d1e; border:1.5px solid #38bdf8; border-radius:6px; color:#fff; font-size:16px; font-weight:900; padding:6px 10px; text-align:center;"
-                  oninput="actualizarHoraObjetivoIAB(); actualizarTickRelojIAB();" onchange="actualizarHoraObjetivoIAB(); actualizarTickRelojIAB();">
+                  oninput="actualizarHoraObjetivoIAA(); actualizarTickRelojIAA();" onchange="actualizarHoraObjetivoIAA(); actualizarTickRelojIAA();">
               </div>
             </div>
           </div>
@@ -456,10 +456,10 @@
 
         <!-- MODO DE EJECUCIÓN: AUTOMÁTICO VS MANUAL -->
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; margin-bottom:14px;">
-          <button type="button" class="action-btn primary" id="btnDisparoAuto" class="action-btn" onclick="setModoDisparoIAB('auto')" style="font-size:11px; padding:8px 4px; justify-content:center;">
+          <button type="button" class="action-btn primary" id="btnDisparoAuto" class="action-btn" onclick="setModoDisparoIAA('auto')" style="font-size:11px; padding:8px 4px; justify-content:center;">
             ⏱️ Ejecución Automática
           </button>
-          <button type="button" class="action-btn" id="btnDisparoManual" class="action-btn primary" onclick="setModoDisparoIAB('manual')" style="font-size:11px; padding:8px 4px; justify-content:center;">
+          <button type="button" class="action-btn" id="btnDisparoManual" class="action-btn primary" onclick="setModoDisparoIAA('manual')" style="font-size:11px; padding:8px 4px; justify-content:center;">
             👆 Ejecución Manual
           </button>
         </div>
@@ -472,13 +472,13 @@
           <div id="boxOpcionesAudioBandera">
             <div style="font-size:11.5px; font-weight:700; color:#f8fafc; margin-bottom:4px;">Audio:</div>
             <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:4px;">
-              <button type="button" class="action-btn primary" id="btnAcompHimno" class="action-btn" onclick="setAcompBanderaIAB('himno')" style="font-size:10.5px; padding:6px 2px; justify-content:center;">
+              <button type="button" class="action-btn primary" id="btnAcompHimno" class="action-btn" onclick="setAcompBanderaIAA('himno')" style="font-size:10.5px; padding:6px 2px; justify-content:center;">
                 🎺 Himno Nacional
               </button>
-              <button type="button" class="action-btn" id="btnAcompChifle" class="action-btn primary" onclick="setAcompBanderaIAB('chifle')" style="font-size:10.5px; padding:6px 2px; justify-content:center;">
+              <button type="button" class="action-btn" id="btnAcompChifle" class="action-btn primary" onclick="setAcompBanderaIAA('chifle')" style="font-size:10.5px; padding:6px 2px; justify-content:center;">
                 📢 Solo Chifle
               </button>
-              <button type="button" class="action-btn" id="btnAcompAmbos" onclick="setAcompBanderaIAB('ambos')" style="font-size:10.5px; padding:6px 2px; justify-content:center;">
+              <button type="button" class="action-btn" id="btnAcompAmbos" onclick="setAcompBanderaIAA('ambos')" style="font-size:10.5px; padding:6px 2px; justify-content:center;">
                 🎺+📢 Ambos
               </button>
             </div>
@@ -488,7 +488,7 @@
           <div id="boxOpcionesBuquesCortesia">
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <div style="font-size:11.5px; font-weight:700; color:#f8fafc;">Buques Extranjeros en Puerto:</div>
-              <span style="font-size:10.5px; color:#38bdf8; cursor:pointer;" onclick="toggleSelectorCortesiaIAB()">[+ Añadir País]</span>
+              <span style="font-size:10.5px; color:#38bdf8; cursor:pointer;" onclick="toggleSelectorCortesiaIAA()">[+ Añadir País]</span>
             </div>
             
             <div id="listaCortesiaPaises" style="display:flex; flex-wrap:wrap; gap:4px; min-height:24px;">
@@ -496,10 +496,10 @@
             </div>
             <!-- DESPLEGABLE RÁPIDO PARA AÑADIR CORTESÍA -->
             <div id="boxSelectorCortesia" style="display:none; margin-top:6px; background:#070d1e; padding:6px; border-radius:6px; border:1px solid #334155;">
-              <select id="selPaisCortesia" style="width:75%; background:#0b152d; border:1px solid #38bdf8; border-radius:4px; color:#fff; font-size:11px; padding:4px;" onchange="agregarPaisCortesiaIAB(this.value)">
+              <select id="selPaisCortesia" style="width:75%; background:#0b152d; border:1px solid #38bdf8; border-radius:4px; color:#fff; font-size:11px; padding:4px;" onchange="agregarPaisCortesiaIAA(this.value)">
                 <option value="">Seleccione país presente...</option>
               </select>
-              <button type="button" class="action-btn" onclick="limpiarPaisesCortesiaIAB()" style="font-size:10px; padding:4px 6px;">Borrar</button>
+              <button type="button" class="action-btn" onclick="limpiarPaisesCortesiaIAA()" style="font-size:10px; padding:4px 6px;">Borrar</button>
             </div>
           </div>
 
@@ -507,16 +507,16 @@
           <div id="rowOpcionOracion" style="display:none; flex-direction:column; gap:6px;">
             <div style="font-size:11.5px; font-weight:700; color:#f8fafc;">Modalidad de la Oración:</div>
             <div style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap:4px;">
-              <button type="button" class="action-btn primary" id="btnOracionVoz" onclick="setModalidadOracionIAB('leida')" style="font-size:10px; padding:6px 2px; justify-content:center;">
+              <button type="button" class="action-btn primary" id="btnOracionVoz" onclick="setModalidadOracionIAA('leida')" style="font-size:10px; padding:6px 2px; justify-content:center;">
                 📖 Leída
               </button>
-              <button type="button" class="action-btn" id="btnOracionCantada" onclick="setModalidadOracionIAB('cantada')" style="font-size:10px; padding:6px 2px; justify-content:center;">
+              <button type="button" class="action-btn" id="btnOracionCantada" onclick="setModalidadOracionIAA('cantada')" style="font-size:10px; padding:6px 2px; justify-content:center;">
                 🎶 Cantada
               </button>
-              <button type="button" class="action-btn" id="btnOracionCorneta" onclick="setModalidadOracionIAB('corneta')" style="font-size:10px; padding:6px 2px; justify-content:center;">
+              <button type="button" class="action-btn" id="btnOracionCorneta" onclick="setModalidadOracionIAA('corneta')" style="font-size:10px; padding:6px 2px; justify-content:center;">
                 🎺 Corneta
               </button>
-              <button type="button" class="action-btn" id="btnOracionNinguna" onclick="setModalidadOracionIAB('ninguna')" style="font-size:10px; padding:6px 2px; justify-content:center;">
+              <button type="button" class="action-btn" id="btnOracionNinguna" onclick="setModalidadOracionIAA('ninguna')" style="font-size:10px; padding:6px 2px; justify-content:center;">
                 ✕ Ninguna
               </button>
             </div>
@@ -537,7 +537,7 @@
 
         <!-- PANEL DE EJECUCIÓN (AUTOMÁTICA O MANUAL) -->
         <div id="panelEjecucionAuto" style="margin-bottom:10px;">
-          <button type="button" class="action-btn primary" id="btnArmarCeremonial" onclick="toggleArmadoCeremonialIAB()" style="width:100%; justify-content:center; padding:12px; font-size:13px; font-weight:900;">
+          <button type="button" class="action-btn primary" id="btnArmarCeremonial" onclick="toggleArmadoCeremonialIAA()" style="width:100%; justify-content:center; padding:12px; font-size:13px; font-weight:900;">
             <span>🛡️ ACTIVAR SECUENCIA AUTOMÁTICA</span>
           </button>
         </div>
@@ -546,39 +546,39 @@
         <div id="panelEjecucionManual" style="display:none; flex-direction:column; gap:6px; margin-bottom:10px;">
           <div style="font-size:11.5px; font-weight:800; color:#38bdf8; margin-bottom:2px;">BOTONES DE MANDO MANUAL:</div>
           <div id="panelPasosBandera" style="display:flex; flex-direction:column; gap:6px;">
-          <button type="button" class="action-btn" onclick="ejecutarPasoManualIAB(1)" style="justify-content:space-between;">
+          <button type="button" class="action-btn" onclick="ejecutarPasoManualIAA(1)" style="justify-content:space-between;">
             <span>1. 🗣️ Voz: "Señales a la bandera" (T-5 min)</span>
             <span>📢</span>
           </button>
-          <button type="button" class="action-btn" onclick="ejecutarPasoManualIAB(2)" style="justify-content:space-between;">
+          <button type="button" class="action-btn" onclick="ejecutarPasoManualIAA(2)" style="justify-content:space-between;">
             <span>2. 🗣️ Voz: "A la bandera frente a popa, presenten"</span>
             <span>📢</span>
           </button>
-          <button type="button" class="action-btn" onclick="ejecutarPasoManualIAB(3)" style="justify-content:space-between;">
+          <button type="button" class="action-btn" onclick="ejecutarPasoManualIAA(3)" style="justify-content:space-between;">
             <span>3. 🇪🇸 Himno / Chifle</span>
             <span>🎺</span>
           </button>
-          <button type="button" class="action-btn" onclick="ejecutarPasoManualIAB(4)" style="justify-content:space-between;">
+          <button type="button" class="action-btn" onclick="ejecutarPasoManualIAA(4)" style="justify-content:space-between;">
             <span>4. 🗣️ Voz: "Retirada de honores"</span>
             <span>📢</span>
           </button>
-          <button type="button" class="action-btn" onclick="ejecutarPasoManualIAB(5)" style="justify-content:space-between;">
+          <button type="button" class="action-btn" onclick="ejecutarPasoManualIAA(5)" style="justify-content:space-between;">
             <span>5. 📢 Chifle: Pitada de Retirada de Honores</span>
             <span>⚓</span>
           </button>
           </div>
-          <button type="button" class="action-btn" id="btnManualPasoOracion" onclick="ejecutarPasoManualIAB(6)" style="display:none; justify-content:space-between;">
+          <button type="button" class="action-btn" id="btnManualPasoOracion" onclick="ejecutarPasoManualIAA(6)" style="display:none; justify-content:space-between;">
             <span>6. ⚓ Oración de la Noche</span>
             <span>🌙</span>
           </button>
-          <button type="button" class="action-btn" id="btnManualPasoBuenasNoches" onclick="ejecutarPasoManualIAB(7)" style="display:none; justify-content:space-between;">
+          <button type="button" class="action-btn" id="btnManualPasoBuenasNoches" onclick="ejecutarPasoManualIAA(7)" style="display:none; justify-content:space-between;">
             <span>7. 🌙 "Dotación, buenas noches"</span>
             <span>🔊</span>
           </button>
         </div>
 
         <!-- BOTÓN DE PARADA GENERAL -->
-        <button type="button" class="action-btn danger" id="btnDetenerSecuenciaGeneral" onclick="cancelarCeremonialIzadoIAB()" style="width:100%; justify-content:center; padding:8px; font-size:11px; margin-top:4px;">
+        <button type="button" class="action-btn danger" id="btnDetenerSecuenciaGeneral" onclick="cancelarCeremonialIzadoIAA()" style="width:100%; justify-content:center; padding:8px; font-size:11px; margin-top:4px;">
           <span>⏹️ DETENER SECUENCIA</span>
         </button>
       </div>
@@ -595,15 +595,15 @@
     // ==========================================
     // CATÁLOGO DE HIMNOS DE CORTESÍA INTERNACIONALES
     // ==========================================
-    const ANTHEMS_CATALOG_IAB = [{"id": "Afghanistan", "name": "Afghanistan", "file": "Afghanistan.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Afghanistan.mp3"}, {"id": "Albania", "name": "Albania", "file": "Albania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Albania.mp3"}, {"id": "Alemania", "name": "Alemania", "file": "Alemania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Alemania.mp3"}, {"id": "Angola", "name": "Angola", "file": "Angola.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Angola.mp3"}, {"id": "Antigua_Barbuda", "name": "Antigua Barbuda", "file": "Antigua_Barbuda.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Antigua_Barbuda.mp3"}, {"id": "Antillas_Holandesas", "name": "Antillas Holandesas", "file": "Antillas_Holandesas.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Antillas_Holandesas.mp3"}, {"id": "Arabia_Saudita", "name": "Arabia Saudita", "file": "Arabia_Saudita.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Arabia_Saudita.mp3"}, {"id": "Argelia", "name": "Argelia", "file": "Argelia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Argelia.mp3"}, {"id": "Argentina", "name": "Argentina", "file": "Argentina.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Argentina.mp3"}, {"id": "Armenia", "name": "Armenia", "file": "Armenia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Armenia.mp3"}, {"id": "Aruba", "name": "Aruba", "file": "Aruba.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Aruba.mp3"}, {"id": "Australia", "name": "Australia", "file": "Australia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Australia.mp3"}, {"id": "Austria", "name": "Austria", "file": "Austria.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Austria.mp3"}, {"id": "Azerbaiyan", "name": "Azerbaiyan", "file": "Azerbaiyan.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Azerbaiyan.mp3"}, {"id": "Bahamas", "name": "Bahamas", "file": "Bahamas.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Bahamas.mp3"}, {"id": "Bahrein", "name": "Bahrein", "file": "Bahrein.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Bahrein.mp3"}, {"id": "Banglades", "name": "Banglades", "file": "Banglades.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Banglades.mp3"}, {"id": "Barbados", "name": "Barbados", "file": "Barbados.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Barbados.mp3"}, {"id": "Belgica", "name": "Belgica", "file": "Belgica.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Belgica.mp3"}, {"id": "Belice", "name": "Belice", "file": "Belice.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Belice.mp3"}, {"id": "Benin", "name": "Benin", "file": "Benin.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Benin.mp3"}, {"id": "Bielorusia", "name": "Bielorusia", "file": "Bielorusia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Bielorusia.mp3"}, {"id": "Bolivia", "name": "Bolivia", "file": "Bolivia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Bolivia.mp3"}, {"id": "Bosnia_H", "name": "Bosnia H", "file": "Bosnia_H.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Bosnia_H.mp3"}, {"id": "Botsuana", "name": "Botsuana", "file": "Botsuana.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Botsuana.mp3"}, {"id": "Brasil", "name": "Brasil", "file": "Brasil.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Brasil.mp3"}, {"id": "Brunei", "name": "Brunei", "file": "Brunei.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Brunei.mp3"}, {"id": "Bulgaria", "name": "Bulgaria", "file": "Bulgaria.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Bulgaria.mp3"}, {"id": "Cabo_Verde", "name": "Cabo Verde", "file": "Cabo_Verde.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Cabo_Verde.mp3"}, {"id": "Camboya", "name": "Camboya", "file": "Camboya.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Camboya.mp3"}, {"id": "Camerun", "name": "Camerun", "file": "Camerun.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Camerun.mp3"}, {"id": "Canada", "name": "Canada", "file": "Canada.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Canada.mp3"}, {"id": "Chad", "name": "Chad", "file": "Chad.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Chad.mp3"}, {"id": "Chile", "name": "Chile", "file": "Chile.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Chile.mp3"}, {"id": "China", "name": "China", "file": "China.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/China.mp3"}, {"id": "Colombia", "name": "Colombia", "file": "Colombia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Colombia.mp3"}, {"id": "Congo", "name": "Congo", "file": "Congo.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Congo.mp3"}, {"id": "Corea_Sur", "name": "Corea Sur", "file": "Corea_Sur.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Corea_Sur.mp3"}, {"id": "Costa_Marfil", "name": "Costa Marfil", "file": "Costa_Marfil.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Costa_Marfil.mp3"}, {"id": "Costa_Rica", "name": "Costa Rica", "file": "Costa_Rica.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Costa_Rica.mp3"}, {"id": "Croacia", "name": "Croacia", "file": "Croacia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Croacia.mp3"}, {"id": "Cuba", "name": "Cuba", "file": "Cuba.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Cuba.mp3"}, {"id": "Dinamarca", "name": "Dinamarca", "file": "Dinamarca.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Dinamarca.mp3"}, {"id": "Dinamarca_MR", "name": "Dinamarca MR", "file": "Dinamarca_MR.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Dinamarca_MR.mp3"}, {"id": "Dominica", "name": "Dominica", "file": "Dominica.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Dominica.mp3"}, {"id": "EEUU", "name": "EEUU", "file": "EEUU.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/EEUU.mp3"}, {"id": "EU", "name": "EU", "file": "EU.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/EU.mp3"}, {"id": "Ecuador", "name": "Ecuador", "file": "Ecuador.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Ecuador.mp3"}, {"id": "Egipto", "name": "Egipto", "file": "Egipto.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Egipto.mp3"}, {"id": "Emiratos", "name": "Emiratos", "file": "Emiratos.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Emiratos.mp3"}, {"id": "Eritrea", "name": "Eritrea", "file": "Eritrea.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Eritrea.mp3"}, {"id": "Eslovaquia", "name": "Eslovaquia", "file": "Eslovaquia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Eslovaquia.mp3"}, {"id": "Eslovenia", "name": "Eslovenia", "file": "Eslovenia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Eslovenia.mp3"}, {"id": "Espania_corto", "name": "Espania corto", "file": "Espania_corto.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Espania_corto.mp3"}, {"id": "Espania_largo", "name": "Espania largo", "file": "Espania_largo.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Espania_largo.mp3"}, {"id": "Estonia", "name": "Estonia", "file": "Estonia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Estonia.mp3"}, {"id": "Filipinas", "name": "Filipinas", "file": "Filipinas.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Filipinas.mp3"}, {"id": "Finlandia", "name": "Finlandia", "file": "Finlandia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Finlandia.mp3"}, {"id": "Francia", "name": "Francia", "file": "Francia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Francia.mp3"}, {"id": "Gabon", "name": "Gabon", "file": "Gabon.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Gabon.mp3"}, {"id": "Gambia", "name": "Gambia", "file": "Gambia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Gambia.mp3"}, {"id": "Georgia", "name": "Georgia", "file": "Georgia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Georgia.mp3"}, {"id": "Ghana", "name": "Ghana", "file": "Ghana.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Ghana.mp3"}, {"id": "Grecia", "name": "Grecia", "file": "Grecia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Grecia.mp3"}, {"id": "Guatemala", "name": "Guatemala", "file": "Guatemala.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Guatemala.mp3"}, {"id": "Guayana", "name": "Guayana", "file": "Guayana.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Guayana.mp3"}, {"id": "Guinea", "name": "Guinea", "file": "Guinea.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Guinea.mp3"}, {"id": "Guinea_Bissau", "name": "Guinea Bissau", "file": "Guinea_Bissau.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Guinea_Bissau.mp3"}, {"id": "Guinea_Ecuatorial", "name": "Guinea Ecuatorial", "file": "Guinea_Ecuatorial.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Guinea_Ecuatorial.mp3"}, {"id": "Haiti", "name": "Haiti", "file": "Haiti.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Haiti.mp3"}, {"id": "Honduras", "name": "Honduras", "file": "Honduras.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Honduras.mp3"}, {"id": "Hungria", "name": "Hungria", "file": "Hungria.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Hungria.mp3"}, {"id": "India", "name": "India", "file": "India.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/India.mp3"}, {"id": "Indonesia", "name": "Indonesia", "file": "Indonesia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Indonesia.mp3"}, {"id": "Irak", "name": "Irak", "file": "Irak.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Irak.mp3"}, {"id": "Irlanda", "name": "Irlanda", "file": "Irlanda.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Irlanda.mp3"}, {"id": "Islandia", "name": "Islandia", "file": "Islandia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Islandia.mp3"}, {"id": "Israel", "name": "Israel", "file": "Israel.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Israel.mp3"}, {"id": "Italia", "name": "Italia", "file": "Italia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Italia.mp3"}, {"id": "Jamaica", "name": "Jamaica", "file": "Jamaica.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Jamaica.mp3"}, {"id": "Japon", "name": "Japon", "file": "Japon.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Japon.mp3"}, {"id": "Jordania", "name": "Jordania", "file": "Jordania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Jordania.mp3"}, {"id": "Kazajistan", "name": "Kazajistan", "file": "Kazajistan.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Kazajistan.mp3"}, {"id": "Kenia", "name": "Kenia", "file": "Kenia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Kenia.mp3"}, {"id": "Kuwait", "name": "Kuwait", "file": "Kuwait.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Kuwait.mp3"}, {"id": "Laos", "name": "Laos", "file": "Laos.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Laos.mp3"}, {"id": "Lesoto", "name": "Lesoto", "file": "Lesoto.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Lesoto.mp3"}, {"id": "Letonia", "name": "Letonia", "file": "Letonia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Letonia.mp3"}, {"id": "Libano", "name": "Libano", "file": "Libano.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Libano.mp3"}, {"id": "Liberia", "name": "Liberia", "file": "Liberia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Liberia.mp3"}, {"id": "Libia", "name": "Libia", "file": "Libia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Libia.mp3"}, {"id": "Liechtenstein", "name": "Liechtenstein", "file": "Liechtenstein.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Liechtenstein.mp3"}, {"id": "Lituania", "name": "Lituania", "file": "Lituania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Lituania.mp3"}, {"id": "Luxemburgo", "name": "Luxemburgo", "file": "Luxemburgo.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Luxemburgo.mp3"}, {"id": "Macedonia", "name": "Macedonia", "file": "Macedonia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Macedonia.mp3"}, {"id": "Madagascar", "name": "Madagascar", "file": "Madagascar.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Madagascar.mp3"}, {"id": "Malasia", "name": "Malasia", "file": "Malasia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Malasia.mp3"}, {"id": "Maldivas", "name": "Maldivas", "file": "Maldivas.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Maldivas.mp3"}, {"id": "Mali", "name": "Mali", "file": "Mali.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Mali.mp3"}, {"id": "Malta", "name": "Malta", "file": "Malta.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Malta.mp3"}, {"id": "Marruecos", "name": "Marruecos", "file": "Marruecos.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Marruecos.mp3"}, {"id": "Mauricio", "name": "Mauricio", "file": "Mauricio.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Mauricio.mp3"}, {"id": "Mauritania", "name": "Mauritania", "file": "Mauritania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Mauritania.mp3"}, {"id": "Mejico", "name": "Mejico", "file": "Mejico.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Mejico.mp3"}, {"id": "Moldavia", "name": "Moldavia", "file": "Moldavia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Moldavia.mp3"}, {"id": "Monaco", "name": "Monaco", "file": "Monaco.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Monaco.mp3"}, {"id": "Montenegro", "name": "Montenegro", "file": "Montenegro.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Montenegro.mp3"}, {"id": "Mozambique", "name": "Mozambique", "file": "Mozambique.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Mozambique.mp3"}, {"id": "Myanmar", "name": "Myanmar", "file": "Myanmar.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Myanmar.mp3"}, {"id": "Namibia", "name": "Namibia", "file": "Namibia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Namibia.mp3"}, {"id": "Nepal", "name": "Nepal", "file": "Nepal.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Nepal.mp3"}, {"id": "Nicaragua", "name": "Nicaragua", "file": "Nicaragua.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Nicaragua.mp3"}, {"id": "Ninguno", "name": "Ninguno", "file": "Ninguno.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Ninguno.mp3"}, {"id": "Noruega", "name": "Noruega", "file": "Noruega.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Noruega.mp3"}, {"id": "Nueva_Zelanda", "name": "Nueva Zelanda", "file": "Nueva_Zelanda.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Nueva_Zelanda.mp3"}, {"id": "OTAN", "name": "OTAN", "file": "OTAN.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/OTAN.mp3"}, {"id": "Oman", "name": "Oman", "file": "Oman.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Oman.mp3"}, {"id": "Paises_Bajos", "name": "Paises Bajos", "file": "Paises_Bajos.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Paises_Bajos.mp3"}, {"id": "Pakistan", "name": "Pakistan", "file": "Pakistan.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Pakistan.mp3"}, {"id": "Panama", "name": "Panama", "file": "Panama.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Panama.mp3"}, {"id": "Peru", "name": "Peru", "file": "Peru.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Peru.mp3"}, {"id": "Polonia", "name": "Polonia", "file": "Polonia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Polonia.mp3"}, {"id": "Portugal", "name": "Portugal", "file": "Portugal.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Portugal.mp3"}, {"id": "Puerto_Rico", "name": "Puerto Rico", "file": "Puerto_Rico.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Puerto_Rico.mp3"}, {"id": "Qatar", "name": "Qatar", "file": "Qatar.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Qatar.mp3"}, {"id": "RC_Africana", "name": "RC Africana", "file": "RC_Africana.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/RC_Africana.mp3"}, {"id": "Reino_Unido", "name": "Reino Unido", "file": "Reino_Unido.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Reino_Unido.mp3"}, {"id": "Rep_Checa", "name": "Rep Checa", "file": "Rep_Checa.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Rep_Checa.mp3"}, {"id": "Republica_Dominicana", "name": "Republica Dominicana", "file": "Republica_Dominicana.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Republica_Dominicana.mp3"}, {"id": "Ruanda", "name": "Ruanda", "file": "Ruanda.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Ruanda.mp3"}, {"id": "Rumania", "name": "Rumania", "file": "Rumania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Rumania.mp3"}, {"id": "Rusia", "name": "Rusia", "file": "Rusia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Rusia.mp3"}, {"id": "SOM_Malta", "name": "SOM Malta", "file": "SOM_Malta.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/SOM_Malta.mp3"}, {"id": "Salvador", "name": "Salvador", "file": "Salvador.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Salvador.mp3"}, {"id": "Serbia", "name": "Serbia", "file": "Serbia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Serbia.mp3"}, {"id": "Seychelles", "name": "Seychelles", "file": "Seychelles.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Seychelles.mp3"}, {"id": "Sierra_Leona", "name": "Sierra Leona", "file": "Sierra_Leona.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Sierra_Leona.mp3"}, {"id": "Singapur", "name": "Singapur", "file": "Singapur.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Singapur.mp3"}, {"id": "Somalia", "name": "Somalia", "file": "Somalia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Somalia.mp3"}, {"id": "Sri_Lanka", "name": "Sri Lanka", "file": "Sri_Lanka.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Sri_Lanka.mp3"}, {"id": "Sudan", "name": "Sudan", "file": "Sudan.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Sudan.mp3"}, {"id": "Suecia", "name": "Suecia", "file": "Suecia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Suecia.mp3"}, {"id": "Suiza", "name": "Suiza", "file": "Suiza.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Suiza.mp3"}, {"id": "Tanzania", "name": "Tanzania", "file": "Tanzania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Tanzania.mp3"}, {"id": "Timor_Oriental", "name": "Timor Oriental", "file": "Timor_Oriental.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Timor_Oriental.mp3"}, {"id": "Trinidad_Tobago", "name": "Trinidad Tobago", "file": "Trinidad_Tobago.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Trinidad_Tobago.mp3"}, {"id": "Tunez", "name": "Tunez", "file": "Tunez.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Tunez.mp3"}, {"id": "Turquia", "name": "Turquia", "file": "Turquia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Turquia.mp3"}, {"id": "UE", "name": "UE", "file": "UE.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/UE.mp3"}, {"id": "Ucrania", "name": "Ucrania", "file": "Ucrania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Ucrania.mp3"}, {"id": "Uganda", "name": "Uganda", "file": "Uganda.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Uganda.mp3"}, {"id": "Uruguay", "name": "Uruguay", "file": "Uruguay.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Uruguay.mp3"}, {"id": "Vaticano", "name": "Vaticano", "file": "Vaticano.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Vaticano.mp3"}, {"id": "Venezuela", "name": "Venezuela", "file": "Venezuela.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Venezuela.mp3"}, {"id": "Yemen", "name": "Yemen", "file": "Yemen.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Yemen.mp3"}, {"id": "Yibuti", "name": "Yibuti", "file": "Yibuti.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Yibuti.mp3"}];
+    const ANTHEMS_CATALOG_IAA = [{"id": "Afghanistan", "name": "Afghanistan", "file": "Afghanistan.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Afghanistan.mp3"}, {"id": "Albania", "name": "Albania", "file": "Albania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Albania.mp3"}, {"id": "Alemania", "name": "Alemania", "file": "Alemania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Alemania.mp3"}, {"id": "Angola", "name": "Angola", "file": "Angola.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Angola.mp3"}, {"id": "Antigua_Barbuda", "name": "Antigua Barbuda", "file": "Antigua_Barbuda.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Antigua_Barbuda.mp3"}, {"id": "Antillas_Holandesas", "name": "Antillas Holandesas", "file": "Antillas_Holandesas.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Antillas_Holandesas.mp3"}, {"id": "Arabia_Saudita", "name": "Arabia Saudita", "file": "Arabia_Saudita.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Arabia_Saudita.mp3"}, {"id": "Argelia", "name": "Argelia", "file": "Argelia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Argelia.mp3"}, {"id": "Argentina", "name": "Argentina", "file": "Argentina.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Argentina.mp3"}, {"id": "Armenia", "name": "Armenia", "file": "Armenia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Armenia.mp3"}, {"id": "Aruba", "name": "Aruba", "file": "Aruba.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Aruba.mp3"}, {"id": "Australia", "name": "Australia", "file": "Australia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Australia.mp3"}, {"id": "Austria", "name": "Austria", "file": "Austria.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Austria.mp3"}, {"id": "Azerbaiyan", "name": "Azerbaiyan", "file": "Azerbaiyan.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Azerbaiyan.mp3"}, {"id": "Bahamas", "name": "Bahamas", "file": "Bahamas.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Bahamas.mp3"}, {"id": "Bahrein", "name": "Bahrein", "file": "Bahrein.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Bahrein.mp3"}, {"id": "Banglades", "name": "Banglades", "file": "Banglades.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Banglades.mp3"}, {"id": "Barbados", "name": "Barbados", "file": "Barbados.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Barbados.mp3"}, {"id": "Belgica", "name": "Belgica", "file": "Belgica.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Belgica.mp3"}, {"id": "Belice", "name": "Belice", "file": "Belice.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Belice.mp3"}, {"id": "Benin", "name": "Benin", "file": "Benin.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Benin.mp3"}, {"id": "Bielorusia", "name": "Bielorusia", "file": "Bielorusia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Bielorusia.mp3"}, {"id": "Bolivia", "name": "Bolivia", "file": "Bolivia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Bolivia.mp3"}, {"id": "Bosnia_H", "name": "Bosnia H", "file": "Bosnia_H.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Bosnia_H.mp3"}, {"id": "Botsuana", "name": "Botsuana", "file": "Botsuana.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Botsuana.mp3"}, {"id": "Brasil", "name": "Brasil", "file": "Brasil.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Brasil.mp3"}, {"id": "Brunei", "name": "Brunei", "file": "Brunei.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Brunei.mp3"}, {"id": "Bulgaria", "name": "Bulgaria", "file": "Bulgaria.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Bulgaria.mp3"}, {"id": "Cabo_Verde", "name": "Cabo Verde", "file": "Cabo_Verde.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Cabo_Verde.mp3"}, {"id": "Camboya", "name": "Camboya", "file": "Camboya.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Camboya.mp3"}, {"id": "Camerun", "name": "Camerun", "file": "Camerun.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Camerun.mp3"}, {"id": "Canada", "name": "Canada", "file": "Canada.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Canada.mp3"}, {"id": "Chad", "name": "Chad", "file": "Chad.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Chad.mp3"}, {"id": "Chile", "name": "Chile", "file": "Chile.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Chile.mp3"}, {"id": "China", "name": "China", "file": "China.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/China.mp3"}, {"id": "Colombia", "name": "Colombia", "file": "Colombia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Colombia.mp3"}, {"id": "Congo", "name": "Congo", "file": "Congo.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Congo.mp3"}, {"id": "Corea_Sur", "name": "Corea Sur", "file": "Corea_Sur.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Corea_Sur.mp3"}, {"id": "Costa_Marfil", "name": "Costa Marfil", "file": "Costa_Marfil.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Costa_Marfil.mp3"}, {"id": "Costa_Rica", "name": "Costa Rica", "file": "Costa_Rica.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Costa_Rica.mp3"}, {"id": "Croacia", "name": "Croacia", "file": "Croacia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Croacia.mp3"}, {"id": "Cuba", "name": "Cuba", "file": "Cuba.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Cuba.mp3"}, {"id": "Dinamarca", "name": "Dinamarca", "file": "Dinamarca.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Dinamarca.mp3"}, {"id": "Dinamarca_MR", "name": "Dinamarca MR", "file": "Dinamarca_MR.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Dinamarca_MR.mp3"}, {"id": "Dominica", "name": "Dominica", "file": "Dominica.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Dominica.mp3"}, {"id": "EEUU", "name": "EEUU", "file": "EEUU.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/EEUU.mp3"}, {"id": "EU", "name": "EU", "file": "EU.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/EU.mp3"}, {"id": "Ecuador", "name": "Ecuador", "file": "Ecuador.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Ecuador.mp3"}, {"id": "Egipto", "name": "Egipto", "file": "Egipto.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Egipto.mp3"}, {"id": "Emiratos", "name": "Emiratos", "file": "Emiratos.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Emiratos.mp3"}, {"id": "Eritrea", "name": "Eritrea", "file": "Eritrea.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Eritrea.mp3"}, {"id": "Eslovaquia", "name": "Eslovaquia", "file": "Eslovaquia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Eslovaquia.mp3"}, {"id": "Eslovenia", "name": "Eslovenia", "file": "Eslovenia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Eslovenia.mp3"}, {"id": "Espania_corto", "name": "Espania corto", "file": "Espania_corto.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Espania_corto.mp3"}, {"id": "Espania_largo", "name": "Espania largo", "file": "Espania_largo.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Espania_largo.mp3"}, {"id": "Estonia", "name": "Estonia", "file": "Estonia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Estonia.mp3"}, {"id": "Filipinas", "name": "Filipinas", "file": "Filipinas.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Filipinas.mp3"}, {"id": "Finlandia", "name": "Finlandia", "file": "Finlandia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Finlandia.mp3"}, {"id": "Francia", "name": "Francia", "file": "Francia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Francia.mp3"}, {"id": "Gabon", "name": "Gabon", "file": "Gabon.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Gabon.mp3"}, {"id": "Gambia", "name": "Gambia", "file": "Gambia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Gambia.mp3"}, {"id": "Georgia", "name": "Georgia", "file": "Georgia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Georgia.mp3"}, {"id": "Ghana", "name": "Ghana", "file": "Ghana.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Ghana.mp3"}, {"id": "Grecia", "name": "Grecia", "file": "Grecia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Grecia.mp3"}, {"id": "Guatemala", "name": "Guatemala", "file": "Guatemala.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Guatemala.mp3"}, {"id": "Guayana", "name": "Guayana", "file": "Guayana.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Guayana.mp3"}, {"id": "Guinea", "name": "Guinea", "file": "Guinea.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Guinea.mp3"}, {"id": "Guinea_Bissau", "name": "Guinea Bissau", "file": "Guinea_Bissau.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Guinea_Bissau.mp3"}, {"id": "Guinea_Ecuatorial", "name": "Guinea Ecuatorial", "file": "Guinea_Ecuatorial.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Guinea_Ecuatorial.mp3"}, {"id": "Haiti", "name": "Haiti", "file": "Haiti.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Haiti.mp3"}, {"id": "Honduras", "name": "Honduras", "file": "Honduras.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Honduras.mp3"}, {"id": "Hungria", "name": "Hungria", "file": "Hungria.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Hungria.mp3"}, {"id": "India", "name": "India", "file": "India.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/India.mp3"}, {"id": "Indonesia", "name": "Indonesia", "file": "Indonesia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Indonesia.mp3"}, {"id": "Irak", "name": "Irak", "file": "Irak.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Irak.mp3"}, {"id": "Irlanda", "name": "Irlanda", "file": "Irlanda.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Irlanda.mp3"}, {"id": "Islandia", "name": "Islandia", "file": "Islandia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Islandia.mp3"}, {"id": "Israel", "name": "Israel", "file": "Israel.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Israel.mp3"}, {"id": "Italia", "name": "Italia", "file": "Italia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Italia.mp3"}, {"id": "Jamaica", "name": "Jamaica", "file": "Jamaica.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Jamaica.mp3"}, {"id": "Japon", "name": "Japon", "file": "Japon.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Japon.mp3"}, {"id": "Jordania", "name": "Jordania", "file": "Jordania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Jordania.mp3"}, {"id": "Kazajistan", "name": "Kazajistan", "file": "Kazajistan.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Kazajistan.mp3"}, {"id": "Kenia", "name": "Kenia", "file": "Kenia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Kenia.mp3"}, {"id": "Kuwait", "name": "Kuwait", "file": "Kuwait.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Kuwait.mp3"}, {"id": "Laos", "name": "Laos", "file": "Laos.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Laos.mp3"}, {"id": "Lesoto", "name": "Lesoto", "file": "Lesoto.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Lesoto.mp3"}, {"id": "Letonia", "name": "Letonia", "file": "Letonia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Letonia.mp3"}, {"id": "Libano", "name": "Libano", "file": "Libano.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Libano.mp3"}, {"id": "Liberia", "name": "Liberia", "file": "Liberia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Liberia.mp3"}, {"id": "Libia", "name": "Libia", "file": "Libia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Libia.mp3"}, {"id": "Liechtenstein", "name": "Liechtenstein", "file": "Liechtenstein.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Liechtenstein.mp3"}, {"id": "Lituania", "name": "Lituania", "file": "Lituania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Lituania.mp3"}, {"id": "Luxemburgo", "name": "Luxemburgo", "file": "Luxemburgo.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Luxemburgo.mp3"}, {"id": "Macedonia", "name": "Macedonia", "file": "Macedonia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Macedonia.mp3"}, {"id": "Madagascar", "name": "Madagascar", "file": "Madagascar.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Madagascar.mp3"}, {"id": "Malasia", "name": "Malasia", "file": "Malasia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Malasia.mp3"}, {"id": "Maldivas", "name": "Maldivas", "file": "Maldivas.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Maldivas.mp3"}, {"id": "Mali", "name": "Mali", "file": "Mali.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Mali.mp3"}, {"id": "Malta", "name": "Malta", "file": "Malta.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Malta.mp3"}, {"id": "Marruecos", "name": "Marruecos", "file": "Marruecos.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Marruecos.mp3"}, {"id": "Mauricio", "name": "Mauricio", "file": "Mauricio.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Mauricio.mp3"}, {"id": "Mauritania", "name": "Mauritania", "file": "Mauritania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Mauritania.mp3"}, {"id": "Mejico", "name": "Mejico", "file": "Mejico.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Mejico.mp3"}, {"id": "Moldavia", "name": "Moldavia", "file": "Moldavia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Moldavia.mp3"}, {"id": "Monaco", "name": "Monaco", "file": "Monaco.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Monaco.mp3"}, {"id": "Montenegro", "name": "Montenegro", "file": "Montenegro.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Montenegro.mp3"}, {"id": "Mozambique", "name": "Mozambique", "file": "Mozambique.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Mozambique.mp3"}, {"id": "Myanmar", "name": "Myanmar", "file": "Myanmar.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Myanmar.mp3"}, {"id": "Namibia", "name": "Namibia", "file": "Namibia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Namibia.mp3"}, {"id": "Nepal", "name": "Nepal", "file": "Nepal.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Nepal.mp3"}, {"id": "Nicaragua", "name": "Nicaragua", "file": "Nicaragua.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Nicaragua.mp3"}, {"id": "Ninguno", "name": "Ninguno", "file": "Ninguno.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Ninguno.mp3"}, {"id": "Noruega", "name": "Noruega", "file": "Noruega.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Noruega.mp3"}, {"id": "Nueva_Zelanda", "name": "Nueva Zelanda", "file": "Nueva_Zelanda.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Nueva_Zelanda.mp3"}, {"id": "OTAN", "name": "OTAN", "file": "OTAN.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/OTAN.mp3"}, {"id": "Oman", "name": "Oman", "file": "Oman.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Oman.mp3"}, {"id": "Paises_Bajos", "name": "Paises Bajos", "file": "Paises_Bajos.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Paises_Bajos.mp3"}, {"id": "Pakistan", "name": "Pakistan", "file": "Pakistan.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Pakistan.mp3"}, {"id": "Panama", "name": "Panama", "file": "Panama.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Panama.mp3"}, {"id": "Peru", "name": "Peru", "file": "Peru.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Peru.mp3"}, {"id": "Polonia", "name": "Polonia", "file": "Polonia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Polonia.mp3"}, {"id": "Portugal", "name": "Portugal", "file": "Portugal.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Portugal.mp3"}, {"id": "Puerto_Rico", "name": "Puerto Rico", "file": "Puerto_Rico.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Puerto_Rico.mp3"}, {"id": "Qatar", "name": "Qatar", "file": "Qatar.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Qatar.mp3"}, {"id": "RC_Africana", "name": "RC Africana", "file": "RC_Africana.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/RC_Africana.mp3"}, {"id": "Reino_Unido", "name": "Reino Unido", "file": "Reino_Unido.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Reino_Unido.mp3"}, {"id": "Rep_Checa", "name": "Rep Checa", "file": "Rep_Checa.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Rep_Checa.mp3"}, {"id": "Republica_Dominicana", "name": "Republica Dominicana", "file": "Republica_Dominicana.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Republica_Dominicana.mp3"}, {"id": "Ruanda", "name": "Ruanda", "file": "Ruanda.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Ruanda.mp3"}, {"id": "Rumania", "name": "Rumania", "file": "Rumania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Rumania.mp3"}, {"id": "Rusia", "name": "Rusia", "file": "Rusia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Rusia.mp3"}, {"id": "SOM_Malta", "name": "SOM Malta", "file": "SOM_Malta.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/SOM_Malta.mp3"}, {"id": "Salvador", "name": "Salvador", "file": "Salvador.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Salvador.mp3"}, {"id": "Serbia", "name": "Serbia", "file": "Serbia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Serbia.mp3"}, {"id": "Seychelles", "name": "Seychelles", "file": "Seychelles.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Seychelles.mp3"}, {"id": "Sierra_Leona", "name": "Sierra Leona", "file": "Sierra_Leona.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Sierra_Leona.mp3"}, {"id": "Singapur", "name": "Singapur", "file": "Singapur.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Singapur.mp3"}, {"id": "Somalia", "name": "Somalia", "file": "Somalia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Somalia.mp3"}, {"id": "Sri_Lanka", "name": "Sri Lanka", "file": "Sri_Lanka.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Sri_Lanka.mp3"}, {"id": "Sudan", "name": "Sudan", "file": "Sudan.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Sudan.mp3"}, {"id": "Suecia", "name": "Suecia", "file": "Suecia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Suecia.mp3"}, {"id": "Suiza", "name": "Suiza", "file": "Suiza.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Suiza.mp3"}, {"id": "Tanzania", "name": "Tanzania", "file": "Tanzania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Tanzania.mp3"}, {"id": "Timor_Oriental", "name": "Timor Oriental", "file": "Timor_Oriental.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Timor_Oriental.mp3"}, {"id": "Trinidad_Tobago", "name": "Trinidad Tobago", "file": "Trinidad_Tobago.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Trinidad_Tobago.mp3"}, {"id": "Tunez", "name": "Tunez", "file": "Tunez.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Tunez.mp3"}, {"id": "Turquia", "name": "Turquia", "file": "Turquia.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Turquia.mp3"}, {"id": "UE", "name": "UE", "file": "UE.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/UE.mp3"}, {"id": "Ucrania", "name": "Ucrania", "file": "Ucrania.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Ucrania.mp3"}, {"id": "Uganda", "name": "Uganda", "file": "Uganda.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Uganda.mp3"}, {"id": "Uruguay", "name": "Uruguay", "file": "Uruguay.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Uruguay.mp3"}, {"id": "Vaticano", "name": "Vaticano", "file": "Vaticano.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Vaticano.mp3"}, {"id": "Venezuela", "name": "Venezuela", "file": "Venezuela.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Venezuela.mp3"}, {"id": "Yemen", "name": "Yemen", "file": "Yemen.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Yemen.mp3"}, {"id": "Yibuti", "name": "Yibuti", "file": "Yibuti.mp3", "url": "https://raw.githubusercontent.com/tdolarea/anthemsnew/main/Yibuti.mp3"}];
 
     // ==========================================
     // MOTOR DE AUDIO Y ESTADO CEREMONIAL
     // ==========================================
-    let currentActiveAudioIAB = null;
+    let currentActiveAudioIAA = null;
 
-    function stopAllAudioIAB() {
-      pararAudioCeremonialIAB();
+    function stopAllAudioIAA() {
+      pararAudioCeremonialIAA();
       const allAudios = document.querySelectorAll('audio');
       allAudios.forEach(a => {
         if (a) {
@@ -614,12 +614,12 @@
       if (statusBox) statusBox.style.display = 'none';
     }
 
-    function cerrarStatusIAB() {
+    function cerrarStatusIAA() {
       const statusBox = document.getElementById('audioStatusBar');
       if (statusBox) statusBox.style.display = 'none';
     }
 
-    function actualizarStatusIAB(txt) {
+    function actualizarStatusIAA(txt) {
       const statusBox = document.getElementById('audioStatusBar');
       const innerText = document.getElementById('audioStatusInnerTxt');
       if (innerText) innerText.textContent = txt;
@@ -645,20 +645,20 @@
     // ==========================================
     // VISTA 4: MOTOR DE IZADO Y ARRIADO DE BANDERA
     // ==========================================
-    let cerModoIAB = 'izado'; // 'izado' | 'arriado'
-    let cerFuenteOcasoIAB = 'manual'; // 'manual' | 'base' | 'gps'
-    let cerModoDisparoIAB = 'auto'; // 'auto' | 'manual'
-    let cerAcompBanderaIAB = 'himno'; // 'himno' | 'chifle' | 'ambos'
-    let cerModalidadOracionIAB = 'leida'; // 'leida' | 'cantada' | 'corneta' | 'ninguna'
-    let cerPaisesCortesiaIAB = []; // Lista de países extranjeros presentes
-    let cerHusoHorarioIAB = 'auto'; // Por defecto toma el huso del dispositivo // Por defecto UTC+2 (Bravo · Verano) o el seleccionado
-    let cerHoraObjetivoIAB = '08:00';
-    let cerArmadoIAB = false;
-    let cerTimerCuentaAtrasIAB = null;
-    let cerDisparoSenalesHechoIAB = false;
-    let cerDisparoEjecutivaHechoIAB = false;
+    let cerModoIAA = 'izado'; // 'izado' | 'arriado'
+    let cerFuenteOcasoIAA = 'manual'; // 'manual' | 'base' | 'gps'
+    let cerModoDisparoIAA = 'auto'; // 'auto' | 'manual'
+    let cerAcompBanderaIAA = 'himno'; // 'himno' | 'chifle' | 'ambos'
+    let cerModalidadOracionIAA = 'leida'; // 'leida' | 'cantada' | 'corneta' | 'ninguna'
+    let cerPaisesCortesiaIAA = []; // Lista de países extranjeros presentes
+    let cerHusoHorarioIAA = 'auto'; // Por defecto toma el huso del dispositivo // Por defecto UTC+2 (Bravo · Verano) o el seleccionado
+    let cerHoraObjetivoIAA = '08:00';
+    let cerArmadoIAA = false;
+    let cerTimerCuentaAtrasIAA = null;
+    let cerDisparoSenalesHechoIAA = false;
+    let cerDisparoEjecutivaHechoIAA = false;
 
-    const BASES_NAVALES_IAB = {
+    const BASES_NAVALES_IAA = {
       'Rota': { lat: 36.6200, lon: -6.3500, nombre: 'Base Naval de Rota' },
       'Ferrol': { lat: 43.4800, lon: -8.2300, nombre: 'Arsenal de Ferrol' },
       'Cartagena': { lat: 37.6000, lon: -0.9800, nombre: 'Arsenal de Cartagena' },
@@ -675,10 +675,10 @@
       'Palma': { lat: 39.5696, lon: 2.6502, nombre: 'CN de Palma de Mallorca' }
     };
 
-    let cerSituacionBuqueIAB = 'puerto'; // 'puerto' | 'mar'
+    let cerSituacionBuqueIAA = 'puerto'; // 'puerto' | 'mar'
 
-    function setSituacionBuqueIAB(sit) {
-      cerSituacionBuqueIAB = sit;
+    function setSituacionBuqueIAA(sit) {
+      cerSituacionBuqueIAA = sit;
       const btnP = document.getElementById('btnSitPuerto');
       const btnM = document.getElementById('btnSitMar');
       const panelBandera = document.getElementById('panelPasosBandera');
@@ -700,7 +700,7 @@
         if (boxCortesia) boxCortesia.style.display = 'none';
 
         // Ocultar pestaña de Izado y fijar Arriado/Ocaso
-        setCeremonialModoIAB('arriado');
+        setCeremonialModoIAA('arriado');
         if (btnIz) btnIz.style.display = 'none';
         if (btnArr) btnArr.style.gridColumn = '1 / -1';
         
@@ -709,7 +709,7 @@
         if (rowBN) rowBN.style.display = 'flex';
 
         // En la mar, por defecto capturar GPS
-        setFuenteOcasoIAB('gps');
+        setFuenteOcasoIAA('gps');
       } else {
         // En puerto / fondeo: ceremonial de bandera activo
         if (panelBandera) panelBandera.style.display = 'flex';
@@ -720,7 +720,7 @@
         if (btnArr) btnArr.style.gridColumn = 'auto';
 
         // Restaurar visibilidad según el modo activo (izado vs arriado)
-        if (cerModoIAB === 'izado') {
+        if (cerModoIAA === 'izado') {
           if (rowOra) rowOra.style.display = 'none';
           if (rowBN) rowBN.style.display = 'none';
         } else {
@@ -728,10 +728,10 @@
           if (rowBN) rowBN.style.display = 'flex';
         }
       }
-      refrescarPosicionYHoraEnPantallaIAB();
+      refrescarPosicionYHoraEnPantallaIAA();
     }
 
-    function formatearCoordNavalIAB(lat, lon) {
+    function formatearCoordNavalIAA(lat, lon) {
       const latHem = lat >= 0 ? 'N' : 'S';
       const lonHem = lon >= 0 ? 'E' : 'W';
       const latAbs = Math.abs(lat);
@@ -746,7 +746,7 @@
       return `${String(latGrad).padStart(2, '0')}°${String(latMin).padStart(4, '0')}'${latHem}, ${String(lonGrad).padStart(3, '0')}°${String(lonMin).padStart(4, '0')}'${lonHem}`;
     }
 
-    function toggleSelectorHusoIAB() {
+    function toggleSelectorHusoIAA() {
       const box = document.getElementById('boxDesplegableHuso');
       const btn = document.getElementById('btnToggleHuso');
       if (!box) return;
@@ -755,8 +755,8 @@
       if (btn) btn.textContent = abierto ? '⚙️ Cambiar' : '✕ Cerrar';
     }
 
-    function onSeleccionarHusoIAB(val) {
-      cambiarHusoHorarioIAB(val);
+    function onSeleccionarHusoIAA(val) {
+      cambiarHusoHorarioIAA(val);
       // Actualizar texto visible
       const lbl = document.getElementById('lblHusoTextoVisible');
       const sel = document.getElementById('selHusoHorario');
@@ -770,10 +770,10 @@
       if (btn) btn.textContent = '⚙️ Cambiar';
     }
 
-        function obtenerTextoHusoIAB(valHuso) {
+        function obtenerTextoHusoIAA(valHuso) {
       if (valHuso === 'auto') {
         const offset = -new Date().getTimezoneOffset() / 60.0;
-        const letra = obtenerLetraHusoIAB(offset);
+        const letra = obtenerLetraHusoIAA(offset);
         const signo = offset >= 0 ? '+' : '';
         return `Dispositivo (UTC${signo}${offset} ${letra})`;
       }
@@ -792,24 +792,24 @@
       return mapNombres[valHuso] || (valHuso >= 0 ? `UTC+${valHuso}` : `UTC${valHuso}`);
     }
 
-    function cambiarHusoHorarioIAB(val) {
-      cerHusoHorarioIAB = val;
+    function cambiarHusoHorarioIAA(val) {
+      cerHusoHorarioIAA = val;
       const bBadge = document.getElementById('lblHusoActivoBadge');
       const lblTexto = document.getElementById('lblHusoTextoVisible');
-      const textoCompleto = obtenerTextoHusoIAB(val);
+      const textoCompleto = obtenerTextoHusoIAA(val);
       if (bBadge) bBadge.textContent = textoCompleto;
       if (lblTexto) lblTexto.textContent = textoCompleto;
 
-      if (cerFuenteOcasoIAB === 'base') calcularOcasoBaseIAB();
-      else if (cerFuenteOcasoIAB === 'coord') calcularOcasoCoordManualIAB();
-      else if (cerFuenteOcasoIAB === 'gps') {
-        const ocaso = calcularHoraOcasoIAB(cerPosicionLat, cerPosicionLon);
-        if (ocaso) { cerHoraObjetivoIAB = ocaso; refrescarPosicionYHoraEnPantallaIAB(); actualizarTickRelojIAB(); }
+      if (cerFuenteOcasoIAA === 'base') calcularOcasoBaseIAA();
+      else if (cerFuenteOcasoIAA === 'coord') calcularOcasoCoordManualIAA();
+      else if (cerFuenteOcasoIAA === 'gps') {
+        const ocaso = calcularHoraOcasoIAA(cerPosicionLat, cerPosicionLon);
+        if (ocaso) { cerHoraObjetivoIAA = ocaso; refrescarPosicionYHoraEnPantallaIAA(); actualizarTickRelojIAA(); }
       }
     }
 
-    function setCeremonialModoIAB(modo) {
-      cerModoIAB = modo;
+    function setCeremonialModoIAA(modo) {
+      cerModoIAA = modo;
       const btnIz = document.getElementById('btnModoIzado');
       const btnArr = document.getElementById('btnModoArriado');
       const boxIz = document.getElementById('boxHoraIzado');
@@ -840,13 +840,13 @@
         if (rowBN) rowBN.style.display = 'flex';
         if (btnManOra) btnManOra.style.display = 'flex';
         if (btnManBN) btnManBN.style.display = 'flex';
-        if (cerFuenteOcasoIAB === 'base') calcularOcasoBaseIAB();
+        if (cerFuenteOcasoIAA === 'base') calcularOcasoBaseIAA();
       }
-      actualizarHoraObjetivoIAB();
+      actualizarHoraObjetivoIAA();
     }
 
-    function setFuenteOcasoIAB(fuente) {
-      cerFuenteOcasoIAB = fuente;
+    function setFuenteOcasoIAA(fuente) {
+      cerFuenteOcasoIAA = fuente;
       const btnB = document.getElementById('btnFuenteBase');
       const btnG = document.getElementById('btnFuenteGps');
       const btnC = document.getElementById('btnFuenteCoordManual');
@@ -868,16 +868,16 @@
       if (boxM) boxM.style.display = (fuente === 'manual' ? 'flex' : 'none');
 
       if (fuente === 'base') {
-        calcularOcasoBaseIAB();
+        calcularOcasoBaseIAA();
       } else if (fuente === 'coord') {
-        calcularOcasoCoordManualIAB();
+        calcularOcasoCoordManualIAA();
       } else if (fuente === 'manual') {
-        actualizarHoraObjetivoIAB();
+        actualizarHoraObjetivoIAA();
       }
     }
 
     // ALGORITMO ASTRONÓMICO OFICIAL NOAA / JEAN MEEUS (100% OFFLINE EN LOCAL)
-    function calcularHoraOcasoIAB(lat, lon, dateObj) {
+    function calcularHoraOcasoIAA(lat, lon, dateObj) {
       const d = dateObj || new Date();
       const start = new Date(d.getFullYear(), 0, 0);
       const diff = d - start;
@@ -913,10 +913,10 @@
 
       // Aplicar el huso horario elegido por el buque/usuario
       let offsetHoras = 0;
-      if (cerHusoHorarioIAB === 'auto') {
+      if (cerHusoHorarioIAA === 'auto') {
         offsetHoras = -d.getTimezoneOffset() / 60.0;
       } else {
-        offsetHoras = parseFloat(cerHusoHorarioIAB);
+        offsetHoras = parseFloat(cerHusoHorarioIAA);
       }
 
       let localHours = (UT + offsetHoras) % 24;
@@ -927,24 +927,24 @@
       return String(hh).padStart(2, '0') + ':' + String(mm % 60).padStart(2, '0');
     }
 
-    function calcularOcasoBaseIAB() {
+    function calcularOcasoBaseIAA() {
       const sel = document.getElementById('selBaseNaval');
       const baseKey = sel ? sel.value : 'Rota';
-      const bObj = BASES_NAVALES_IAB[baseKey] || BASES_NAVALES_IAB['Rota'];
+      const bObj = BASES_NAVALES_IAA[baseKey] || BASES_NAVALES_IAA['Rota'];
       
       cerPosicionLat = bObj.lat;
       cerPosicionLon = bObj.lon;
       cerPosicionNombre = bObj.nombre;
 
-      const ocasoStr = calcularHoraOcasoIAB(cerPosicionLat, cerPosicionLon);
+      const ocasoStr = calcularHoraOcasoIAA(cerPosicionLat, cerPosicionLon);
       if (ocasoStr) {
-        cerHoraObjetivoIAB = ocasoStr;
+        cerHoraObjetivoIAA = ocasoStr;
       }
-      refrescarPosicionYHoraEnPantallaIAB();
-      actualizarTickRelojIAB();
+      refrescarPosicionYHoraEnPantallaIAA();
+      actualizarTickRelojIAA();
     }
 
-    function calcularOcasoCoordManualIAB() {
+    function calcularOcasoCoordManualIAA() {
       const inLat = document.getElementById('inputCoordLat');
       const inLon = document.getElementById('inputCoordLon');
       const latVal = inLat ? parseFloat(inLat.value) : 36.62;
@@ -955,16 +955,16 @@
         cerPosicionLon = lonVal;
         cerPosicionNombre = 'Posición Manual';
 
-        const ocasoStr = calcularHoraOcasoIAB(cerPosicionLat, cerPosicionLon);
+        const ocasoStr = calcularHoraOcasoIAA(cerPosicionLat, cerPosicionLon);
         if (ocasoStr) {
-          cerHoraObjetivoIAB = ocasoStr;
+          cerHoraObjetivoIAA = ocasoStr;
         }
-        refrescarPosicionYHoraEnPantallaIAB();
-        actualizarTickRelojIAB();
+        refrescarPosicionYHoraEnPantallaIAA();
+        actualizarTickRelojIAA();
       }
     }
 
-    function obtenerGpsYCalcularOcasoIAB() {
+    function obtenerGpsYCalcularOcasoIAA() {
       const lblCoord = document.getElementById('lblCoordenadasGps');
       if (lblCoord) lblCoord.textContent = 'Obteniendo señal GPS del buque...';
 
@@ -980,22 +980,22 @@
         cerPosicionLon = lon;
         cerPosicionNombre = 'GPS Buque';
 
-        const navalFmt = formatearCoordNavalIAB(lat, lon);
+        const navalFmt = formatearCoordNavalIAA(lat, lon);
         if (lblCoord) lblCoord.textContent = `Señal OK: ${navalFmt} (Lat ${lat.toFixed(4)}°, Lon ${lon.toFixed(4)}°)`;
 
-        const ocaso = calcularHoraOcasoIAB(lat, lon);
+        const ocaso = calcularHoraOcasoIAA(lat, lon);
         if (ocaso) {
-          cerHoraObjetivoIAB = ocaso;
-          refrescarPosicionYHoraEnPantallaIAB();
-          actualizarTickRelojIAB();
+          cerHoraObjetivoIAA = ocaso;
+          refrescarPosicionYHoraEnPantallaIAA();
+          actualizarTickRelojIAA();
         }
       }, err => {
         if (lblCoord) lblCoord.textContent = 'Error GPS: ' + err.message + '. Activando Base Rota por defecto.';
-        calcularOcasoBaseIAB();
+        calcularOcasoBaseIAA();
       }, { timeout: 10000, enableHighAccuracy: true });
     }
 
-    function obtenerLetraHusoIAB(valHuso) {
+    function obtenerLetraHusoIAA(valHuso) {
       let offset = 0;
       if (valHuso === 'auto') {
         offset = -new Date().getTimezoneOffset() / 60.0;
@@ -1010,67 +1010,67 @@
       return mapping[offset] || (offset >= 0 ? `+${offset}` : `${offset}`);
     }
 
-    function refrescarPosicionYHoraEnPantallaIAB() {
+    function refrescarPosicionYHoraEnPantallaIAA() {
       const lblPos = document.getElementById('lblPosicionDisplay');
       const lblDisp = document.getElementById('lblHoraCeremonialDisplay');
       const rowPos = document.getElementById('rowPosicionPantalla');
 
-      if (cerModoIAB === 'arriado') {
+      if (cerModoIAA === 'arriado') {
         if (rowPos) rowPos.style.display = 'flex';
         if (lblPos) {
-          if (cerFuenteOcasoIAB === 'manual') {
+          if (cerFuenteOcasoIAA === 'manual') {
             lblPos.textContent = 'Hora fijada manualmente';
           } else {
-            const coordFmt = formatearCoordNavalIAB(cerPosicionLat, cerPosicionLon);
+            const coordFmt = formatearCoordNavalIAA(cerPosicionLat, cerPosicionLon);
             lblPos.textContent = `${coordFmt} · ${cerPosicionNombre}`;
           }
         }
         if (lblDisp) {
-          const letraHuso = obtenerLetraHusoIAB(cerHusoHorarioIAB);
+          const letraHuso = obtenerLetraHusoIAA(cerHusoHorarioIAA);
           // Formato naval estricto ordenado por el Comandante: p.e. "20:32 C"
-          lblDisp.textContent = `${cerHoraObjetivoIAB} ${letraHuso}`;
+          lblDisp.textContent = `${cerHoraObjetivoIAA} ${letraHuso}`;
           lblDisp.style.color = '#fbbf24';
         }
       } else {
         // En modo Izado
         if (rowPos) rowPos.style.display = 'none';
         if (lblDisp) {
-          const letraHuso = obtenerLetraHusoIAB(cerHusoHorarioIAB);
-          lblDisp.textContent = `${cerHoraObjetivoIAB} ${letraHuso}`;
+          const letraHuso = obtenerLetraHusoIAA(cerHusoHorarioIAA);
+          lblDisp.textContent = `${cerHoraObjetivoIAA} ${letraHuso}`;
           lblDisp.style.color = '#38bdf8';
         }
       }
     }
 
-    function actualizarHoraObjetivoIAB() {
-      if (cerModoIAB === 'izado') {
+    function actualizarHoraObjetivoIAA() {
+      if (cerModoIAA === 'izado') {
         const inp = document.getElementById('inputHoraIzado');
-        cerHoraObjetivoIAB = inp ? inp.value : '08:00';
+        cerHoraObjetivoIAA = inp ? inp.value : '08:00';
       } else {
-        if (cerFuenteOcasoIAB === 'manual') {
+        if (cerFuenteOcasoIAA === 'manual') {
           const inp = document.getElementById('inputHoraArriadoManual');
-          cerHoraObjetivoIAB = inp ? inp.value : '19:30';
-        } else if (cerFuenteOcasoIAB === 'base') {
-          calcularOcasoBaseIAB();
+          cerHoraObjetivoIAA = inp ? inp.value : '19:30';
+        } else if (cerFuenteOcasoIAA === 'base') {
+          calcularOcasoBaseIAA();
           return;
-        } else if (cerFuenteOcasoIAB === 'coord') {
-          calcularOcasoCoordManualIAB();
+        } else if (cerFuenteOcasoIAA === 'coord') {
+          calcularOcasoCoordManualIAA();
           return;
-        } else if (cerFuenteOcasoIAB === 'gps') {
-          const ocaso = calcularHoraOcasoIAB(cerPosicionLat, cerPosicionLon);
-          if (ocaso) cerHoraObjetivoIAB = ocaso;
+        } else if (cerFuenteOcasoIAA === 'gps') {
+          const ocaso = calcularHoraOcasoIAA(cerPosicionLat, cerPosicionLon);
+          if (ocaso) cerHoraObjetivoIAA = ocaso;
         }
       }
 
       const lblTit = document.getElementById('lblTituloHoraEfectiva');
       if (lblTit) {
-        lblTit.textContent = (cerModoIAB === 'izado') ? '🎯 HORA DEL IZADO:' : '🎯 HORA DEL ARRIADO:';
+        lblTit.textContent = (cerModoIAA === 'izado') ? '🎯 HORA DEL IZADO:' : '🎯 HORA DEL ARRIADO:';
       }
-      refrescarPosicionYHoraEnPantallaIAB();
+      refrescarPosicionYHoraEnPantallaIAA();
     }
 
-    function setModoDisparoIAB(modo) {
-      cerModoDisparoIAB = modo;
+    function setModoDisparoIAA(modo) {
+      cerModoDisparoIAA = modo;
       const btnA = document.getElementById('btnDisparoAuto');
       const btnM = document.getElementById('btnDisparoManual');
       const pAuto = document.getElementById('panelEjecucionAuto');
@@ -1083,8 +1083,8 @@
       if (pMan) pMan.style.display = (modo === 'manual' ? 'flex' : 'none');
     }
 
-    function setAcompBanderaIAB(tipo) {
-      cerAcompBanderaIAB = tipo;
+    function setAcompBanderaIAA(tipo) {
+      cerAcompBanderaIAA = tipo;
       const bH = document.getElementById('btnAcompHimno');
       const bC = document.getElementById('btnAcompChifle');
       const bA = document.getElementById('btnAcompAmbos');
@@ -1094,8 +1094,8 @@
       if (bA) bA.className = 'action-btn' + (tipo === 'ambos' ? ' primary' : '');
     }
 
-    function setModalidadOracionIAB(mod) {
-      cerModalidadOracionIAB = mod;
+    function setModalidadOracionIAA(mod) {
+      cerModalidadOracionIAA = mod;
       const bV = document.getElementById('btnOracionVoz');
       const bC = document.getElementById('btnOracionCantada');
       const bCor = document.getElementById('btnOracionCorneta');
@@ -1107,14 +1107,14 @@
       if (bN) bN.className = 'action-btn' + (mod === 'ninguna' ? ' primary' : '');
     }
 
-    function toggleSelectorCortesiaIAB() {
+    function toggleSelectorCortesiaIAA() {
       const box = document.getElementById('boxSelectorCortesia');
       if (!box) return;
       box.style.display = (box.style.display === 'none' ? 'flex' : 'none');
       if (box.style.display === 'flex') {
         const sel = document.getElementById('selPaisCortesia');
         if (sel && sel.options.length <= 1) {
-          ANTHEMS_CATALOG_IAB.forEach(p => {
+          ANTHEMS_CATALOG_IAA.forEach(p => {
             const opt = document.createElement('option');
             opt.value = p.name;
             opt.textContent = p.name;
@@ -1124,42 +1124,42 @@
       }
     }
 
-    function agregarPaisCortesiaIAB(nombrePais) {
-      if (!nombrePais || cerPaisesCortesiaIAB.includes(nombrePais)) return;
-      cerPaisesCortesiaIAB.push(nombrePais);
-      renderPaisesCortesiaIAB();
+    function agregarPaisCortesiaIAA(nombrePais) {
+      if (!nombrePais || cerPaisesCortesiaIAA.includes(nombrePais)) return;
+      cerPaisesCortesiaIAA.push(nombrePais);
+      renderPaisesCortesiaIAA();
       const sel = document.getElementById('selPaisCortesia');
       if (sel) sel.value = '';
     }
 
-    function limpiarPaisesCortesiaIAB() {
-      cerPaisesCortesiaIAB = [];
-      renderPaisesCortesiaIAB();
+    function limpiarPaisesCortesiaIAA() {
+      cerPaisesCortesiaIAA = [];
+      renderPaisesCortesiaIAA();
     }
 
-    function renderPaisesCortesiaIAB() {
+    function renderPaisesCortesiaIAA() {
       const cont = document.getElementById('listaCortesiaPaises');
       if (!cont) return;
       cont.innerHTML = '';
-      if (cerPaisesCortesiaIAB.length === 0) {
+      if (cerPaisesCortesiaIAA.length === 0) {
         cont.innerHTML = '<span style="font-size:11px; color:#64748b; font-style:italic;">Ningún buque extranjero añadido</span>';
         return;
       }
-      cerPaisesCortesiaIAB.forEach((p, idx) => {
+      cerPaisesCortesiaIAA.forEach((p, idx) => {
         const badge = document.createElement('span');
         badge.style.cssText = 'background:#1e3a8a; color:#38bdf8; font-size:11px; font-weight:700; padding:3px 8px; border-radius:12px; display:inline-flex; align-items:center; gap:4px;';
-        badge.innerHTML = `🎵 ${idx + 1}º ${p} <span style="cursor:pointer; color:#ef4444; font-weight:900;" onclick="eliminarPaisCortesiaIAB('${p}')">×</span>`;
+        badge.innerHTML = `🎵 ${idx + 1}º ${p} <span style="cursor:pointer; color:#ef4444; font-weight:900;" onclick="eliminarPaisCortesiaIAA('${p}')">×</span>`;
         cont.appendChild(badge);
       });
     }
 
-    function eliminarPaisCortesiaIAB(p) {
-      cerPaisesCortesiaIAB = cerPaisesCortesiaIAB.filter(x => x !== p);
-      renderPaisesCortesiaIAB();
+    function eliminarPaisCortesiaIAA(p) {
+      cerPaisesCortesiaIAA = cerPaisesCortesiaIAA.filter(x => x !== p);
+      renderPaisesCortesiaIAA();
     }
 
     // RELOJ CONTINUO Y EVALUACIÓN DE DISPARO
-    function actualizarTickRelojIAB() {
+    function actualizarTickRelojIAA() {
       // 1. Obtener la hora del sistema del dispositivo con segundos
       const now = new Date();
       const sH = String(now.getHours()).padStart(2, '0');
@@ -1168,7 +1168,7 @@
 
       // Calcular la letra de huso horario militar del propio dispositivo
       const offsetDisp = -now.getTimezoneOffset() / 60.0;
-      const letraHusoDisp = obtenerLetraHusoIAB(offsetDisp);
+      const letraHusoDisp = obtenerLetraHusoIAA(offsetDisp);
 
       // Formato solicitado por el Comandante: HH:mm:ss H
       const horaSistemaFmt = `${sH}:${sM}:${sS} ${letraHusoDisp}`;
@@ -1179,27 +1179,27 @@
 
       // 2. Extraer horas y minutos del ceremonial activo para la evaluación de disparo
       let horaStr = '';
-      if (cerModoIAB === 'izado') {
+      if (cerModoIAA === 'izado') {
         const inp = document.getElementById('inputHoraIzado');
         if (inp && inp.value) horaStr = inp.value;
       } else {
-        if (cerFuenteOcasoIAB === 'manual') {
+        if (cerFuenteOcasoIAA === 'manual') {
           const inp = document.getElementById('inputHoraArriadoManual');
           if (inp && inp.value) horaStr = inp.value;
         } else {
-          horaStr = cerHoraObjetivoIAB;
+          horaStr = cerHoraObjetivoIAA;
         }
       }
 
       if (!horaStr || !horaStr.includes(':')) {
-        horaStr = (cerModoIAB === 'izado' ? '08:00' : '19:30');
+        horaStr = (cerModoIAA === 'izado' ? '08:00' : '19:30');
       }
 
       const match = horaStr.match(/(\d{1,2}):(\d{2})/);
       if (!match) return;
       const objH = parseInt(match[1], 10);
       const objM = parseInt(match[2], 10);
-      cerHoraObjetivoIAB = `${String(objH).padStart(2,'0')}:${String(objM).padStart(2,'0')}`;
+      cerHoraObjetivoIAA = `${String(objH).padStart(2,'0')}:${String(objM).padStart(2,'0')}`;
 
       // 3. Evaluar cuenta atrás interna para la secuencia automática
       const target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), objH, objM, 0, 0);
@@ -1212,53 +1212,53 @@
       const totalSec = Math.max(0, Math.floor(diffMs / 1000));
 
       // 4. Disparo de eventos en modo automático
-      if (cerArmadoIAB && cerModoDisparoIAB === 'auto') {
+      if (cerArmadoIAA && cerModoDisparoIAA === 'auto') {
         // A T-5 min (300 segundos, margen 295-300)
-        if (totalSec <= 300 && totalSec > 290 && !cerDisparoSenalesHechoIAB) {
-          cerDisparoSenalesHechoIAB = true;
-          ejecutarPasoManualIAB(1);
+        if (totalSec <= 300 && totalSec > 290 && !cerDisparoSenalesHechoIAA) {
+          cerDisparoSenalesHechoIAA = true;
+          ejecutarPasoManualIAA(1);
         }
 
         // A T-0 exactos
-        if (totalSec <= 0 && !cerDisparoEjecutivaHechoIAB) {
-          cerDisparoEjecutivaHechoIAB = true;
-          iniciarSecuenciaCompletaAutoIAB();
+        if (totalSec <= 0 && !cerDisparoEjecutivaHechoIAA) {
+          cerDisparoEjecutivaHechoIAA = true;
+          iniciarSecuenciaCompletaAutoIAA();
         }
       }
     }
 
-    function iniciarRelojCeremonialIAB() {
-      actualizarTickRelojIAB();
+    function iniciarRelojCeremonialIAA() {
+      actualizarTickRelojIAA();
       if (!window.__relojInterval) {
-        window.__relojInterval = setInterval(actualizarTickRelojIAB, 1000);
+        window.__relojInterval = setInterval(actualizarTickRelojIAA, 1000);
       }
     }
 
-    function toggleArmadoCeremonialIAB() {
-      cerArmadoIAB = !cerArmadoIAB;
+    function toggleArmadoCeremonialIAA() {
+      cerArmadoIAA = !cerArmadoIAA;
       const btn = document.getElementById('btnArmarCeremonial');
       const btnDetener = document.getElementById('btnDetenerSecuenciaGeneral');
 
       if (btn) {
-        if (cerArmadoIAB) {
-          cerDisparoSenalesHechoIAB = false;
-          cerDisparoEjecutivaHechoIAB = false;
+        if (cerArmadoIAA) {
+          cerDisparoSenalesHechoIAA = false;
+          cerDisparoEjecutivaHechoIAA = false;
           btn.className = 'action-btn danger';
           btn.innerHTML = '<span>🛡️ SECUENCIA AUTOMÁTICA ACTIVA — TOCAR PARA DESACTIVAR</span>';
           if (btnDetener) btnDetener.style.display = 'none'; // OCULTAR SEGUNDO BOTÓN ROJO
-          actualizarStatusIAB(`🛡️ Ceremonial ${cerModoIAB.toUpperCase()} armado para las ${cerHoraObjetivoIAB}h`);
+          actualizarStatusIAA(`🛡️ Ceremonial ${cerModoIAA.toUpperCase()} armado para las ${cerHoraObjetivoIAA}h`);
         } else {
-          restablecerConfiguracionPorDefectoIAB();
-          cerrarStatusIAB();
+          restablecerConfiguracionPorDefectoIAA();
+          cerrarStatusIAA();
         }
       }
     }
 
-        function restablecerConfiguracionPorDefectoIAB() {
+        function restablecerConfiguracionPorDefectoIAA() {
       // 1. Desarmar automático y apagar botón rojo
-      cerArmadoIAB = false;
-      cerDisparoSenalesHechoIAB = false;
-      cerDisparoEjecutivaHechoIAB = false;
+      cerArmadoIAA = false;
+      cerDisparoSenalesHechoIAA = false;
+      cerDisparoEjecutivaHechoIAA = false;
       const btnArmar = document.getElementById('btnArmarCeremonial');
       const btnDetener = document.getElementById('btnDetenerSecuenciaGeneral');
       if (btnArmar) {
@@ -1268,89 +1268,89 @@
       if (btnDetener) btnDetener.style.display = 'block';
 
       // 2. Conmutar modo a EJECUCIÓN MANUAL
-      setModoDisparoIAB('manual');
+      setModoDisparoIAA('manual');
 
       // 3. Situación del buque por defecto: Buque en Puerto
-      setSituacionBuqueIAB('puerto');
+      setSituacionBuqueIAA('puerto');
 
       // 4. Modo de hora por defecto: Hora Manual
-      setFuenteOcasoIAB('manual');
+      setFuenteOcasoIAA('manual');
 
       // 5. Opciones ceremoniales por defecto
-      setAcompBanderaIAB('chifle');
-      limpiarPaisesCortesiaIAB();
-      setModalidadOracionIAB('leida');
+      setAcompBanderaIAA('chifle');
+      limpiarPaisesCortesiaIAA();
+      setModalidadOracionIAA('leida');
 
       // 6. Buenas noches marcadas por defecto
       const chkBN = document.getElementById('chkBuenasNoches');
       if (chkBN) chkBN.checked = true;
 
       // 7. Refrescar display y reloj
-      actualizarHoraObjetivoIAB();
-      refrescarPosicionYHoraEnPantallaIAB();
-      actualizarTickRelojIAB();
+      actualizarHoraObjetivoIAA();
+      refrescarPosicionYHoraEnPantallaIAA();
+      actualizarTickRelojIAA();
     }
 
-    function cancelarCeremonialIzadoIAB() {
-      stopAllAudioIAB();
-      pararAudioCeremonialIAB();
-      restablecerConfiguracionPorDefectoIAB();
-      actualizarStatusIAB('⏹️ Secuencia automática detenida. Sistema en configuración por defecto.');
-      setTimeout(cerrarStatusIAB, 3000);
+    function cancelarCeremonialIzadoIAA() {
+      stopAllAudioIAA();
+      pararAudioCeremonialIAA();
+      restablecerConfiguracionPorDefectoIAA();
+      actualizarStatusIAA('⏹️ Secuencia automática detenida. Sistema en configuración por defecto.');
+      setTimeout(cerrarStatusIAA, 3000);
     }
 
-    function finalizarSecuenciaAutoCompletaIAB(msgExito) {
-      cerrarStatusIAB();
-      restablecerConfiguracionPorDefectoIAB();
+    function finalizarSecuenciaAutoCompletaIAA(msgExito) {
+      cerrarStatusIAA();
+      restablecerConfiguracionPorDefectoIAA();
     }
 
-    function iniciarSecuenciaCompletaAutoIAB() {
+    function iniciarSecuenciaCompletaAutoIAA() {
       // 1. Si el buque está NAVEGANDO (EN LA MAR)
-      if (cerSituacionBuqueIAB === 'mar') {
-        actualizarStatusIAB('🌊 Buque navegando: Bandera permanece izada. Iniciando Oración al Ocaso...');
-        ejecutarOracionIAB(() => {
+      if (cerSituacionBuqueIAA === 'mar') {
+        actualizarStatusIAA('🌊 Buque navegando: Bandera permanece izada. Iniciando Oración al Ocaso...');
+        ejecutarOracionIAA(() => {
           const chkBN = document.getElementById('chkBuenasNoches');
           if (chkBN && chkBN.checked) {
-            reproducirElementoCeremonialIAB(document.getElementById('audArriado7'), '🌙 Dotación, buenas noches', () => {
-              finalizarSecuenciaAutoCompletaIAB('✅ Ceremonial al Ocaso en la mar completado. Modo cambiado a manual.');
+            reproducirElementoCeremonialIAA(document.getElementById('audArriado7'), '🌙 Dotación, buenas noches', () => {
+              finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial al Ocaso en la mar completado. Modo cambiado a manual.');
             });
           } else {
-            finalizarSecuenciaAutoCompletaIAB('✅ Ceremonial al Ocaso en la mar completado. Modo cambiado a manual.');
+            finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial al Ocaso en la mar completado. Modo cambiado a manual.');
           }
         });
         return;
       }
 
       // 2. Si está EN PUERTO / FONDEADO: Ceremonial completo de Bandera
-      const el2 = (cerModoIAB === 'izado') ? document.getElementById('audIzado2') : document.getElementById('audArriado2');
-      reproducirElementoCeremonialIAB(el2, '2. 🗣️ A la bandera frente a popa, presenten', () => {
-        ejecutarMovimientoBanderaCompletoIAB(() => {
-          const el4 = (cerModoIAB === 'izado') ? document.getElementById('audIzado4') : document.getElementById('audArriado4');
-          reproducirElementoCeremonialIAB(el4, '4. 🗣️ Voz: Retirada de honores', () => {
-            const el5 = (cerModoIAB === 'izado') ? document.getElementById('audIzado5') : document.getElementById('audArriado5');
-            reproducirElementoCeremonialIAB(el5, '5. 📢 Chifle: Retirada de honores', () => {
-              if (cerModoIAB === 'arriado' && cerModalidadOracionIAB !== 'ninguna') {
-                ejecutarOracionIAB(() => {
+      const el2 = (cerModoIAA === 'izado') ? document.getElementById('audIzado2') : document.getElementById('audArriado2');
+      reproducirElementoCeremonialIAA(el2, '2. 🗣️ A la bandera frente a popa, presenten', () => {
+        ejecutarMovimientoBanderaCompletoIAA(() => {
+          const el4 = (cerModoIAA === 'izado') ? document.getElementById('audIzado4') : document.getElementById('audArriado4');
+          reproducirElementoCeremonialIAA(el4, '4. 🗣️ Voz: Retirada de honores', () => {
+            const el5 = (cerModoIAA === 'izado') ? document.getElementById('audIzado5') : document.getElementById('audArriado5');
+            reproducirElementoCeremonialIAA(el5, '5. 📢 Chifle: Retirada de honores', () => {
+              if (cerModoIAA === 'arriado' && cerModalidadOracionIAA !== 'ninguna') {
+                ejecutarOracionIAA(() => {
                   const chkBN = document.getElementById('chkBuenasNoches');
                   if (chkBN && chkBN.checked) {
-                    reproducirElementoCeremonialIAB(document.getElementById('audArriado7'), '7. 🌙 Dotación, buenas noches', () => {
-                      finalizarSecuenciaAutoCompletaIAB('✅ Ceremonial de Arriado completado. Modo cambiado a manual.');
+                    reproducirElementoCeremonialIAA(document.getElementById('audArriado7'), '7. 🌙 Dotación, buenas noches', () => {
+                      finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial de Arriado completado. Modo cambiado a manual.');
                     });
                   } else {
-                    finalizarSecuenciaAutoCompletaIAB('✅ Ceremonial de Arriado completado. Modo cambiado a manual.');
+                    finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial de Arriado completado. Modo cambiado a manual.');
                   }
                 });
-              } else if (cerModoIAB === 'arriado') {
+              } else if (cerModoIAA === 'arriado') {
                 const chkBN = document.getElementById('chkBuenasNoches');
                 if (chkBN && chkBN.checked) {
-                  reproducirElementoCeremonialIAB(document.getElementById('audArriado7'), '7. 🌙 Dotación, buenas noches', () => {
-                    finalizarSecuenciaAutoCompletaIAB('✅ Ceremonial de Arriado completado. Modo cambiado a manual.');
+                  reproducirElementoCeremonialIAA(document.getElementById('audArriado7'), '7. 🌙 Dotación, buenas noches', () => {
+                    finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial de Arriado completado. Modo cambiado a manual.');
                   });
                 } else {
-                  finalizarSecuenciaAutoCompletaIAB('✅ Ceremonial de Arriado completado. Modo cambiado a manual.');
+                  finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial de Arriado completado. Modo cambiado a manual.');
                 }
               } else {
-                finalizarSecuenciaAutoCompletaIAB('✅ Ceremonial de Izado completado. Modo cambiado a manual.');
+                finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial de Izado completado. Modo cambiado a manual.');
               }
             });
           });
@@ -1358,7 +1358,7 @@
       });
     }
 
-    function pararAudioCeremonialIAB(elExcluido) {
+    function pararAudioCeremonialIAA(elExcluido) {
       const ids = [
         'audIzado1','audIzado2','audIzado3Himno','audIzado3Chifle','audIzado4','audIzado5',
         'audArriado1','audArriado2','audArriado3Himno','audArriado3Chifle','audArriado4','audArriado5',
@@ -1376,13 +1376,13 @@
       });
     }
 
-    function reproducirElementoCeremonialIAB(elAudio, etiqueta, onFin, elExcluido) {
+    function reproducirElementoCeremonialIAA(elAudio, etiqueta, onFin, elExcluido) {
       if (!elAudio) {
         if (onFin) onFin();
         return;
       }
-      pararAudioCeremonialIAB(elExcluido);
-      actualizarStatusIAB(etiqueta);
+      pararAudioCeremonialIAA(elExcluido);
+      actualizarStatusIAA(etiqueta);
 
       let finalizado = false;
       function avanzar() {
@@ -1411,38 +1411,38 @@
     }
 
     // BOTONES DE MANDO MANUAL PASO A PASO
-    function ejecutarPasoManualIAB(paso) {
+    function ejecutarPasoManualIAA(paso) {
       if (paso === 1) {
-        const el = (cerModoIAB === 'izado') ? document.getElementById('audIzado1') : document.getElementById('audArriado1');
-        reproducirElementoCeremonialIAB(el, '1. 🗣️ Voz: "Señales a la bandera" (T-5 min)');
+        const el = (cerModoIAA === 'izado') ? document.getElementById('audIzado1') : document.getElementById('audArriado1');
+        reproducirElementoCeremonialIAA(el, '1. 🗣️ Voz: "Señales a la bandera" (T-5 min)');
       } else if (paso === 2) {
-        const el = (cerModoIAB === 'izado') ? document.getElementById('audIzado2') : document.getElementById('audArriado2');
-        reproducirElementoCeremonialIAB(el, '2. 🗣️ Voz: "A la bandera frente a popa, presenten"');
+        const el = (cerModoIAA === 'izado') ? document.getElementById('audIzado2') : document.getElementById('audArriado2');
+        reproducirElementoCeremonialIAA(el, '2. 🗣️ Voz: "A la bandera frente a popa, presenten"');
       } else if (paso === 3) {
-        ejecutarMovimientoBanderaCompletoIAB();
+        ejecutarMovimientoBanderaCompletoIAA();
       } else if (paso === 4) {
-        const el = (cerModoIAB === 'izado') ? document.getElementById('audIzado4') : document.getElementById('audArriado4');
-        reproducirElementoCeremonialIAB(el, '4. 🗣️ Voz: "Retirada de honores"');
+        const el = (cerModoIAA === 'izado') ? document.getElementById('audIzado4') : document.getElementById('audArriado4');
+        reproducirElementoCeremonialIAA(el, '4. 🗣️ Voz: "Retirada de honores"');
       } else if (paso === 5) {
-        const el = (cerModoIAB === 'izado') ? document.getElementById('audIzado5') : document.getElementById('audArriado5');
-        reproducirElementoCeremonialIAB(el, '5. 📢 Chifle: Retirada de honores');
+        const el = (cerModoIAA === 'izado') ? document.getElementById('audIzado5') : document.getElementById('audArriado5');
+        reproducirElementoCeremonialIAA(el, '5. 📢 Chifle: Retirada de honores');
       } else if (paso === 6) {
-        ejecutarOracionIAB();
+        ejecutarOracionIAA();
       } else if (paso === 7) {
-        reproducirElementoCeremonialIAB(document.getElementById('audArriado7'), '7. 🌙 "Dotación, buenas noches"', () => { setTimeout(cerrarStatusIAB, 1500); });
+        reproducirElementoCeremonialIAA(document.getElementById('audArriado7'), '7. 🌙 "Dotación, buenas noches"', () => { setTimeout(cerrarStatusIAA, 1500); });
       }
     }
 
     // PASO 3: MOVIMIENTO DE BANDERA (HIMNO / CHIFLE / AMBOS)
-    function ejecutarMovimientoBanderaCompletoIAB(callbackFin) {
-      pararAudioCeremonialIAB();
+    function ejecutarMovimientoBanderaCompletoIAA(callbackFin) {
+      pararAudioCeremonialIAA();
 
-      const elHimno = (cerModoIAB === 'izado') ? document.getElementById('audIzado3Himno') : document.getElementById('audArriado3Himno');
-      const elChifle = (cerModoIAB === 'izado') ? document.getElementById('audIzado3Chifle') : document.getElementById('audArriado3Chifle');
+      const elHimno = (cerModoIAA === 'izado') ? document.getElementById('audIzado3Himno') : document.getElementById('audArriado3Himno');
+      const elChifle = (cerModoIAA === 'izado') ? document.getElementById('audIzado3Chifle') : document.getElementById('audArriado3Chifle');
 
       // Caso 1: Solo chifle
-      if (cerAcompBanderaIAB === 'chifle') {
-        reproducirElementoCeremonialIAB(elChifle, '3. 📢 Pitada de Chifle', () => {
+      if (cerAcompBanderaIAA === 'chifle') {
+        reproducirElementoCeremonialIAA(elChifle, '3. 📢 Pitada de Chifle', () => {
           // Esperar 20 segundos para que la dotacion pueda doblar la bandera
           setTimeout(callbackFin, 20000);
         });
@@ -1450,7 +1450,7 @@
       }
 
       // Caso 2: Chifle + Himno simultáneos
-      if (cerAcompBanderaIAB === 'ambos') {
+      if (cerAcompBanderaIAA === 'ambos') {
         if (elChifle) {
           try {
             elChifle.currentTime = 0;
@@ -1465,8 +1465,8 @@
 
       // Caso 3: Cola de himnos (países de cortesía si los hay + Himno Nacional de España de último)
       let cola = [];
-      cerPaisesCortesiaIAB.forEach(pNombre => {
-        const item = ANTHEMS_CATALOG_IAB.find(a => a.name.toLowerCase() === pNombre.toLowerCase());
+      cerPaisesCortesiaIAA.forEach(pNombre => {
+        const item = ANTHEMS_CATALOG_IAA.find(a => a.name.toLowerCase() === pNombre.toLowerCase());
         if (item) {
           cola.push({ url: item.url, label: 'CORTESÍA: ' + item.name });
         }
@@ -1483,18 +1483,18 @@
         const item = cola.shift();
         if (item.el) {
           // Si estamos en modo ambos, no matar al chifle al lanzar el himno:
-          reproducirElementoCeremonialIAB(item.el, '3. 🇪🇸 ' + item.label, () => {
+          reproducirElementoCeremonialIAA(item.el, '3. 🇪🇸 ' + item.label, () => {
             if (cola.length > 0) setTimeout(procesarCola, 1200);
             else if (callbackFin) callbackFin();
-          }, (cerAcompBanderaIAB === 'ambos') ? elChifle : null);
+          }, (cerAcompBanderaIAA === 'ambos') ? elChifle : null);
         } else if (item.url) {
           const ext = document.getElementById('audHimnoExtranjero');
           if (ext) {
             ext.src = item.url;
-            reproducirElementoCeremonialIAB(ext, '3. 🇪🇸 ' + item.label, () => {
+            reproducirElementoCeremonialIAA(ext, '3. 🇪🇸 ' + item.label, () => {
               if (cola.length > 0) setTimeout(procesarCola, 1200);
               else if (callbackFin) callbackFin();
-            }, (cerAcompBanderaIAB === 'ambos') ? elChifle : null);
+            }, (cerAcompBanderaIAA === 'ambos') ? elChifle : null);
           } else {
             procesarCola();
           }
@@ -1505,22 +1505,22 @@
     }
 
     // PASO 6: ORACIÓN DE LA NOCHE (ARRIADO)
-    function ejecutarOracionIAB(callbackFin) {
+    function ejecutarOracionIAA(callbackFin) {
       let elOra = null;
       let lbl = 'Oración de la Noche';
-      if (cerModalidadOracionIAB === 'leida') {
+      if (cerModalidadOracionIAA === 'leida') {
         elOra = document.getElementById('audArriado6Leida');
         lbl = '6. 📖 Oración de la Noche (Leída)';
-      } else if (cerModalidadOracionIAB === 'cantada') {
+      } else if (cerModalidadOracionIAA === 'cantada') {
         elOra = document.getElementById('audArriado6Cantada');
         lbl = '6. 🎶 Oración Marinera (Cantada)';
-      } else if (cerModalidadOracionIAB === 'corneta') {
+      } else if (cerModalidadOracionIAA === 'corneta') {
         elOra = document.getElementById('audArriado6Corneta');
         lbl = '6. 🎺 Toque de Oración a Corneta';
       }
 
       if (elOra) {
-        reproducirElementoCeremonialIAB(elOra, lbl, callbackFin);
+        reproducirElementoCeremonialIAA(elOra, lbl, callbackFin);
       } else {
         if (callbackFin) callbackFin();
       }
@@ -1534,10 +1534,10 @@
     } catch(e) { console.error('Error renderAuthList init:', e); }
 
     try {
-      actualizarHoraObjetivoIAB();
-      refrescarPosicionYHoraEnPantallaIAB();
-      iniciarRelojCeremonialIAB();
-      actualizarTickRelojIAB();
+      actualizarHoraObjetivoIAA();
+      refrescarPosicionYHoraEnPantallaIAA();
+      iniciarRelojCeremonialIAA();
+      actualizarTickRelojIAA();
     } catch(e) { console.error('Error reloj init:', e); }
 
     
@@ -1547,10 +1547,10 @@
     // ==========================================
     window.addEventListener('DOMContentLoaded', () => {
       try {
-        actualizarHoraObjetivoIAB();
-        refrescarPosicionYHoraEnPantallaIAB();
-        iniciarRelojCeremonialIAB();
-        actualizarTickRelojIAB();
+        actualizarHoraObjetivoIAA();
+        refrescarPosicionYHoraEnPantallaIAA();
+        iniciarRelojCeremonialIAA();
+        actualizarTickRelojIAA();
       } catch(e) {
         console.error('Error init ceremonial:', e);
       }

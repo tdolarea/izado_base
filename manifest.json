@@ -1,6 +1,6 @@
 {
-  "name": "Izado y Arriado Base",
-  "short_name": "Izado Base",
+  "name": "Izado y Arriado en Acuartelamientos (IAA)",
+  "short_name": "IAA Base",
   "description": "Ceremonial y Honores de Ordenanza de la Armada Española",
   "start_url": "./index.html",
   "display": "standalone",
