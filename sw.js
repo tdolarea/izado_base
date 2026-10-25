@@ -1,4 +1,4 @@
-// SW Izado y Arriado en Acuartelamientos (IAA) v1792961844
+// SW Izado Base Acuartelamientos Completo v1792962644
 self.addEventListener('install', e => self.skipWaiting());
 self.addEventListener('activate', e => {
   e.waitUntil(

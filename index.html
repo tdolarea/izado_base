@@ -155,7 +155,7 @@
 
   <script>
     // Forzar purga de caché vieja en móviles
-    const APP_VERSION = 'v1792961844';
+    const APP_VERSION = 'v1792962644';
     if (localStorage.getItem('app_ver') !== APP_VERSION) {
       localStorage.setItem('app_ver', APP_VERSION);
       if ('caches' in window) {
@@ -269,17 +269,17 @@
       <div class="card">
         
 
-        <!-- SELECTOR DE SITUACIÓN OPERATIVA DEL BUQUE -->
-        <div style="background:#070d1e; border:1px solid #334155; border-radius:8px; padding:6px 10px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
-          <div style="font-size:11.5px; font-weight:800; color:#94a3b8; display:flex; align-items:center; gap:6px;">
-            <span>🚢 SITUACIÓN DEL BUQUE:</span>
+                <!-- SELECTOR DE MODALIDAD: CON GUARDIA MILITAR VS SIN GUARDIA MILITAR -->
+        <div style="background:#070d1e; border:1.5px solid #1e3a8a; border-radius:10px; padding:10px 12px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+          <div style="font-size:12px; font-weight:800; color:#cbd5e1; display:flex; align-items:center; gap:6px;">
+            <span>🎖️ FORMACIÓN / GUARDIA:</span>
           </div>
-          <div style="display:flex; gap:6px;">
-            <button type="button" class="action-btn primary" id="btnSitPuerto" onclick="setSituacionBuqueIAA('puerto')" style="font-size:11px; padding:5px 10px; min-height:28px;">
-              ⚓ En Puerto / Fondeo
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="action-btn primary" id="btnGuardiaSi" onclick="setGuardiaMilitarIAA(true)" style="font-size:11.5px; padding:8px 14px; border-radius:8px; min-height:unset;">
+              💂 Con Guardia Militar
             </button>
-            <button type="button" class="action-btn" id="btnSitMar" onclick="setSituacionBuqueIAA('mar')" style="font-size:11px; padding:5px 10px; min-height:28px;">
-              🌊 Navegando (En la Mar)
+            <button type="button" class="action-btn" id="btnGuardiaNo" onclick="setGuardiaMilitarIAA(false)" style="font-size:11.5px; padding:8px 14px; border-radius:8px; min-height:unset;">
+              🚶 Sin Guardia Militar
             </button>
           </div>
         </div>
@@ -1304,136 +1304,132 @@
       restablecerConfiguracionPorDefectoIAA();
     }
 
+    // ==========================================
+    // PROTOCOLO CEREMONIAL ACUARTELAMIENTOS Y BASES (IAA)
+    // ==========================================
+    let cerTieneGuardiaIAA = true;
+    let cerModalidadPresentenIAA = 'corneta'; // 'corneta' o 'voz'
+    let cerModoArriadoHoraIAA = 'fija'; // 'fija' u 'ocaso'
+
+    function setGuardiaMilitarIAA(tieneGuardia) {
+      cerTieneGuardiaIAA = tieneGuardia;
+      const btnSi = document.getElementById('btnGuardiaSi');
+      const btnNo = document.getElementById('btnGuardiaNo');
+      const boxGuardia = document.getElementById('boxOpcionesGuardiaIAA');
+      const boxDescanso = document.getElementById('boxDescansoEnvainenIAA');
+      const badge = document.getElementById('badgeGuardiaInfo');
+
+      if (tieneGuardia) {
+        if (btnSi) btnSi.classList.add('primary');
+        if (btnNo) btnNo.classList.remove('primary');
+        if (boxGuardia) boxGuardia.style.display = 'block';
+        if (boxDescanso) boxDescanso.style.display = 'block';
+        if (badge) { badge.textContent = 'CON GUARDIA'; badge.style.background = '#1e3a8a'; }
+      } else {
+        if (btnSi) btnSi.classList.remove('primary');
+        if (btnNo) btnNo.classList.add('primary');
+        if (boxGuardia) boxGuardia.style.display = 'none';
+        if (boxDescanso) boxDescanso.style.display = 'none';
+        if (badge) { badge.textContent = 'SIN GUARDIA'; badge.style.background = '#475569'; }
+      }
+      guardarConfigIAA();
+    }
+
+    function setModalidadPresentenIAA(tipo) {
+      cerModalidadPresentenIAA = tipo;
+      const btnC = document.getElementById('btnPresentenCornetaIAA');
+      const btnV = document.getElementById('btnPresentenVozIAA');
+      if (tipo === 'corneta') {
+        if (btnC) btnC.classList.add('primary');
+        if (btnV) btnV.classList.remove('primary');
+      } else {
+        if (btnC) btnC.classList.remove('primary');
+        if (btnV) btnV.classList.add('primary');
+      }
+      guardarConfigIAA();
+    }
+
+    function setModoArriadoHoraIAA(modo) {
+      cerModoArriadoHoraIAA = modo;
+      const btnF = document.getElementById('btnArriadoHoraFija');
+      const btnO = document.getElementById('btnArriadoOcaso');
+      const panelManual = document.getElementById('panelArriadoManual');
+      const panelBases = document.getElementById('panelArriadoBases');
+
+      if (modo === 'fija') {
+        if (btnF) btnF.classList.add('primary');
+        if (btnO) btnO.classList.remove('primary');
+        if (panelManual) panelManual.style.display = 'block';
+        if (panelBases) panelBases.style.display = 'none';
+        cerFuenteOcasoIAA = 'manual';
+      } else {
+        if (btnF) btnF.classList.remove('primary');
+        if (btnO) btnO.classList.add('primary');
+        if (panelManual) panelManual.style.display = 'none';
+        if (panelBases) panelBases.style.display = 'block';
+        cerFuenteOcasoIAA = 'base';
+      }
+      actualizarHoraObjetivoIAA();
+      guardarConfigIAA();
+    }
+
+    // EJECUCIÓN SECUENCIAL COMPLETA DE ACUARTELAMIENTO
     function iniciarSecuenciaCompletaAutoIAA() {
-      // 1. Si el buque está NAVEGANDO (EN LA MAR)
-      if (cerSituacionBuqueIAA === 'mar') {
-        actualizarStatusIAA('🌊 Buque navegando: Bandera permanece izada. Iniciando Oración al Ocaso...');
-        ejecutarOracionIAA(() => {
-          const chkBN = document.getElementById('chkBuenasNoches');
-          if (chkBN && chkBN.checked) {
-            reproducirElementoCeremonialIAA(document.getElementById('audArriado7'), '🌙 Dotación, buenas noches', () => {
-              finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial al Ocaso en la mar completado. Modo cambiado a manual.');
+      // 1. Si hay Guardia Militar: 
+      // Paso 2: Firmes -> Paso 3: Presenten armas -> Paso 4 y 5: Himno / Acompañamiento -> Paso 6: Descansen -> Paso 7: Envainen -> (Paso 8: Oración si es Arriado)
+      // 2. Si NO hay Guardia Militar:
+      // Se omiten 2, 3, 6 y 7 -> Ejecuta directamente Paso 4 y 5: Himno / Acompañamiento -> (Paso 8: Oración si es Arriado)
+
+      const audFirmes = document.getElementById('audCornetaFirmesIAA');
+      const audPresenten = (cerModalidadPresentenIAA === 'voz') ? document.getElementById('audVozPresentenIAA') : document.getElementById('audCornetaPresentenIAA');
+      const audEjecutiva = document.getElementById('audCornetaEjecutivaIAA');
+      const audDescansen = document.getElementById('audCornetaDescansoIAA');
+      const audEnvainen = document.getElementById('audCornetaEnvainenIAA');
+
+      function faseAcompanamientoYFin() {
+        actualizarStatusIAA('4 y 5. 🇪🇸 Rindiendo Honores a la Bandera Nacional...');
+        ejecutarMovimientoBanderaCompletoIAA(() => {
+          if (cerTieneGuardiaIAA) {
+            // Paso 6: Descansen armas
+            reproducirElementoCeremonialIAA(audDescansen, '6. 📯 Descansen armas', () => {
+              // Paso 7: Envainen armas
+              reproducirElementoCeremonialIAA(audEnvainen, '7. 📯 Envainen armas', () => {
+                comprobarOracionYFinalizar();
+              });
             });
           } else {
-            finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial al Ocaso en la mar completado. Modo cambiado a manual.');
+            comprobarOracionYFinalizar();
           }
         });
-        return;
       }
 
-      // 2. Si está EN PUERTO / FONDEADO: Ceremonial completo de Bandera
-      const el2 = (cerModoIAA === 'izado') ? document.getElementById('audIzado2') : document.getElementById('audArriado2');
-      reproducirElementoCeremonialIAA(el2, '2. 🗣️ A la bandera frente a popa, presenten', () => {
-        ejecutarMovimientoBanderaCompletoIAA(() => {
-          const el4 = (cerModoIAA === 'izado') ? document.getElementById('audIzado4') : document.getElementById('audArriado4');
-          reproducirElementoCeremonialIAA(el4, '4. 🗣️ Voz: Retirada de honores', () => {
-            const el5 = (cerModoIAA === 'izado') ? document.getElementById('audIzado5') : document.getElementById('audArriado5');
-            reproducirElementoCeremonialIAA(el5, '5. 📢 Chifle: Retirada de honores', () => {
-              if (cerModoIAA === 'arriado' && cerModalidadOracionIAA !== 'ninguna') {
-                ejecutarOracionIAA(() => {
-                  const chkBN = document.getElementById('chkBuenasNoches');
-                  if (chkBN && chkBN.checked) {
-                    reproducirElementoCeremonialIAA(document.getElementById('audArriado7'), '7. 🌙 Dotación, buenas noches', () => {
-                      finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial de Arriado completado. Modo cambiado a manual.');
-                    });
-                  } else {
-                    finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial de Arriado completado. Modo cambiado a manual.');
-                  }
-                });
-              } else if (cerModoIAA === 'arriado') {
-                const chkBN = document.getElementById('chkBuenasNoches');
-                if (chkBN && chkBN.checked) {
-                  reproducirElementoCeremonialIAA(document.getElementById('audArriado7'), '7. 🌙 Dotación, buenas noches', () => {
-                    finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial de Arriado completado. Modo cambiado a manual.');
-                  });
-                } else {
-                  finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial de Arriado completado. Modo cambiado a manual.');
-                }
-              } else {
-                finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial de Izado completado. Modo cambiado a manual.');
-              }
-            });
+      function comprobarOracionYFinalizar() {
+        if (cerModoIAA === 'arriado' && cerModalidadOracionIAA !== 'ninguna') {
+          actualizarStatusIAA('8. ✝️ Oración al Ocaso...');
+          ejecutarOracionIAA(() => {
+            finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial de Arriado en Acuartelamiento completado con éxito.');
+          });
+        } else {
+          finalizarSecuenciaAutoCompletaIAA(`✅ Ceremonial de ' + cerModoIAA.toUpperCase() + ' en Acuartelamiento completado con éxito.`);
+        }
+      }
+
+      // INICIO DE LA SECUENCIA SEGÚN MODALIDAD
+      if (cerTieneGuardiaIAA) {
+        // Con Guardia Militar: arranca con Firmes (Hora T)
+        reproducirElementoCeremonialIAA(audFirmes, '2. 📯 Toque de corneta: Firmes', () => {
+          // Paso 3: Presenten armas (Voz o Corneta)
+          const tagPresenten = (cerModalidadPresentenIAA === 'voz') ? '3. 🗣️ Voz: Presenten armas' : '3. 📯 Toque de corneta: Presenten armas';
+          reproducirElementoCeremonialIAA(audPresenten, tagPresenten, () => {
+            faseAcompanamientoYFin();
           });
         });
-      });
-    }
-
-    function pararAudioCeremonialIAA(elExcluido) {
-      const ids = [
-        'audIzado1','audIzado2','audIzado3Himno','audIzado3Chifle','audIzado4','audIzado5',
-        'audArriado1','audArriado2','audArriado3Himno','audArriado3Chifle','audArriado4','audArriado5',
-        'audArriado6Leida','audArriado6Cantada','audArriado6Corneta','audArriado7'
-      ];
-      ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el && el !== elExcluido) {
-          try {
-            el.pause();
-            el.currentTime = 0;
-            el.onended = null;
-          } catch(e) {}
-        }
-      });
-    }
-
-    function reproducirElementoCeremonialIAA(elAudio, etiqueta, onFin, elExcluido) {
-      if (!elAudio) {
-        if (onFin) onFin();
-        return;
-      }
-      pararAudioCeremonialIAA(elExcluido);
-      actualizarStatusIAA(etiqueta);
-
-      let finalizado = false;
-      function avanzar() {
-        if (finalizado) return;
-        finalizado = true;
-        elAudio.onended = null;
-        if (onFin) {
-          setTimeout(onFin, 1000); // 1 segundo de pausa solemne entre fases
-        }
-      }
-
-      try {
-        elAudio.currentTime = 0;
-        elAudio.muted = false;
-      } catch(e) {}
-
-      elAudio.onended = avanzar;
-
-      let p = elAudio.play();
-      if (p !== undefined) {
-        p.catch(err => {
-          console.warn('Ceremonial play err:', etiqueta, err);
-          avanzar();
-        });
+      } else {
+        // Sin Guardia Militar: salta directamente a la Bandera
+        faseAcompanamientoYFin();
       }
     }
 
-    // BOTONES DE MANDO MANUAL PASO A PASO
-    function ejecutarPasoManualIAA(paso) {
-      if (paso === 1) {
-        const el = (cerModoIAA === 'izado') ? document.getElementById('audIzado1') : document.getElementById('audArriado1');
-        reproducirElementoCeremonialIAA(el, '1. 🗣️ Voz: "Señales a la bandera" (T-5 min)');
-      } else if (paso === 2) {
-        const el = (cerModoIAA === 'izado') ? document.getElementById('audIzado2') : document.getElementById('audArriado2');
-        reproducirElementoCeremonialIAA(el, '2. 🗣️ Voz: "A la bandera frente a popa, presenten"');
-      } else if (paso === 3) {
-        ejecutarMovimientoBanderaCompletoIAA();
-      } else if (paso === 4) {
-        const el = (cerModoIAA === 'izado') ? document.getElementById('audIzado4') : document.getElementById('audArriado4');
-        reproducirElementoCeremonialIAA(el, '4. 🗣️ Voz: "Retirada de honores"');
-      } else if (paso === 5) {
-        const el = (cerModoIAA === 'izado') ? document.getElementById('audIzado5') : document.getElementById('audArriado5');
-        reproducirElementoCeremonialIAA(el, '5. 📢 Chifle: Retirada de honores');
-      } else if (paso === 6) {
-        ejecutarOracionIAA();
-      } else if (paso === 7) {
-        reproducirElementoCeremonialIAA(document.getElementById('audArriado7'), '7. 🌙 "Dotación, buenas noches"', () => { setTimeout(cerrarStatusIAA, 1500); });
-      }
-    }
-
-    // PASO 3: MOVIMIENTO DE BANDERA (HIMNO / CHIFLE / AMBOS)
     function ejecutarMovimientoBanderaCompletoIAA(callbackFin) {
       pararAudioCeremonialIAA();
 
