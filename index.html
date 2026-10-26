@@ -235,42 +235,43 @@
       player1.src = audio1Url;
       player2.src = audio2Url;
       
-      // Reproducir ambos simultáneamente
-      let playing = 0;
-      let maxDuration = 0;
-      
-      player1.onloadedmetadata = function() {
-        if (player1.duration > maxDuration) maxDuration = player1.duration;
-      };
-      
-      player2.onloadedmetadata = function() {
-        if (player2.duration > maxDuration) maxDuration = player2.duration;
-      };
-      
-      player1.onerror = player2.onerror = function() {
-        console.error('Error loading audio');
-        setTimeout(() => {
+      let completados = 0;
+      const finalizarDual = function() {
+        completados++;
+        if (completados >= 2) {
           document.getElementById('status').textContent = '5. 🎺 HIMNO + CHIFLE ✅';
-        }, 2000);
+        }
       };
       
-      // Reproducir
-      Promise.all([player1.play(), player2.play()]).then(() => {
-        // Ambos reproduciendo exitosamente
-      }).catch(err => {
-        console.warn('Play error:', err);
-        // Fallback: reproducir solo player1
-        player1.play();
-      });
+      player1.onended = finalizarDual;
+      player2.onended = finalizarDual;
       
-      // Esperar a que terminen ambos
-      setTimeout(() => {
-        document.getElementById('status').textContent = '5. 🎺 HIMNO + CHIFLE ✅';
-      }, Math.max(player1.duration, player2.duration) * 1000 + 1000);
+      player1.onerror = function(err) {
+        console.error('Player1 error:', err);
+        finalizarDual();
+      };
+      
+      player2.onerror = function(err) {
+        console.error('Player2 error:', err);
+        finalizarDual();
+      };
+      
+      // Reproducir ambos simultáneamente
+      Promise.all([player1.play(), player2.play()]).then(() => {
+        console.log('Ambos audios reproduciendo');
+      }).catch(err => {
+        console.warn('Play bloqueado, intentando solo player1:', err);
+        player1.play().catch(e => console.error('Player1 error:', e));
+        player2.play().catch(e => console.error('Player2 error:', e));
+      });
     }
 
-
+    
     function reproducirPunto(p) {
+      // Pausar cualquier audio en reproducción
+      document.getElementById('audioPlayer').pause();
+      document.getElementById('audioPlayer2').pause();
+      
       let audio = null;
       let label = puntosLabel[p];
       
