@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#070d1e">
-  <title>Izado y Arriado en Acuartelamientos (IAA)</title>
+  <title>Izado y Arriado en Acuartelamientos (IAA) - Motor de Ejecución</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #070d1e; color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; }
@@ -23,16 +23,120 @@
     .puntos-grid { display: grid; grid-template-columns: 1fr; gap: 8px; max-width: 520px; margin: 0 auto; padding: 0 16px; }
     .punto-btn { background: #1e293b; border: 1px solid #334155; color: #cbd5e1; padding: 16px 18px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; text-align: left; min-height: 56px; display: flex; align-items: center; text-transform: uppercase; letter-spacing: 0.5px; }
     .punto-btn:active { background: #0284c7; border-color: #38bdf8; }
+    .reloj { background: #1a2332; border: 2px solid #0284c7; border-radius: 8px; padding: 12px; text-align: center; margin-bottom: 12px; font-size: 32px; font-weight: 800; color: #38bdf8; font-family: 'Courier New', monospace; }
+    .reloj-info { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+    .input-group { display: flex; gap: 8px; margin-bottom: 12px; }
+    .input-group input { flex: 1; padding: 10px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 700; }
+    .input-group button { padding: 10px 16px; background: #0284c7; border: 1px solid #0284c7; border-radius: 6px; color: #fff; font-weight: 700; cursor: pointer; }
+    .countdown { background: #1a2332; border: 2px solid #10b981; border-radius: 8px; padding: 16px; text-align: center; margin: 12px 0; }
+    .countdown-time { font-size: 48px; font-weight: 800; color: #10b981; font-family: 'Courier New', monospace; }
+    .countdown-label { font-size: 12px; color: #94a3b8; margin-top: 8px; }
   </style>
 </head>
 <body>
   <header>
     <h1>🇪🇸 Izado y Arriado en Acuartelamientos</h1>
-    <p>PWA - Protocolo en Tierra</p>
+    <p>Motor de Ejecución - Control Temporal</p>
   </header>
 
   <main>
-    <!-- EVENTO -->
+    <!-- RELOJ DEL SISTEMA -->
+    <div class="card">
+      <div class="reloj" id="reloj">--:--:--</div>
+      <div class="reloj-info">
+        <span id="husoInfo">UTC</span> | 
+        <span id="fechaInfo">--/--/----</span>
+      </div>
+    </div>
+
+    <!-- POSICIÓN (para cálculo de Ocaso) -->
+    <div class="card">
+      <div class="card-title">📍 Posición (Ocaso)</div>
+      <div class="btn-group">
+        <button id="btnPosGPS" class="btn" style="background:#0c4a6e;" onclick="setPosicion('gps')">🛰️ GPS 🟢</button>
+        <button id="btnPosManual" class="btn" onclick="setPosicion('manual')">📌 Manual</button>
+      </div>
+      <div id="seccionGPS" style="display:block; margin-bottom:12px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #0284c7;">
+        <div style="font-size:11px; color:#38bdf8; margin-bottom:8px;">🛰️ GPS Automático</div>
+        <button class="btn" style="width:100%;" onclick="obtenerGPS()">Obtener posición GPS actual</button>
+        <div style="font-size:11px; color:#94a3b8; margin-top:8px;" id="gpsStatus">Esperando GPS...</div>
+      </div>
+      <div id="seccionManual" style="display:none; margin-bottom:12px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #0284c7;">
+        <div style="font-size:11px; color:#38bdf8; margin-bottom:8px;">📌 Posición Manual</div>
+        <div class="input-group">
+          <input type="number" id="latInput" placeholder="Latitud (-90 a 90)" min="-90" max="90" step="0.001">
+          <input type="number" id="lonInput" placeholder="Longitud (-180 a 180)" min="-180" max="180" step="0.001">
+          <button onclick="guardarPosicion()">✓ Guardar</button>
+        </div>
+        <div style="font-size:11px; color:#94a3b8;" id="manualStatus">Ingrese latitud y longitud</div>
+      </div>
+      <div id="seccionListado" style="display:none; margin-bottom:12px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #0284c7;">
+        <div style="font-size:11px; color:#38bdf8; margin-bottom:8px;">📋 Localidades Predefinidas</div>
+        <select id="listadoLocalidades" style="width:100%; padding:10px; background:#1e293b; border:1px solid #334155; border-radius:6px; color:#cbd5e1; font-weight:700;" onchange="seleccionarLocalidad()">
+          <option value="">Seleccionar localidad...</option>
+          <option value="rota">Base Naval Rota (37.2521, -6.3675)</option>
+          <option value="ferrol">Base Naval Ferrol (43.4667, -8.2500)</option>
+          <option value="cartagena">Base Naval Cartagena (37.6167, -0.9833)</option>
+          <option value="madrid">Madrid (40.4168, -3.7038)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- HORAS DE EJECUCIÓN -->
+    <div class="card">
+      <div class="card-title">⏰ Horas de Ejecución</div>
+      
+      <div style="margin-bottom:14px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #10b981;">
+        <div style="font-size:11px; font-weight:700; color:#38bdf8; margin-bottom:8px;">📌 Hora IZADO (Manual):</div>
+        <div class="input-group">
+          <input type="time" id="horaIzado" value="08:00" style="flex:1;">
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #f59e0b;">
+        <div style="font-size:11px; font-weight:700; color:#fcd34d; margin-bottom:8px;">🌅 Hora ARRIADO:</div>
+        <div class="btn-group">
+          <button id="btnArriadorManual" class="btn" style="background:#0c4a6e;" onclick="setArriado('manual')">⏱️ Manual 🟢</button>
+          <button id="btnArriadorOcaso" class="btn" onclick="setArriado('ocaso')">🌅 Ocaso</button>
+        </div>
+        <div id="seccionArriadorManual" style="display:block; margin-top:12px;">
+          <div class="input-group">
+            <input type="time" id="horaArriado" value="18:00" style="flex:1;">
+          </div>
+        </div>
+        <div id="seccionArriadorOcaso" style="display:none; margin-top:12px; padding:10px; background:#0f172a; border-radius:6px;">
+          <div style="font-size:11px; color:#94a3b8; margin-bottom:6px;">Hora del Ocaso (calculada):</div>
+          <div style="font-size:16px; color:#fcd34d; font-weight:800; font-family:'Courier New', monospace;" id="horaOcasoCalculada">--:--</div>
+          <button class="btn" style="width:100%; margin-top:8px; background:#f59e0b; border-color:#fcd34d;" onclick="calcularOcaso()">Calcular Ocaso</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EJECUCIÓN -->
+    <div class="card">
+      <div class="card-title">⚡ Modo de Ejecución</div>
+      <div class="btn-group">
+        <button id="btnEjecAuto" class="btn" style="background:#0c4a6e;" onclick="setEjecucion('automatica')">🤖 Automática 🟢</button>
+        <button id="btnEjecManual" class="btn" onclick="setEjecucion('manual')">👆 Manual</button>
+      </div>
+
+      <div id="seccionEjecAutomatica" style="display:block; margin-top:12px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #0284c7;">
+        <div style="font-size:11px; color:#38bdf8; margin-bottom:12px;">🤖 Ejecución Automática:</div>
+        <div class="countdown" id="countdownAuto" style="display:none;">
+          <div class="countdown-time" id="countdownTimeAuto">T-00:00</div>
+          <div class="countdown-label">Tiempo hasta Izado/Arriado</div>
+        </div>
+        <button class="btn" style="width:100%; background:#10b981; border-color:#34d399;" onclick="iniciarAutomatica()">▶️ Iniciar Ejecución Automática</button>
+      </div>
+
+      <div id="seccionEjecManual" style="display:none; margin-top:12px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #0284c7;">
+        <div style="font-size:11px; color:#38bdf8; margin-bottom:12px;">👆 Ejecución Manual - Sabiendo la hora:</div>
+        <button class="btn" style="width:100%; background:#f59e0b; border-color:#fcd34d; margin-bottom:8px;" onclick="reproducirManualT5()">🎙️ T-5 Señales a la Bandera</button>
+        <div style="font-size:11px; color:#94a3b8; margin-bottom:12px; text-align:center;">A partir de T, controle la secuencia:</div>
+      </div>
+    </div>
+
+    <!-- EVENTO (Configuración original) -->
     <div class="card">
       <div class="card-title">⚙️ Evento</div>
       
@@ -113,6 +217,10 @@
     let oracion = 'corneta';
     let cerPuntosActivosManualIAA = [];
     let secuenciaEnCurso = false;
+    let posicion = { tipo: 'gps', lat: null, lon: null };
+    let arriado = 'manual';
+    let ejecucion = 'automatica';
+    let countdownInterval = null;
 
     const audioURLs = {
       '1_izado': 'audios/01_01_senales_izado.mp3',
@@ -131,6 +239,161 @@
       '8_musica': 'audios/08_02_oracion_musica.mp3',
       '8_voz': 'audios/08_03_oracion_voz.mp3'
     };
+
+    // RELOJ DEL SISTEMA
+    function actualizarReloj() {
+      const ahora = new Date();
+      const horas = String(ahora.getHours()).padStart(2, '0');
+      const minutos = String(ahora.getMinutes()).padStart(2, '0');
+      const segundos = String(ahora.getSeconds()).padStart(2, '0');
+      document.getElementById('reloj').textContent = `${horas}:${minutos}:${segundos}`;
+      
+      const huso = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const fecha = ahora.toLocaleDateString('es-ES');
+      document.getElementById('husoInfo').textContent = huso;
+      document.getElementById('fechaInfo').textContent = fecha;
+    }
+    setInterval(actualizarReloj, 1000);
+    actualizarReloj();
+
+    // POSICIÓN
+    function setPosicion(tipo) {
+      posicion.tipo = tipo;
+      document.getElementById('seccionGPS').style.display = tipo === 'gps' ? 'block' : 'none';
+      document.getElementById('seccionManual').style.display = tipo === 'manual' ? 'block' : 'none';
+      document.getElementById('seccionListado').style.display = tipo === 'listado' ? 'block' : 'none';
+      document.getElementById('btnPosGPS').style.background = tipo === 'gps' ? '#0c4a6e' : '#334155';
+      document.getElementById('btnPosManual').style.background = tipo === 'manual' ? '#0c4a6e' : '#334155';
+      if (tipo === 'gps') obtenerGPS();
+    }
+
+    function obtenerGPS() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            posicion.lat = pos.coords.latitude;
+            posicion.lon = pos.coords.longitude;
+            document.getElementById('gpsStatus').textContent = `📍 ${posicion.lat.toFixed(4)}°, ${posicion.lon.toFixed(4)}°`;
+          },
+          (err) => {
+            document.getElementById('gpsStatus').textContent = '❌ Error obteniendo GPS: ' + err.message;
+          }
+        );
+      }
+    }
+
+    function guardarPosicion() {
+      posicion.lat = parseFloat(document.getElementById('latInput').value);
+      posicion.lon = parseFloat(document.getElementById('lonInput').value);
+      if (isNaN(posicion.lat) || isNaN(posicion.lon)) {
+        document.getElementById('manualStatus').textContent = '❌ Valores inválidos';
+        return;
+      }
+      document.getElementById('manualStatus').textContent = `✅ ${posicion.lat.toFixed(4)}°, ${posicion.lon.toFixed(4)}°`;
+    }
+
+    function seleccionarLocalidad() {
+      const sel = document.getElementById('listadoLocalidades').value;
+      const localidades = {
+        'rota': { lat: 37.2521, lon: -6.3675 },
+        'ferrol': { lat: 43.4667, lon: -8.2500 },
+        'cartagena': { lat: 37.6167, lon: -0.9833 },
+        'madrid': { lat: 40.4168, lon: -3.7038 }
+      };
+      if (localidades[sel]) {
+        posicion.lat = localidades[sel].lat;
+        posicion.lon = localidades[sel].lon;
+        calcularOcaso();
+      }
+    }
+
+    // ALGORITMO DE OCASO (Ecuación de Cooper simplificada)
+    function calcularOcaso() {
+      if (!posicion.lat || !posicion.lon) {
+        alert('Configure posición primero');
+        return;
+      }
+
+      const ahora = new Date();
+      const dia = ahora.getDate();
+      const mes = ahora.getMonth() + 1;
+      const año = ahora.getFullYear();
+      
+      // Aproximación simple para ocaso
+      // En realidad debería usar fórmula astronómica más precisa
+      const diaDelAño = Math.floor((mes - 1) * 30.44 + dia);
+      const latRad = posicion.lat * Math.PI / 180;
+      const declinacion = 23.44 * Math.sin((284 + diaDelAño) * Math.PI / 180) * Math.PI / 180;
+      
+      const cosH = -Math.tan(latRad) * Math.tan(declinacion);
+      const h = cosH >= -1 && cosH <= 1 ? Math.acos(cosH) : 0;
+      const minutos = (12 + h * 180 / Math.PI / 15) * 60;
+      
+      const horas = Math.floor(minutos / 60);
+      const mins = Math.floor(minutos % 60);
+      
+      document.getElementById('horaOcasoCalculada').textContent = 
+        `${String(horas).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+    }
+
+    // ARRIADO
+    function setArriado(tipo) {
+      arriado = tipo;
+      document.getElementById('seccionArriadorManual').style.display = tipo === 'manual' ? 'block' : 'none';
+      document.getElementById('seccionArriadorOcaso').style.display = tipo === 'ocaso' ? 'block' : 'none';
+      document.getElementById('btnArriadorManual').style.background = tipo === 'manual' ? '#0c4a6e' : '#334155';
+      document.getElementById('btnArriadorOcaso').style.background = tipo === 'ocaso' ? '#0c4a6e' : '#334155';
+    }
+
+    // EJECUCIÓN
+    function setEjecucion(tipo) {
+      ejecucion = tipo;
+      document.getElementById('seccionEjecAutomatica').style.display = tipo === 'automatica' ? 'block' : 'none';
+      document.getElementById('seccionEjecManual').style.display = tipo === 'manual' ? 'block' : 'none';
+      document.getElementById('btnEjecAuto').style.background = tipo === 'automatica' ? '#0c4a6e' : '#334155';
+      document.getElementById('btnEjecManual').style.background = tipo === 'manual' ? '#0c4a6e' : '#334155';
+    }
+
+    function iniciarAutomatica() {
+      const horaIzado = document.getElementById('horaIzado').value;
+      if (!horaIzado) {
+        alert('Configure la hora de Izado/Arriado');
+        return;
+      }
+      
+      const [horas, minutos] = horaIzado.split(':');
+      const tiempo = new Date();
+      tiempo.setHours(parseInt(horas), parseInt(minutos), 0, 0);
+      
+      // Iniciar countdown
+      actualizarCountdown(tiempo);
+      document.getElementById('countdownAuto').style.display = 'block';
+      clearInterval(countdownInterval);
+      countdownInterval = setInterval(() => actualizarCountdown(tiempo), 1000);
+    }
+
+    function actualizarCountdown(tiempoObjetivo) {
+      const ahora = new Date();
+      const diff = tiempoObjetivo - ahora;
+      
+      if (diff <= 0) {
+        document.getElementById('countdownTimeAuto').textContent = 'T ¡AHORA!';
+        clearInterval(countdownInterval);
+        // Lanzar Punto 1 (Señales) y luego secuencia
+        reproducirPunto(1);
+        setTimeout(() => iniciarAuto(), 6000); // Esperar a que termine Punto 1
+        return;
+      }
+      
+      const mins = Math.floor(diff / 60000);
+      const segs = Math.floor((diff % 60000) / 1000);
+      document.getElementById('countdownTimeAuto').textContent = 
+        `T-${String(mins).padStart(2, '0')}:${String(segs).padStart(2, '0')}`;
+    }
+
+    function reproducirManualT5() {
+      reproducirPunto(1); // Punto 1 = Señales a la Bandera
+    }
 
     function getAudioURL(punto) {
       if (punto === 1) {
@@ -157,6 +420,7 @@
     function setOracion(o) { oracion = o; updateUI(); }
     function stopAll() { 
       secuenciaEnCurso = false;
+      clearInterval(countdownInterval);
       document.getElementById('audioPlayer').pause(); 
       document.getElementById('status').innerHTML = '<span>Detenido</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>'; 
     }
@@ -273,10 +537,8 @@
         
         idx++;
         
-        // ESPERAR a que el audio TERMINE antes de lanzar el siguiente
         audio.onended = () => {
           if (secuenciaEnCurso) {
-            // Pausa de 1.5 segundos entre audios DESPUÉS de que termine el anterior
             setTimeout(reproducirSiguiente, 1500);
           }
         };
@@ -389,6 +651,9 @@
     cerPuntosActivosManualIAA = [];
     calcularPuntos();
     updateUI();
+    setPosicion('gps');
+    setArriado('manual');
+    setEjecucion('automatica');
   </script>
 </body>
 </html>
