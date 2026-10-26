@@ -202,14 +202,30 @@
     
     function actualizarVisibilidadPunto4() {
       // Botón 4 solo activo si hay Himno en el acompañamiento
-      const btnPunto4 = document.getElementById('btnManualPunto4IAA');
       const tieneHimno = (acompañamiento === 'himno' || acompañamiento === 'himno_chifle');
       
-      if (btnPunto4) {
-        btnPunto4.style.display = tieneHimno ? 'block' : 'none';
+      // Como los botones se renderizan dinámicamente en renderPuntos(),
+      // necesitamos controlar si Punto 4 está en la lista de puntos activos
+      
+      if (tieneHimno) {
+        // Asegurarse de que Punto 4 esté en cerPuntosActivosManualIAA si no está ya
+        if (!cerPuntosActivosManualIAA.includes(4)) {
+          cerPuntosActivosManualIAA.push(4);
+          cerPuntosActivosManualIAA.sort((a, b) => a - b); // Mantener orden
+        }
+      } else {
+        // Remover Punto 4 de cerPuntosActivosManualIAA
+        const idx = cerPuntosActivosManualIAA.indexOf(4);
+        if (idx > -1) {
+          cerPuntosActivosManualIAA.splice(idx, 1);
+        }
       }
+      
+      // Renderizar de nuevo los puntos
+      renderPuntos();
     }
 
+    
     function calcularPuntos() {
       puntosActivos = [];
       if (modo === 'izado') {
