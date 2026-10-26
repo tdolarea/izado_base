@@ -96,7 +96,10 @@
     <!-- MODO MANUAL -->
     <div class="card">
       <div class="card-title">⏸️ Modo Manual - Paso a Paso</div>
-      <div class="status" id="status" style="border-left: 4px solid #ef4444; padding-left: 12px; background: rgba(239, 68, 68, 0.1);">Esperando inicio...</div>
+      <div class="status" id="status" style="border-left: 4px solid #ef4444; padding-left: 12px; background: rgba(239, 68, 68, 0.1); display: flex; justify-content: space-between; align-items: center;">
+        <span>Esperando inicio...</span>
+        <button class="btn" onclick="stopAll()" style="padding: 6px 12px; font-size: 11px; background: #ef4444;">⏹️ Detener</button>
+      </div>
       <div class="puntos-grid" id="puntosGrid">
         <!-- Dinámico -->
       </div>
