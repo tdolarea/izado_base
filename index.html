@@ -199,6 +199,17 @@
       renderPuntos(); // Re-renderizar botones con nuevo label
     }
 
+    
+    function actualizarVisibilidadPunto4() {
+      // Botón 4 solo activo si hay Himno en el acompañamiento
+      const btnPunto4 = document.getElementById('btnManualPunto4IAA');
+      const tieneHimno = (acompañamiento === 'himno' || acompañamiento === 'himno_chifle');
+      
+      if (btnPunto4) {
+        btnPunto4.style.display = tieneHimno ? 'block' : 'none';
+      }
+    }
+
     function calcularPuntos() {
       puntosActivos = [];
       if (modo === 'izado') {
@@ -369,7 +380,7 @@
     function setModo(m) { modo = m; calcularPuntos(); updateUI(); }
     function setGuardia(g) { conGuardia = g; calcularPuntos(); updateUI(); }
     function setPresenten(p) { modalidadPresenten = p; updateUI(); }
-    function setAcompañamiento(a) { acompañamiento = a; actualizarLabelPunto5(); updateUI(); }
+    function setAcompañamiento(a) { acompañamiento = a; actualizarLabelPunto5(); actualizarVisibilidadPunto4(); updateUI(); }
     function setOracion(o) { oracion = o; updateUI(); }
     function resetManual() { document.getElementById('status').textContent = 'Reiniciado'; }
     function stopAll() { document.getElementById('audioPlayer').pause(); document.getElementById('status').textContent = 'Detenido'; }
@@ -377,6 +388,7 @@
     // Inicializar
     calcularPuntos();
     actualizarLabelPunto5();
+    actualizarVisibilidadPunto4();
     updateUI();
   </script>
 </body>
