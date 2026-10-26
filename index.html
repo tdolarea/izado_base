@@ -77,33 +77,45 @@
     <div class="brand">
       <div>
         <div class="brand-title">Izado y Arriado en Tierra</div>
-        <div class="brand-sub">Motor de Ejecución · Armada Española</div>
       </div>
     </div>
   </header>
 
   <main>
+<!-- EVENTO -->
+    <div class="card">
+      <div class="card-title">⚙️ Evento</div>
+      <div class="btn-grid" style="margin-bottom:12px;">
+        <button type="button" class="action-btn primary" id="btnIzado" onclick="setModo('izado')" style="justify-content:center;">
+          📌 Izado
+        </button>
+        <button type="button" class="action-btn" id="btnArriado" onclick="setModo('arriado')" style="justify-content:center;">
+          📖 Arriado
+        </button>
+      </div>
+    
+    
+    
+    
     <!-- RELOJ GRANDE DEL SISTEMA -->
     <div class="card">
-      <div class="reloj-grande" id="reloj">--:--:--</div>
+      <di<!-- EVENTO -->
+    <div class="card">
+      <div class="card-title">⚙️ Evento</div>
+      <div class="btn-grid" style="margin-bottom:12px;">
+        <button type="button" class="action-btn primary" id="btnIzado" onclick="setModo('izado')" style="justify-content:center;">
+          📌 Izado
+        </button>
+        <button type="button" class="action-btn" id="btnArriado" onclick="setModo('arriado')" style="justify-content:center;">
+          📖 Arriado
+        </button>
+      </div>v class="reloj-grande" id="reloj">--:--:--</div>
       <div class="reloj-info" style="text-align:center;">
         <span id="husoInfo">UTC+2 (Bravo · B)</span> | 
         <span id="fechaInfo">--/--/----</span>
       </div>
     </div>
 
-    <!-- SITUACIÓN DEL BUQUE / UNIDAD -->
-    <div class="card">
-      <div class="card-title">📍 Situación de la Unidad</div>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-        <button type="button" class="action-btn primary" id="btnSitTierra" onclick="setSituacion('tierra')" style="justify-content:center;">
-          🏝️ En Tierra / Acuartelamiento
-        </button>
-        <button type="button" class="action-btn" id="btnSitMar" onclick="setSituacion('mar')" style="justify-content:center;">
-          🌊 En la Mar
-        </button>
-      </div>
-    </div>
 
     <!-- HUSO HORARIO Y POSICIÓN -->
     <div class="card">
@@ -227,17 +239,7 @@
       </div>
     </div>
 
-    <!-- EVENTO -->
-    <div class="card">
-      <div class="card-title">⚙️ Evento</div>
-      <div class="btn-grid" style="margin-bottom:12px;">
-        <button type="button" class="action-btn primary" id="btnIzado" onclick="setModo('izado')" style="justify-content:center;">
-          📌 Izado
-        </button>
-        <button type="button" class="action-btn" id="btnArriado" onclick="setModo('arriado')" style="justify-content:center;">
-          📖 Arriado
-        </button>
-      </div>
+    
 
       <div style="padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #0284c7;">
         <div style="font-size:11.5px; font-weight:800; color:#cbd5e1; margin-bottom:8px;">💂 Guardia Militar:</div>
