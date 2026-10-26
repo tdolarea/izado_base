@@ -107,6 +107,70 @@
       </div>
     </div>
 
+    <!-- HORAS DE EJECUCIÓN -->
+    <div class="card">
+      <div class="card-title">⏰ Programación Horaria</div>
+      
+      <!-- HORA IZADO -->
+      <div style="margin-bottom:12px; padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #10b981;">
+        <div style="font-size:11.5px; font-weight:800; color:#cbd5e1; margin-bottom:8px;">📌 HORA IZADO:</div>
+        <div class="input-group">
+          <input type="time" id="horaIzado" value="08:00">
+        </div>
+      </div>
+
+      <!-- HORA ARRIADO -->
+      <div style="margin-bottom:12px; padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #f59e0b;">
+        <div style="font-size:11.5px; font-weight:800; color:#fcd34d; margin-bottom:8px;">🌅 HORA ARRIADO:</div>
+        <div class="btn-grid" style="margin-bottom:10px;">
+          <button type="button" class="action-btn primary" id="btnArriadoManual" onclick="setArriado('manual')">⏱️ Manual</button>
+          <button type="button" class="action-btn" id="btnArriadoOcaso" onclick="setArriado('ocaso')">🌅 Ocaso</button>
+        </div>
+        <div id="secArriadoOcaso" style="display:none; padding:10px; background:#070d1e; border-radius:6px;">
+          <div style="font-size:11px; color:#94a3b8; margin-bottom:6px;">Hora del Ocaso (calculada):</div>
+          <div style="font-size:20px; color:#fcd34d; font-weight:800; font-family:'Courier New', monospace;" id="horaOcaso">--:--</div>
+          <button class="action-btn primary" style="width:100%; margin-top:8px;" onclick="calcularOcaso()">Calcular Ocaso</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- EJECUCIÓN -->
+    <div class="card">
+      <div class="card-title">⚡ Ejecución</div>
+      <div class="btn-grid">
+        <button type="button" class="action-btn primary" id="btnEjecAuto" onclick="setEjecucion('automatica')" style="justify-content:center;">
+          🤖 Automática
+        </button>
+        <button type="button" class="action-btn" id="btnEjecManual" onclick="setEjecucion('manual')" style="justify-content:center;">
+          👆 Manual
+        </button>
+      </div>
+
+      <!-- EJECUCIÓN AUTOMÁTICA -->
+      <div id="secEjecAuto" style="display:block; margin-top:12px; padding:10px; background:#0b152d; border-radius:8px;">
+        <div style="font-size:11px; color:#38bdf8; margin-bottom:12px; font-weight:700;">🤖 Ejecución Automática con Countdown:</div>
+        <button class="action-btn primary" style="width:100%; background:#10b981; border-color:#34d399;" onclick="iniciarAutomatica()">▶️ Iniciar Automática (Countdown)</button>
+        <div style="font-size:48px; color:#10b981; font-weight:800; font-family:'Courier New', monospace; text-align:center; margin-top:12px; display:none;" id="countdownDisplay">T-00:00</div>
+      </div>
+
+      <!-- EJECUCIÓN MANUAL -->
+      <div id="secEjecManual" style="display:none; margin-top:12px; padding:10px; background:#0b152d; border-radius:8px;">
+        <div style="font-size:11px; color:#38bdf8; margin-bottom:12px; font-weight:700;">👆 Ejecución Manual - Sabiendo la hora:</div>
+        <button class="action-btn primary" style="width:100%; background:#f59e0b; border-color:#fcd34d; margin-bottom:8px;" onclick="reproducirManualT5()">🎙️ T-5 Señales a la Bandera</button>
+      </div>
+    </div>
+
+    
+
+      <div style="padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #0284c7;">
+        <div style="font-size:11.5px; font-weight:800; color:#cbd5e1; margin-bottom:8px;">💂 Guardia Militar:</div>
+        <div class="btn-grid">
+          <button type="button" class="action-btn primary" id="btnGuardiaSi" onclick="setGuardia(true)">Sí</button>
+          <button type="button" class="action-btn" id="btnGuardiaNo" onclick="setGuardia(false)">No</button>
+        </div>
+      </div>
+    </div>
+
 
     <!-- HUSO HORARIO Y POSICIÓN -->
     <div class="card">
@@ -173,70 +237,6 @@
             <input type="time" id="horaArriado" value="18:00">
           </div>
           <div style="font-size:11px; color:#94a3b8;">Hora del Arriado (manual)</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- HORAS DE EJECUCIÓN -->
-    <div class="card">
-      <div class="card-title">⏰ Programación Horaria</div>
-      
-      <!-- HORA IZADO -->
-      <div style="margin-bottom:12px; padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #10b981;">
-        <div style="font-size:11.5px; font-weight:800; color:#cbd5e1; margin-bottom:8px;">📌 HORA IZADO:</div>
-        <div class="input-group">
-          <input type="time" id="horaIzado" value="08:00">
-        </div>
-      </div>
-
-      <!-- HORA ARRIADO -->
-      <div style="margin-bottom:12px; padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #f59e0b;">
-        <div style="font-size:11.5px; font-weight:800; color:#fcd34d; margin-bottom:8px;">🌅 HORA ARRIADO:</div>
-        <div class="btn-grid" style="margin-bottom:10px;">
-          <button type="button" class="action-btn primary" id="btnArriadoManual" onclick="setArriado('manual')">⏱️ Manual</button>
-          <button type="button" class="action-btn" id="btnArriadoOcaso" onclick="setArriado('ocaso')">🌅 Ocaso</button>
-        </div>
-        <div id="secArriadoOcaso" style="display:none; padding:10px; background:#070d1e; border-radius:6px;">
-          <div style="font-size:11px; color:#94a3b8; margin-bottom:6px;">Hora del Ocaso (calculada):</div>
-          <div style="font-size:20px; color:#fcd34d; font-weight:800; font-family:'Courier New', monospace;" id="horaOcaso">--:--</div>
-          <button class="action-btn primary" style="width:100%; margin-top:8px;" onclick="calcularOcaso()">Calcular Ocaso</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- EJECUCIÓN -->
-    <div class="card">
-      <div class="card-title">⚡ Ejecución</div>
-      <div class="btn-grid">
-        <button type="button" class="action-btn primary" id="btnEjecAuto" onclick="setEjecucion('automatica')" style="justify-content:center;">
-          🤖 Automática
-        </button>
-        <button type="button" class="action-btn" id="btnEjecManual" onclick="setEjecucion('manual')" style="justify-content:center;">
-          👆 Manual
-        </button>
-      </div>
-
-      <!-- EJECUCIÓN AUTOMÁTICA -->
-      <div id="secEjecAuto" style="display:block; margin-top:12px; padding:10px; background:#0b152d; border-radius:8px;">
-        <div style="font-size:11px; color:#38bdf8; margin-bottom:12px; font-weight:700;">🤖 Ejecución Automática con Countdown:</div>
-        <button class="action-btn primary" style="width:100%; background:#10b981; border-color:#34d399;" onclick="iniciarAutomatica()">▶️ Iniciar Automática (Countdown)</button>
-        <div style="font-size:48px; color:#10b981; font-weight:800; font-family:'Courier New', monospace; text-align:center; margin-top:12px; display:none;" id="countdownDisplay">T-00:00</div>
-      </div>
-
-      <!-- EJECUCIÓN MANUAL -->
-      <div id="secEjecManual" style="display:none; margin-top:12px; padding:10px; background:#0b152d; border-radius:8px;">
-        <div style="font-size:11px; color:#38bdf8; margin-bottom:12px; font-weight:700;">👆 Ejecución Manual - Sabiendo la hora:</div>
-        <button class="action-btn primary" style="width:100%; background:#f59e0b; border-color:#fcd34d; margin-bottom:8px;" onclick="reproducirManualT5()">🎙️ T-5 Señales a la Bandera</button>
-      </div>
-    </div>
-
-    
-
-      <div style="padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #0284c7;">
-        <div style="font-size:11.5px; font-weight:800; color:#cbd5e1; margin-bottom:8px;">💂 Guardia Militar:</div>
-        <div class="btn-grid">
-          <button type="button" class="action-btn primary" id="btnGuardiaSi" onclick="setGuardia(true)">Sí</button>
-          <button type="button" class="action-btn" id="btnGuardiaNo" onclick="setGuardia(false)">No</button>
         </div>
       </div>
     </div>
