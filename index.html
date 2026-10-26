@@ -17,8 +17,6 @@
     .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
     .btn { background: #0c4a6e; border: 1.5px solid #0284c7; color: #e0f2fe; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; text-align: center; }
     .btn:active { background: #0284c7; transform: scale(0.98); }
-    .btn.danger { background: #450a0a; border-color: #ef4444; color: #fca5a5; }
-    .btn.danger:active { background: #dc2626; }
     .status { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 12px; color: #cbd5e1; border-left: 4px solid #ef4444; padding-left: 12px; background: rgba(239, 68, 68, 0.1); display: flex; justify-content: space-between; align-items: center; min-height: 40px; }
     .status-btn { padding: 6px 12px; font-size: 11px; background: #ef4444; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-weight: 700; }
     .status-btn:active { background: #dc2626; }
@@ -106,7 +104,6 @@
   </main>
 
   <audio id="audioPlayer" style="display:none;"></audio>
-  <audio id="audioPlayer2" style="display:none;"></audio>
 
   <script>
     let modo = 'izado';
@@ -116,10 +113,46 @@
     let oracion = 'corneta';
     let cerPuntosActivosManualIAA = [];
 
+    const audioURLs = {
+      '1_izado': 'audios/01_01_senales_izado.mp3',
+      '1_arriado': 'audios/01_02_senales_arriado.mp3',
+      '2': 'audios/02_firmes.mp3',
+      '3_voz': 'audios/03_01_presenten_voz.mp3',
+      '3_corneta': 'audios/03_02_presenten_corneta.wav',
+      '4': 'audios/04_ejecutiva.wav',
+      '5_himno': 'audios/05_01_himno.mp3',
+      '5_chifle': 'audios/05_02_chifle.mp3',
+      '5_corneta': 'audios/05_03_corneta.wav',
+      '5_himno_chifle': 'audios/05_04_himno_chifle.mp3',
+      '6': 'audios/06_descansen.wav',
+      '7': 'audios/07_envainen.wav',
+      '8_corneta': 'audios/08_01_oracion_corneta.wav',
+      '8_musica': 'audios/08_02_oracion_musica.mp3',
+      '8_voz': 'audios/08_03_oracion_voz.mp3'
+    };
+
+    function getAudioURL(punto) {
+      if (punto === 1) {
+        return modo === 'izado' ? audioURLs['1_izado'] : audioURLs['1_arriado'];
+      } else if (punto === 3) {
+        return modalidadPresenten === 'voz' ? audioURLs['3_voz'] : audioURLs['3_corneta'];
+      } else if (punto === 5) {
+        if (acompañamiento === 'himno') return audioURLs['5_himno'];
+        if (acompañamiento === 'chifle') return audioURLs['5_chifle'];
+        if (acompañamiento === 'corneta') return audioURLs['5_corneta'];
+        if (acompañamiento === 'himno_chifle') return audioURLs['5_himno_chifle'];
+      } else if (punto === 8) {
+        if (oracion === 'corneta') return audioURLs['8_corneta'];
+        if (oracion === 'musica') return audioURLs['8_musica'];
+        if (oracion === 'voz') return audioURLs['8_voz'];
+      }
+      return audioURLs[punto.toString()];
+    }
+
     function setModo(m) { modo = m; calcularPuntos(); updateUI(); }
     function setGuardia(g) { conGuardia = g; calcularPuntos(); updateUI(); }
     function setPresenten(p) { modalidadPresenten = p; updateUI(); }
-    function setAcompañamiento(a) { acompañamiento = a; actualizarVisibilidadPunto4(); calcularPuntos(); updateUI(); }
+    function setAcompañamiento(a) { acompañamiento = a; calcularPuntos(); updateUI(); }
     function setOracion(o) { oracion = o; updateUI(); }
     function stopAll() { document.getElementById('audioPlayer').pause(); document.getElementById('status').innerHTML = '<span>Detenido</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>'; }
 
@@ -156,7 +189,7 @@
         5: acompañamiento === 'himno' ? '5. 🎺 HIMNO' : acompañamiento === 'chifle' ? '5. 🚪 CHIFLE' : acompañamiento === 'corneta' ? '5. 📯 CORNETA' : '5. 🎺+🚪 HIMNO+CHIFLE',
         6: '6. 📯 DESCANSEN',
         7: '7. 📯 ENVAINEN',
-        8: oracion === 'corneta' ? '8. 📯 ORACIÓN' : oracion === 'musica' ? '8. 🎼 ORACIÓN' : oracion === 'leida' ? '8. 🗣️ ORACIÓN' : '8. ORACIÓN'
+        8: oracion === 'corneta' ? '8. 📯 ORACIÓN' : oracion === 'musica' ? '8. 🎼 ORACIÓN' : oracion === 'voz' ? '8. 🗣️ ORACIÓN' : '8. ORACIÓN'
       };
       return labels[p] || `Punto ${p}`;
     }
@@ -175,11 +208,20 @@
 
     function reproducirPunto(p) {
       const statusEl = document.getElementById('status');
-      statusEl.innerHTML = `<span>Ejecutando Punto ${p}...</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>`;
-      // Aquí iría la reproducción de audio
-      setTimeout(() => {
-        statusEl.innerHTML = `<span>Punto ${p} completado ✅</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>`;
-      }, 2000);
+      const audioURL = getAudioURL(p);
+      
+      statusEl.innerHTML = `<span>🔊 Reproduciendo Punto ${p}...</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>`;
+      
+      const audio = document.getElementById('audioPlayer');
+      audio.src = audioURL;
+      audio.play().catch(err => {
+        console.error('Error reproduciendo audio:', err);
+        statusEl.innerHTML = `<span>❌ Error al reproducir Punto ${p}</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>`;
+      });
+      
+      audio.onended = () => {
+        statusEl.innerHTML = `<span>✅ Punto ${p} completado</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>`;
+      };
     }
 
     function iniciarAuto() {
@@ -199,6 +241,7 @@
 
     function iniciarSecuenciaContinua(puntos) {
       let idx = 0;
+      const audio = document.getElementById('audioPlayer');
       
       function reproducirSiguiente() {
         if (idx >= puntos.length) {
@@ -208,8 +251,15 @@
         
         const p = puntos[idx];
         const statusEl = document.getElementById('status');
-        statusEl.innerHTML = `<span>Ejecutando Punto ${p}...</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>`;
-        reproducirPunto(p);
+        const audioURL = getAudioURL(p);
+        
+        statusEl.innerHTML = `<span>🔊 Punto ${p}...</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>`;
+        
+        audio.src = audioURL;
+        audio.play().catch(err => {
+          console.error('Error reproduciendo audio:', err);
+        });
+        
         idx++;
         
         // PAUSA DE 4 SEGUNDOS entre cada audio
@@ -217,13 +267,6 @@
       }
       
       reproducirSiguiente();
-    }
-
-    function actualizarVisibilidadPunto4() {
-      const tieneHimno = (acompañamiento === 'himno' || acompañamiento === 'himno_chifle');
-      if (!tieneHimno && cerPuntosActivosManualIAA.includes(4)) {
-        cerPuntosActivosManualIAA = cerPuntosActivosManualIAA.filter(p => p !== 4);
-      }
     }
 
     function updateUI() {
@@ -315,9 +358,9 @@
         btnOracionMusica.style.boxShadow = oracion === 'musica' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
       }
       if (btnOracionLeida) {
-        btnOracionLeida.textContent = oracion === 'leida' ? '🗣️ Leída 🟢' : '🗣️ Leída';
-        btnOracionLeida.style.background = oracion === 'leida' ? '#0c4a6e' : '#334155';
-        btnOracionLeida.style.boxShadow = oracion === 'leida' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnOracionLeida.textContent = oracion === 'voz' ? '🗣️ Leída 🟢' : '🗣️ Leída';
+        btnOracionLeida.style.background = oracion === 'voz' ? '#0c4a6e' : '#334155';
+        btnOracionLeida.style.boxShadow = oracion === 'voz' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
       }
       if (btnOracionNinguna) {
         btnOracionNinguna.textContent = oracion === 'ninguna' ? '❌ Ninguna 🟢' : '❌ Ninguna';
