@@ -2,154 +2,248 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#070d1e">
-  <title>Izado y Arriado en Acuartelamientos (IAA) - Motor de Ejecución</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Izado y Arriado en Tierra · Armada Española</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #070d1e; color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; }
-    header { background: #0f172a; border-bottom: 2px solid #1e3a8a; padding: 14px; text-align: center; }
-    header h1 { font-size: 18px; color: #38bdf8; }
-    header p { font-size: 12px; color: #94a3b8; }
-    main { max-width: 800px; margin: 0 auto; padding: 14px; }
-    .card { background: #0f172a; border: 1px solid #1e3a8a; border-radius: 10px; padding: 14px; margin-bottom: 14px; }
-    .card-title { font-size: 13px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin-bottom: 10px; }
-    .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-    .btn { background: #0c4a6e; border: 1.5px solid #0284c7; color: #e0f2fe; padding: 12px; border-radius: 8px; font-weight: 700; cursor: pointer; text-align: center; }
-    .btn:active { background: #0284c7; transform: scale(0.98); }
-    .status { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 12px; margin-bottom: 12px; font-size: 12px; color: #cbd5e1; border-left: 4px solid #ef4444; padding-left: 12px; background: rgba(239, 68, 68, 0.1); display: flex; justify-content: space-between; align-items: center; min-height: 40px; }
-    .status-btn { padding: 6px 12px; font-size: 11px; background: #ef4444; border: none; color: #fff; border-radius: 6px; cursor: pointer; font-weight: 700; }
-    .status-btn:active { background: #dc2626; }
-    .puntos-grid { display: grid; grid-template-columns: 1fr; gap: 8px; max-width: 520px; margin: 0 auto; padding: 0 16px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: #070d1e; color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; }
+    
+    header {
+      background: #0f172a; border-bottom: 2px solid #1e3a8a; padding: 12px 16px;
+      display: flex; justify-content: center; align-items: center; position: sticky; top: 0; z-index: 100;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; justify-content: center; }
+    .brand-title { font-size: 15px; font-weight: 800; color: #38bdf8; line-height: 1.15; }
+    .brand-sub { font-size: 10px; color: #94a3b8; font-weight: 700; text-transform: uppercase; }
+
+    main { flex: 1; padding: 14px; max-width: 800px; margin: 0 auto; width: 100%; }
+
+    .card {
+      background: #0f172a; border: 1px solid #1e3a8a; border-radius: 10px; padding: 14px; margin-bottom: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    .card-title {
+      font-size: 13px; font-weight: 800; color: #38bdf8; text-transform: uppercase; margin-bottom: 10px;
+      display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 6px;
+    }
+
+    .reloj-grande {
+      background: #1a2332; border: 2px solid #0284c7; border-radius: 8px; padding: 16px; text-align: center; margin-bottom: 12px;
+      font-size: 48px; font-weight: 800; color: #38bdf8; font-family: 'Courier New', monospace;
+    }
+    .reloj-info { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+
+    .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .action-btn {
+      background: #1e293b; border: 1.5px solid #334155; color: #f8fafc; padding: 12px 14px; border-radius: 8px;
+      font-size: 12.5px; font-weight: 800; cursor: pointer; text-align: center; transition: 0.15s; min-height: 48px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .action-btn:active { transform: scale(0.98); background: #0284c7; border-color: #38bdf8; }
+    .action-btn.primary { background: #0c4a6e; border-color: #0284c7; color: #e0f2fe; }
+
+    .status-bar {
+      background: #7f1d1d; border: 2px solid #ef4444; border-radius: 8px; padding: 12px 16px;
+      color: #fef2f2; font-size: 13px; font-weight: 800; margin-bottom: 14px; display: flex;
+      align-items: center; justify-content: space-between; box-shadow: 0 4px 15px rgba(239,68,68,0.4);
+      animation: pulseAlert 2s infinite;
+    }
+    @keyframes pulseAlert {
+      0% { border-color: #ef4444; }
+      50% { border-color: #f87171; }
+      100% { border-color: #ef4444; }
+    }
+    .status-bar-stop-btn {
+      background: #dc2626; border: 1.5px solid #fecaca; color: white; padding: 8px 16px;
+      border-radius: 6px; font-size: 13px; font-weight: 900; cursor: pointer; text-transform: uppercase;
+    }
+    .status-bar-stop-btn:active { background: #991b1b; transform: scale(0.96); }
+
+    .puntos-grid { display: grid; grid-template-columns: 1fr; gap: 8px; }
     .punto-btn { background: #1e293b; border: 1px solid #334155; color: #cbd5e1; padding: 16px 18px; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; text-align: left; min-height: 56px; display: flex; align-items: center; text-transform: uppercase; letter-spacing: 0.5px; }
     .punto-btn:active { background: #0284c7; border-color: #38bdf8; }
-    .reloj { background: #1a2332; border: 2px solid #0284c7; border-radius: 8px; padding: 12px; text-align: center; margin-bottom: 12px; font-size: 32px; font-weight: 800; color: #38bdf8; font-family: 'Courier New', monospace; }
-    .reloj-info { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+
     .input-group { display: flex; gap: 8px; margin-bottom: 12px; }
     .input-group input { flex: 1; padding: 10px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 700; }
+    .input-group select { flex: 1; padding: 10px; background: #1e293b; border: 1px solid #334155; border-radius: 6px; color: #cbd5e1; font-weight: 700; }
     .input-group button { padding: 10px 16px; background: #0284c7; border: 1px solid #0284c7; border-radius: 6px; color: #fff; font-weight: 700; cursor: pointer; }
-    .countdown { background: #1a2332; border: 2px solid #10b981; border-radius: 8px; padding: 16px; text-align: center; margin: 12px 0; }
-    .countdown-time { font-size: 48px; font-weight: 800; color: #10b981; font-family: 'Courier New', monospace; }
-    .countdown-label { font-size: 12px; color: #94a3b8; margin-top: 8px; }
   </style>
 </head>
 <body>
   <header>
-    <h1>🇪🇸 Izado y Arriado en Acuartelamientos</h1>
-    <p>Motor de Ejecución - Control Temporal</p>
+    <div class="brand">
+      <div>
+        <div class="brand-title">Izado y Arriado en Tierra</div>
+        <div class="brand-sub">Motor de Ejecución · Armada Española</div>
+      </div>
+    </div>
   </header>
 
   <main>
-    <!-- RELOJ DEL SISTEMA -->
+    <!-- RELOJ GRANDE DEL SISTEMA -->
     <div class="card">
-      <div class="reloj" id="reloj">--:--:--</div>
-      <div class="reloj-info">
-        <span id="husoInfo">UTC</span> | 
+      <div class="reloj-grande" id="reloj">--:--:--</div>
+      <div class="reloj-info" style="text-align:center;">
+        <span id="husoInfo">UTC+2 (Bravo · B)</span> | 
         <span id="fechaInfo">--/--/----</span>
       </div>
     </div>
 
-    <!-- POSICIÓN (para cálculo de Ocaso) -->
+    <!-- SITUACIÓN DEL BUQUE / UNIDAD -->
     <div class="card">
-      <div class="card-title">📍 Posición (Ocaso)</div>
-      <div class="btn-group">
-        <button id="btnPosGPS" class="btn" style="background:#0c4a6e;" onclick="setPosicion('gps')">🛰️ GPS 🟢</button>
-        <button id="btnPosManual" class="btn" onclick="setPosicion('manual')">📌 Manual</button>
+      <div class="card-title">📍 Situación de la Unidad</div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+        <button type="button" class="action-btn primary" id="btnSitTierra" onclick="setSituacion('tierra')" style="justify-content:center;">
+          🏝️ En Tierra / Acuartelamiento
+        </button>
+        <button type="button" class="action-btn" id="btnSitMar" onclick="setSituacion('mar')" style="justify-content:center;">
+          🌊 En la Mar
+        </button>
       </div>
-      <div id="seccionGPS" style="display:block; margin-bottom:12px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #0284c7;">
-        <div style="font-size:11px; color:#38bdf8; margin-bottom:8px;">🛰️ GPS Automático</div>
-        <button class="btn" style="width:100%;" onclick="obtenerGPS()">Obtener posición GPS actual</button>
-        <div style="font-size:11px; color:#94a3b8; margin-top:8px;" id="gpsStatus">Esperando GPS...</div>
-      </div>
-      <div id="seccionManual" style="display:none; margin-bottom:12px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #0284c7;">
-        <div style="font-size:11px; color:#38bdf8; margin-bottom:8px;">📌 Posición Manual</div>
-        <div class="input-group">
-          <input type="number" id="latInput" placeholder="Latitud (-90 a 90)" min="-90" max="90" step="0.001">
-          <input type="number" id="lonInput" placeholder="Longitud (-180 a 180)" min="-180" max="180" step="0.001">
-          <button onclick="guardarPosicion()">✓ Guardar</button>
-        </div>
-        <div style="font-size:11px; color:#94a3b8;" id="manualStatus">Ingrese latitud y longitud</div>
-      </div>
-      <div id="seccionListado" style="display:none; margin-bottom:12px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #0284c7;">
-        <div style="font-size:11px; color:#38bdf8; margin-bottom:8px;">📋 Localidades Predefinidas</div>
-        <select id="listadoLocalidades" style="width:100%; padding:10px; background:#1e293b; border:1px solid #334155; border-radius:6px; color:#cbd5e1; font-weight:700;" onchange="seleccionarLocalidad()">
-          <option value="">Seleccionar localidad...</option>
-          <option value="rota">Base Naval Rota (37.2521, -6.3675)</option>
-          <option value="ferrol">Base Naval Ferrol (43.4667, -8.2500)</option>
-          <option value="cartagena">Base Naval Cartagena (37.6167, -0.9833)</option>
-          <option value="madrid">Madrid (40.4168, -3.7038)</option>
+    </div>
+
+    <!-- HUSO HORARIO Y POSICIÓN -->
+    <div class="card">
+      <div class="card-title">⚙️ Configuración</div>
+      
+      <!-- HUSO HORARIO -->
+      <div style="margin-bottom:12px; padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #0284c7;">
+        <div style="font-size:11.5px; font-weight:800; color:#94a3b8; margin-bottom:8px;">🌐 HUSO HORARIO:</div>
+        <select id="selHuso" style="width:100%; padding:10px; background:#070d1e; border:1.5px solid #38bdf8; border-radius:6px; color:#fff; font-size:12px; font-weight:800;" onchange="actualizarHuso()">
+          <option value="auto" selected>📱 Hora del Dispositivo (Auto)</option>
+          <option value="0">UTC +0 (Zulu · Z · GMT)</option>
+          <option value="1">UTC +1 (Alfa · A · Invierno Península)</option>
+          <option value="2">UTC +2 (Bravo · B · Verano Península)</option>
+          <option value="3">UTC +3 (Charlie · C)</option>
+          <option value="4">UTC +4 (Delta · D)</option>
+          <option value="-1">UTC -1 (November · N)</option>
+          <option value="-4">UTC -4 (Quebec · Q)</option>
         </select>
+      </div>
+
+      <!-- POSICIÓN PARA OCASO -->
+      <div style="margin-bottom:12px; padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #0284c7;">
+        <div style="font-size:11.5px; font-weight:800; color:#94a3b8; margin-bottom:8px;">📍 POSICIÓN (Cálculo Ocaso):</div>
+        <div class="btn-grid" style="margin-bottom:10px;">
+          <button type="button" class="action-btn primary" id="btnPosBase" onclick="setPosicion('base')">⚓ Base Naval</button>
+          <button type="button" class="action-btn" id="btnPosGPS" onclick="setPosicion('gps')">🛰️ GPS</button>
+          <button type="button" class="action-btn" id="btnPosManual" onclick="setPosicion('manual')">✏️ Manual</button>
+          <button type="button" class="action-btn" id="btnPosManualHora" onclick="setPosicion('manualhora')">📝 Hora Manual</button>
+        </div>
+
+        <!-- BASE NAVAL -->
+        <div id="secBase" style="display:block; margin-bottom:10px;">
+          <select id="selBase" style="width:100%; padding:10px; background:#070d1e; border:1.5px solid #38bdf8; border-radius:6px; color:#fff; font-size:12px; font-weight:800;" onchange="calcularOcasoBase()">
+            <option value="rota">Base Naval de Rota (37.25°N, 6.36°W)</option>
+            <option value="ferrol">Arsenal de Ferrol (43.46°N, 8.25°W)</option>
+            <option value="cartagena">Arsenal de Cartagena (37.61°N, 0.98°W)</option>
+            <option value="sanfernando">Base Naval San Fernando (36.45°N, 6.19°W)</option>
+            <option value="laspalmas">Arsenal Las Palmas (28.00°N, 15.57°W)</option>
+            <option value="marin">ENM de Marín (42.39°N, 8.75°W)</option>
+            <option value="mahon">Estación Naval Mahón (39.87°N, 4.27°E)</option>
+            <option value="ceuta">Comandancia Naval Ceuta (35.89°N, 5.32°W)</option>
+          </select>
+        </div>
+
+        <!-- GPS -->
+        <div id="secGPS" style="display:none; margin-bottom:10px;">
+          <button class="action-btn primary" style="width:100%;" onclick="obtenerGPS()">Obtener posición GPS actual</button>
+          <div style="font-size:11px; color:#94a3b8; margin-top:6px;" id="gpsStatus">Esperando GPS...</div>
+        </div>
+
+        <!-- MANUAL (LAT/LON) -->
+        <div id="secManual" style="display:none; margin-bottom:10px;">
+          <div class="input-group">
+            <input type="number" id="latInput" placeholder="Latitud (-90 a 90)" min="-90" max="90" step="0.001">
+            <input type="number" id="lonInput" placeholder="Longitud (-180 a 180)" min="-180" max="180" step="0.001">
+            <button onclick="guardarPosicion()">Guardar</button>
+          </div>
+          <div style="font-size:11px; color:#94a3b8;" id="manualStatus">Ingrese coordenadas</div>
+        </div>
+
+        <!-- MANUAL HORA -->
+        <div id="secManualHora" style="display:none; margin-bottom:10px;">
+          <div class="input-group">
+            <input type="time" id="horaArriado" value="18:00">
+          </div>
+          <div style="font-size:11px; color:#94a3b8;">Hora del Arriado (manual)</div>
+        </div>
       </div>
     </div>
 
     <!-- HORAS DE EJECUCIÓN -->
     <div class="card">
-      <div class="card-title">⏰ Horas de Ejecución</div>
+      <div class="card-title">⏰ Programación Horaria</div>
       
-      <div style="margin-bottom:14px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #10b981;">
-        <div style="font-size:11px; font-weight:700; color:#38bdf8; margin-bottom:8px;">📌 Hora IZADO (Manual):</div>
+      <!-- HORA IZADO -->
+      <div style="margin-bottom:12px; padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #10b981;">
+        <div style="font-size:11.5px; font-weight:800; color:#cbd5e1; margin-bottom:8px;">📌 HORA IZADO:</div>
         <div class="input-group">
-          <input type="time" id="horaIzado" value="08:00" style="flex:1;">
+          <input type="time" id="horaIzado" value="08:00">
         </div>
       </div>
 
-      <div style="margin-bottom:14px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #f59e0b;">
-        <div style="font-size:11px; font-weight:700; color:#fcd34d; margin-bottom:8px;">🌅 Hora ARRIADO:</div>
-        <div class="btn-group">
-          <button id="btnArriadorManual" class="btn" style="background:#0c4a6e;" onclick="setArriado('manual')">⏱️ Manual 🟢</button>
-          <button id="btnArriadorOcaso" class="btn" onclick="setArriado('ocaso')">🌅 Ocaso</button>
+      <!-- HORA ARRIADO -->
+      <div style="margin-bottom:12px; padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #f59e0b;">
+        <div style="font-size:11.5px; font-weight:800; color:#fcd34d; margin-bottom:8px;">🌅 HORA ARRIADO:</div>
+        <div class="btn-grid" style="margin-bottom:10px;">
+          <button type="button" class="action-btn primary" id="btnArriadoManual" onclick="setArriado('manual')">⏱️ Manual</button>
+          <button type="button" class="action-btn" id="btnArriadoOcaso" onclick="setArriado('ocaso')">🌅 Ocaso</button>
         </div>
-        <div id="seccionArriadorManual" style="display:block; margin-top:12px;">
-          <div class="input-group">
-            <input type="time" id="horaArriado" value="18:00" style="flex:1;">
-          </div>
-        </div>
-        <div id="seccionArriadorOcaso" style="display:none; margin-top:12px; padding:10px; background:#0f172a; border-radius:6px;">
+        <div id="secArriadoOcaso" style="display:none; padding:10px; background:#070d1e; border-radius:6px;">
           <div style="font-size:11px; color:#94a3b8; margin-bottom:6px;">Hora del Ocaso (calculada):</div>
-          <div style="font-size:16px; color:#fcd34d; font-weight:800; font-family:'Courier New', monospace;" id="horaOcasoCalculada">--:--</div>
-          <button class="btn" style="width:100%; margin-top:8px; background:#f59e0b; border-color:#fcd34d;" onclick="calcularOcaso()">Calcular Ocaso</button>
+          <div style="font-size:20px; color:#fcd34d; font-weight:800; font-family:'Courier New', monospace;" id="horaOcaso">--:--</div>
+          <button class="action-btn primary" style="width:100%; margin-top:8px;" onclick="calcularOcaso()">Calcular Ocaso</button>
         </div>
       </div>
     </div>
 
     <!-- EJECUCIÓN -->
     <div class="card">
-      <div class="card-title">⚡ Modo de Ejecución</div>
-      <div class="btn-group">
-        <button id="btnEjecAuto" class="btn" style="background:#0c4a6e;" onclick="setEjecucion('automatica')">🤖 Automática 🟢</button>
-        <button id="btnEjecManual" class="btn" onclick="setEjecucion('manual')">👆 Manual</button>
+      <div class="card-title">⚡ Ejecución</div>
+      <div class="btn-grid">
+        <button type="button" class="action-btn primary" id="btnEjecAuto" onclick="setEjecucion('automatica')" style="justify-content:center;">
+          🤖 Automática
+        </button>
+        <button type="button" class="action-btn" id="btnEjecManual" onclick="setEjecucion('manual')" style="justify-content:center;">
+          👆 Manual
+        </button>
       </div>
 
-      <div id="seccionEjecAutomatica" style="display:block; margin-top:12px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #0284c7;">
-        <div style="font-size:11px; color:#38bdf8; margin-bottom:12px;">🤖 Ejecución Automática:</div>
-        <div class="countdown" id="countdownAuto" style="display:none;">
-          <div class="countdown-time" id="countdownTimeAuto">T-00:00</div>
-          <div class="countdown-label">Tiempo hasta Izado/Arriado</div>
-        </div>
-        <button class="btn" style="width:100%; background:#10b981; border-color:#34d399;" onclick="iniciarAutomatica()">▶️ Iniciar Ejecución Automática</button>
+      <!-- EJECUCIÓN AUTOMÁTICA -->
+      <div id="secEjecAuto" style="display:block; margin-top:12px; padding:10px; background:#0b152d; border-radius:8px;">
+        <div style="font-size:11px; color:#38bdf8; margin-bottom:12px; font-weight:700;">🤖 Ejecución Automática con Countdown:</div>
+        <button class="action-btn primary" style="width:100%; background:#10b981; border-color:#34d399;" onclick="iniciarAutomatica()">▶️ Iniciar Automática (Countdown)</button>
+        <div style="font-size:48px; color:#10b981; font-weight:800; font-family:'Courier New', monospace; text-align:center; margin-top:12px; display:none;" id="countdownDisplay">T-00:00</div>
       </div>
 
-      <div id="seccionEjecManual" style="display:none; margin-top:12px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #0284c7;">
-        <div style="font-size:11px; color:#38bdf8; margin-bottom:12px;">👆 Ejecución Manual - Sabiendo la hora:</div>
-        <button class="btn" style="width:100%; background:#f59e0b; border-color:#fcd34d; margin-bottom:8px;" onclick="reproducirManualT5()">🎙️ T-5 Señales a la Bandera</button>
-        <div style="font-size:11px; color:#94a3b8; margin-bottom:12px; text-align:center;">A partir de T, controle la secuencia:</div>
+      <!-- EJECUCIÓN MANUAL -->
+      <div id="secEjecManual" style="display:none; margin-top:12px; padding:10px; background:#0b152d; border-radius:8px;">
+        <div style="font-size:11px; color:#38bdf8; margin-bottom:12px; font-weight:700;">👆 Ejecución Manual - Sabiendo la hora:</div>
+        <button class="action-btn primary" style="width:100%; background:#f59e0b; border-color:#fcd34d; margin-bottom:8px;" onclick="reproducirManualT5()">🎙️ T-5 Señales a la Bandera</button>
       </div>
     </div>
 
-    <!-- EVENTO (Configuración original) -->
+    <!-- EVENTO -->
     <div class="card">
       <div class="card-title">⚙️ Evento</div>
-      
-      <div class="btn-group">
-        <button id="btnIzado" class="btn" style="background:#0c4a6e;" onclick="setModo('izado')">📌 Izado 🟢</button>
-        <button id="btnArriado" class="btn" onclick="setModo('arriado')">📖 Arriado</button>
+      <div class="btn-grid" style="margin-bottom:12px;">
+        <button type="button" class="action-btn primary" id="btnIzado" onclick="setModo('izado')" style="justify-content:center;">
+          📌 Izado
+        </button>
+        <button type="button" class="action-btn" id="btnArriado" onclick="setModo('arriado')" style="justify-content:center;">
+          📖 Arriado
+        </button>
       </div>
 
-      <div style="margin-top:12px; padding:10px; background:#1e293b; border-radius:8px; display:flex; justify-content:space-between; align-items:center; gap:12px;">
-        <span style="font-size:12px; font-weight:700; color:#cbd5e1; white-space:nowrap;">💂 Guardia Militar:</span>
-        <div style="display:flex; gap:8px; flex:1;">
-          <button id="btnGuardiaSi" class="btn" style="flex:1; background:#0c4a6e; padding:10px;" onclick="setGuardia(true)">Sí 🟢</button>
-          <button id="btnGuardiaNo" class="btn" style="flex:1; background:#334155; padding:10px;" onclick="setGuardia(false)">No</button>
+      <div style="padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #0284c7;">
+        <div style="font-size:11.5px; font-weight:800; color:#cbd5e1; margin-bottom:8px;">💂 Guardia Militar:</div>
+        <div class="btn-grid">
+          <button type="button" class="action-btn primary" id="btnGuardiaSi" onclick="setGuardia(true)">Sí</button>
+          <button type="button" class="action-btn" id="btnGuardiaNo" onclick="setGuardia(false)">No</button>
         </div>
       </div>
     </div>
@@ -158,35 +252,35 @@
     <div class="card">
       <div class="card-title">🎵 Opciones</div>
 
-      <div id="seccionPresenten" style="display:none; margin-bottom:14px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #0284c7;">
-        <div style="font-size:11px; font-weight:700; color:#38bdf8; margin-bottom:8px;">🎙️ Orden de Presenten Armas:</div>
-        <div class="btn-group">
-          <button id="btnPresentenVoz" class="btn" style="background:#0c4a6e;" onclick="setPresenten('voz')">🗣️ A la Voz 🟢</button>
-          <button id="btnPresentenCorneta" class="btn" onclick="setPresenten('corneta')">📯 A Corneta</button>
+      <div id="seccionPresenten" style="display:none; margin-bottom:14px; padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #0284c7;">
+        <div style="font-size:11.5px; font-weight:800; color:#38bdf8; margin-bottom:8px;">🎙️ Orden de Presenten Armas:</div>
+        <div class="btn-grid">
+          <button type="button" class="action-btn primary" id="btnPresentenVoz" onclick="setPresenten('voz')">🗣️ A la Voz</button>
+          <button type="button" class="action-btn" id="btnPresentenCorneta" onclick="setPresenten('corneta')">📯 A Corneta</button>
         </div>
       </div>
 
-      <div style="margin-bottom:14px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #10b981;">
-        <div style="font-size:11px; font-weight:700; color:#38bdf8; margin-bottom:8px;">🎵 Acompañamiento de la Bandera:</div>
-        <div class="btn-group">
-          <button id="btnAcompHimno" class="btn" style="background:#0c4a6e;" onclick="setAcompañamiento('himno')">🎺 Himno 🟢</button>
-          <button id="btnAcompChifle" class="btn" onclick="setAcompañamiento('chifle')">🚪 Chifle</button>
+      <div style="margin-bottom:14px; padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #10b981;">
+        <div style="font-size:11.5px; font-weight:800; color:#38bdf8; margin-bottom:8px;">🎵 Acompañamiento de la Bandera:</div>
+        <div class="btn-grid">
+          <button type="button" class="action-btn primary" id="btnAcompHimno" onclick="setAcompañamiento('himno')">🎺 Himno</button>
+          <button type="button" class="action-btn" id="btnAcompChifle" onclick="setAcompañamiento('chifle')">🚪 Chifle</button>
         </div>
-        <div class="btn-group" style="margin-top:6px;">
-          <button id="btnAcompCorneta" class="btn" onclick="setAcompañamiento('corneta')">📯 Corneta</button>
-          <button id="btnAcompHimnoChifle" class="btn" onclick="setAcompañamiento('himno_chifle')">🎺+🚪 Himno+Chifle</button>
+        <div class="btn-grid" style="margin-top:6px;">
+          <button type="button" class="action-btn" id="btnAcompCorneta" onclick="setAcompañamiento('corneta')">📯 Corneta</button>
+          <button type="button" class="action-btn" id="btnAcompHimnoChifle" onclick="setAcompañamiento('himno_chifle')">🎺+🚪 Himno+Chifle</button>
         </div>
       </div>
 
-      <div id="seccionOracion" style="display:none; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #f59e0b;">
-        <div style="font-size:11px; font-weight:700; color:#fcd34d; margin-bottom:8px;">✝️ Oración del Arriado:</div>
-        <div class="btn-group">
-          <button id="btnOracionCorneta" class="btn" style="background:#0c4a6e;" onclick="setOracion('corneta')">📯 Corneta 🟢</button>
-          <button id="btnOracionMusica" class="btn" onclick="setOracion('musica')">🎼 Música</button>
+      <div id="seccionOracion" style="display:none; padding:10px; background:#0b152d; border-radius:8px; border-left:3px solid #f59e0b;">
+        <div style="font-size:11.5px; font-weight:800; color:#fcd34d; margin-bottom:8px;">✝️ Oración del Arriado:</div>
+        <div class="btn-grid">
+          <button type="button" class="action-btn primary" id="btnOracionCorneta" onclick="setOracion('corneta')">📯 Corneta</button>
+          <button type="button" class="action-btn" id="btnOracionMusica" onclick="setOracion('musica')">🎼 Música</button>
         </div>
-        <div class="btn-group" style="margin-top:6px;">
-          <button id="btnOracionLeida" class="btn" onclick="setOracion('leida')">🗣️ Leída</button>
-          <button id="btnOracionNinguna" class="btn" onclick="setOracion('ninguna')">❌ Ninguna</button>
+        <div class="btn-grid" style="margin-top:6px;">
+          <button type="button" class="action-btn" id="btnOracionLeida" onclick="setOracion('leida')">🗣️ Leída</button>
+          <button type="button" class="action-btn" id="btnOracionNinguna" onclick="setOracion('ninguna')">❌ Ninguna</button>
         </div>
       </div>
     </div>
@@ -194,16 +288,16 @@
     <!-- MODO MANUAL -->
     <div class="card">
       <div class="card-title">⏸️ Modo Manual</div>
-      <div class="status" id="status">
-        <span>Esperando inicio...</span>
-        <button class="status-btn" onclick="stopAll()">⏹️ Detener</button>
+      <div class="status-bar">
+        <span id="status">Esperando inicio...</span>
+        <button class="status-bar-stop-btn" onclick="stopAll()">⏹️ Detener</button>
       </div>
       <div class="puntos-grid" id="puntosGrid"></div>
     </div>
 
     <!-- SECUENCIA CONTINUA -->
     <div class="card" style="text-align:center; padding:20px;">
-      <button class="btn" style="width:100%; padding:16px; font-size:16px; background:#0284c7; border-color:#38bdf8;" onclick="iniciarAuto()">▶️ INICIAR SECUENCIA CONTINUA</button>
+      <button class="action-btn primary" style="width:100%; padding:16px; font-size:16px; background:#0284c7; border-color:#38bdf8; justify-content:center;" onclick="iniciarAuto()">▶️ INICIAR SECUENCIA CONTINUA</button>
     </div>
   </main>
 
@@ -217,9 +311,10 @@
     let oracion = 'corneta';
     let cerPuntosActivosManualIAA = [];
     let secuenciaEnCurso = false;
-    let posicion = { tipo: 'gps', lat: null, lon: null };
+    let posicion = { tipo: 'base', lat: 37.2521, lon: -6.3675 };
     let arriado = 'manual';
     let ejecucion = 'automatica';
+    let huso = 'auto';
     let countdownInterval = null;
 
     const audioURLs = {
@@ -243,28 +338,76 @@
     // RELOJ DEL SISTEMA
     function actualizarReloj() {
       const ahora = new Date();
-      const horas = String(ahora.getHours()).padStart(2, '0');
-      const minutos = String(ahora.getMinutes()).padStart(2, '0');
-      const segundos = String(ahora.getSeconds()).padStart(2, '0');
-      document.getElementById('reloj').textContent = `${horas}:${minutos}:${segundos}`;
-      
-      const huso = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      let horas = ahora.getHours();
+      let minutos = ahora.getMinutes();
+      let segundos = ahora.getSeconds();
+
+      // Aplicar offset de huso si no es auto
+      if (huso !== 'auto') {
+        const offset = parseInt(huso);
+        const husoLocal = -(ahora.getTimezoneOffset() / 60);
+        const diff = offset - husoLocal;
+        horas = (horas + diff + 24) % 24;
+      }
+
+      const horasStr = String(horas).padStart(2, '0');
+      const minutosStr = String(minutos).padStart(2, '0');
+      const segundosStr = String(segundos).padStart(2, '0');
+      document.getElementById('reloj').textContent = `${horasStr}:${minutosStr}:${segundosStr}`;
+
       const fecha = ahora.toLocaleDateString('es-ES');
-      document.getElementById('husoInfo').textContent = huso;
       document.getElementById('fechaInfo').textContent = fecha;
     }
     setInterval(actualizarReloj, 1000);
     actualizarReloj();
 
+    function actualizarHuso() {
+      huso = document.getElementById('selHuso').value;
+      const husoLabels = {
+        'auto': 'Dispositivo (Auto)',
+        '0': 'UTC +0 (Zulu)',
+        '1': 'UTC +1 (Alfa)',
+        '2': 'UTC +2 (Bravo)',
+        '3': 'UTC +3 (Charlie)',
+        '4': 'UTC +4 (Delta)',
+        '-1': 'UTC -1 (November)',
+        '-4': 'UTC -4 (Quebec)'
+      };
+      document.getElementById('husoInfo').textContent = husoLabels[huso] || 'UTC';
+      actualizarReloj();
+    }
+
     // POSICIÓN
     function setPosicion(tipo) {
       posicion.tipo = tipo;
-      document.getElementById('seccionGPS').style.display = tipo === 'gps' ? 'block' : 'none';
-      document.getElementById('seccionManual').style.display = tipo === 'manual' ? 'block' : 'none';
-      document.getElementById('seccionListado').style.display = tipo === 'listado' ? 'block' : 'none';
-      document.getElementById('btnPosGPS').style.background = tipo === 'gps' ? '#0c4a6e' : '#334155';
-      document.getElementById('btnPosManual').style.background = tipo === 'manual' ? '#0c4a6e' : '#334155';
-      if (tipo === 'gps') obtenerGPS();
+      document.getElementById('secBase').style.display = tipo === 'base' ? 'block' : 'none';
+      document.getElementById('secGPS').style.display = tipo === 'gps' ? 'block' : 'none';
+      document.getElementById('secManual').style.display = tipo === 'manual' ? 'block' : 'none';
+      document.getElementById('secManualHora').style.display = tipo === 'manualhora' ? 'block' : 'none';
+
+      document.getElementById('btnPosBase').style.background = tipo === 'base' ? '#0c4a6e' : '#1e293b';
+      document.getElementById('btnPosGPS').style.background = tipo === 'gps' ? '#0c4a6e' : '#1e293b';
+      document.getElementById('btnPosManual').style.background = tipo === 'manual' ? '#0c4a6e' : '#1e293b';
+      document.getElementById('btnPosManualHora').style.background = tipo === 'manualhora' ? '#0c4a6e' : '#1e293b';
+    }
+
+    function calcularOcasoBase() {
+      const base = document.getElementById('selBase').value;
+      const bases = {
+        'rota': { lat: 37.2521, lon: -6.3675 },
+        'ferrol': { lat: 43.4667, lon: -8.2500 },
+        'cartagena': { lat: 37.6167, lon: -0.9833 },
+        'sanfernando': { lat: 36.4500, lon: -6.1900 },
+        'laspalmas': { lat: 28.0000, lon: -15.5700 },
+        'marin': { lat: 42.3900, lon: -8.7500 },
+        'mahon': { lat: 39.8700, lon: 4.2700 },
+        'ceuta': { lat: 35.8900, lon: -5.3200 }
+      };
+      if (bases[base]) {
+        posicion.lat = bases[base].lat;
+        posicion.lon = bases[base].lon;
+        calcularOcaso();
+      }
     }
 
     function obtenerGPS() {
@@ -274,9 +417,10 @@
             posicion.lat = pos.coords.latitude;
             posicion.lon = pos.coords.longitude;
             document.getElementById('gpsStatus').textContent = `📍 ${posicion.lat.toFixed(4)}°, ${posicion.lon.toFixed(4)}°`;
+            calcularOcaso();
           },
           (err) => {
-            document.getElementById('gpsStatus').textContent = '❌ Error obteniendo GPS: ' + err.message;
+            document.getElementById('gpsStatus').textContent = '❌ Error: ' + err.message;
           }
         );
       }
@@ -286,41 +430,20 @@
       posicion.lat = parseFloat(document.getElementById('latInput').value);
       posicion.lon = parseFloat(document.getElementById('lonInput').value);
       if (isNaN(posicion.lat) || isNaN(posicion.lon)) {
-        document.getElementById('manualStatus').textContent = '❌ Valores inválidos';
+        document.getElementById('manualStatus').textContent = '❌ Inválido';
         return;
       }
       document.getElementById('manualStatus').textContent = `✅ ${posicion.lat.toFixed(4)}°, ${posicion.lon.toFixed(4)}°`;
-    }
-
-    function seleccionarLocalidad() {
-      const sel = document.getElementById('listadoLocalidades').value;
-      const localidades = {
-        'rota': { lat: 37.2521, lon: -6.3675 },
-        'ferrol': { lat: 43.4667, lon: -8.2500 },
-        'cartagena': { lat: 37.6167, lon: -0.9833 },
-        'madrid': { lat: 40.4168, lon: -3.7038 }
-      };
-      if (localidades[sel]) {
-        posicion.lat = localidades[sel].lat;
-        posicion.lon = localidades[sel].lon;
-        calcularOcaso();
-      }
+      calcularOcaso();
     }
 
     // ALGORITMO DE OCASO (Ecuación de Cooper simplificada)
     function calcularOcaso() {
-      if (!posicion.lat || !posicion.lon) {
-        alert('Configure posición primero');
-        return;
-      }
+      if (!posicion.lat || !posicion.lon) return;
 
       const ahora = new Date();
       const dia = ahora.getDate();
       const mes = ahora.getMonth() + 1;
-      const año = ahora.getFullYear();
-      
-      // Aproximación simple para ocaso
-      // En realidad debería usar fórmula astronómica más precisa
       const diaDelAño = Math.floor((mes - 1) * 30.44 + dia);
       const latRad = posicion.lat * Math.PI / 180;
       const declinacion = 23.44 * Math.sin((284 + diaDelAño) * Math.PI / 180) * Math.PI / 180;
@@ -332,44 +455,42 @@
       const horas = Math.floor(minutos / 60);
       const mins = Math.floor(minutos % 60);
       
-      document.getElementById('horaOcasoCalculada').textContent = 
+      document.getElementById('horaOcaso').textContent = 
         `${String(horas).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
     }
 
     // ARRIADO
     function setArriado(tipo) {
       arriado = tipo;
-      document.getElementById('seccionArriadorManual').style.display = tipo === 'manual' ? 'block' : 'none';
-      document.getElementById('seccionArriadorOcaso').style.display = tipo === 'ocaso' ? 'block' : 'none';
-      document.getElementById('btnArriadorManual').style.background = tipo === 'manual' ? '#0c4a6e' : '#334155';
-      document.getElementById('btnArriadorOcaso').style.background = tipo === 'ocaso' ? '#0c4a6e' : '#334155';
+      document.getElementById('secArriadoOcaso').style.display = tipo === 'ocaso' ? 'block' : 'none';
+      document.getElementById('btnArriadoManual').style.background = tipo === 'manual' ? '#0c4a6e' : '#1e293b';
+      document.getElementById('btnArriadoOcaso').style.background = tipo === 'ocaso' ? '#0c4a6e' : '#1e293b';
     }
 
     // EJECUCIÓN
     function setEjecucion(tipo) {
       ejecucion = tipo;
-      document.getElementById('seccionEjecAutomatica').style.display = tipo === 'automatica' ? 'block' : 'none';
-      document.getElementById('seccionEjecManual').style.display = tipo === 'manual' ? 'block' : 'none';
-      document.getElementById('btnEjecAuto').style.background = tipo === 'automatica' ? '#0c4a6e' : '#334155';
-      document.getElementById('btnEjecManual').style.background = tipo === 'manual' ? '#0c4a6e' : '#334155';
+      document.getElementById('secEjecAuto').style.display = tipo === 'automatica' ? 'block' : 'none';
+      document.getElementById('secEjecManual').style.display = tipo === 'manual' ? 'block' : 'none';
+      document.getElementById('btnEjecAuto').style.background = tipo === 'automatica' ? '#0c4a6e' : '#1e293b';
+      document.getElementById('btnEjecManual').style.background = tipo === 'manual' ? '#0c4a6e' : '#1e293b';
     }
 
     function iniciarAutomatica() {
-      const horaIzado = document.getElementById('horaIzado').value;
-      if (!horaIzado) {
-        alert('Configure la hora de Izado/Arriado');
+      const horaStr = document.getElementById('horaIzado').value;
+      if (!horaStr) {
+        alert('Configure la hora');
         return;
       }
       
-      const [horas, minutos] = horaIzado.split(':');
+      const [horas, minutos] = horaStr.split(':');
       const tiempo = new Date();
       tiempo.setHours(parseInt(horas), parseInt(minutos), 0, 0);
       
-      // Iniciar countdown
-      actualizarCountdown(tiempo);
-      document.getElementById('countdownAuto').style.display = 'block';
+      document.getElementById('countdownDisplay').style.display = 'block';
       clearInterval(countdownInterval);
       countdownInterval = setInterval(() => actualizarCountdown(tiempo), 1000);
+      actualizarCountdown(tiempo);
     }
 
     function actualizarCountdown(tiempoObjetivo) {
@@ -377,22 +498,21 @@
       const diff = tiempoObjetivo - ahora;
       
       if (diff <= 0) {
-        document.getElementById('countdownTimeAuto').textContent = 'T ¡AHORA!';
+        document.getElementById('countdownDisplay').textContent = 'T ¡AHORA!';
         clearInterval(countdownInterval);
-        // Lanzar Punto 1 (Señales) y luego secuencia
         reproducirPunto(1);
-        setTimeout(() => iniciarAuto(), 6000); // Esperar a que termine Punto 1
+        setTimeout(() => iniciarAuto(), 6000);
         return;
       }
       
       const mins = Math.floor(diff / 60000);
       const segs = Math.floor((diff % 60000) / 1000);
-      document.getElementById('countdownTimeAuto').textContent = 
+      document.getElementById('countdownDisplay').textContent = 
         `T-${String(mins).padStart(2, '0')}:${String(segs).padStart(2, '0')}`;
     }
 
     function reproducirManualT5() {
-      reproducirPunto(1); // Punto 1 = Señales a la Bandera
+      reproducirPunto(1);
     }
 
     function getAudioURL(punto) {
@@ -413,6 +533,11 @@
       return audioURLs[punto.toString()];
     }
 
+    function setSituacion(sit) {
+      document.getElementById('btnSitTierra').style.background = sit === 'tierra' ? '#0c4a6e' : '#1e293b';
+      document.getElementById('btnSitMar').style.background = sit === 'mar' ? '#0c4a6e' : '#1e293b';
+    }
+
     function setModo(m) { modo = m; calcularPuntos(); updateUI(); }
     function setGuardia(g) { conGuardia = g; calcularPuntos(); updateUI(); }
     function setPresenten(p) { modalidadPresenten = p; updateUI(); }
@@ -422,7 +547,7 @@
       secuenciaEnCurso = false;
       clearInterval(countdownInterval);
       document.getElementById('audioPlayer').pause(); 
-      document.getElementById('status').innerHTML = '<span>Detenido</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>'; 
+      document.getElementById('status').textContent = 'Detenido';
     }
 
     function calcularPuntos() {
@@ -479,29 +604,29 @@
       const statusEl = document.getElementById('status');
       const audioURL = getAudioURL(p);
       
-      statusEl.innerHTML = `<span>🔊 Reproduciendo Punto ${p}...</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>`;
+      statusEl.textContent = `🔊 Reproduciendo Punto ${p}...`;
       
       const audio = document.getElementById('audioPlayer');
       audio.src = audioURL;
       audio.play().catch(err => {
-        console.error('Error reproduciendo audio:', err);
-        statusEl.innerHTML = `<span>❌ Error al reproducir Punto ${p}</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>`;
+        console.error('Error:', err);
+        statusEl.textContent = `❌ Error Punto ${p}`;
       });
       
       audio.onended = () => {
-        statusEl.innerHTML = `<span>✅ Punto ${p} completado</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>`;
+        statusEl.textContent = `✅ Punto ${p} completado`;
       };
     }
 
     function iniciarAuto() {
       if (!cerPuntosActivosManualIAA || cerPuntosActivosManualIAA.length === 0) {
-        document.getElementById('status').innerHTML = '<span>❌ No hay puntos activos</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>';
+        document.getElementById('status').textContent = '❌ No hay puntos activos';
         return;
       }
       
       let puntosSecuencia = cerPuntosActivosManualIAA.filter(p => p !== 1);
       if (puntosSecuencia.length === 0) {
-        document.getElementById('status').innerHTML = '<span>❌ Solo está Punto 1</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>';
+        document.getElementById('status').textContent = '❌ Solo está Punto 1';
         return;
       }
       
@@ -515,7 +640,7 @@
       
       function reproducirSiguiente() {
         if (!secuenciaEnCurso || idx >= puntos.length) {
-          document.getElementById('status').innerHTML = '<span>✅ Secuencia completada</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>';
+          document.getElementById('status').textContent = '✅ Secuencia completada';
           secuenciaEnCurso = false;
           return;
         }
@@ -524,11 +649,10 @@
         const statusEl = document.getElementById('status');
         const audioURL = getAudioURL(p);
         
-        statusEl.innerHTML = `<span>🔊 Punto ${p}...</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>`;
+        statusEl.textContent = `🔊 Punto ${p}...`;
         
         audio.src = audioURL;
         audio.play().catch(err => {
-          console.error('Error reproduciendo audio:', err);
           if (secuenciaEnCurso) {
             idx++;
             setTimeout(reproducirSiguiente, 1500);
@@ -556,40 +680,28 @@
       const btnIzado = document.getElementById('btnIzado');
       const btnArriado = document.getElementById('btnArriado');
       if (btnIzado) {
-        btnIzado.textContent = modo === 'izado' ? '📌 Izado 🟢' : '📌 Izado';
-        btnIzado.style.background = modo === 'izado' ? '#0c4a6e' : '#334155';
-        btnIzado.style.boxShadow = modo === 'izado' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnIzado.style.background = modo === 'izado' ? '#0c4a6e' : '#1e293b';
       }
       if (btnArriado) {
-        btnArriado.textContent = modo === 'arriado' ? '📖 Arriado 🟢' : '📖 Arriado';
-        btnArriado.style.background = modo === 'arriado' ? '#0c4a6e' : '#334155';
-        btnArriado.style.boxShadow = modo === 'arriado' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnArriado.style.background = modo === 'arriado' ? '#0c4a6e' : '#1e293b';
       }
 
       const btnGuardiaSi = document.getElementById('btnGuardiaSi');
       const btnGuardiaNo = document.getElementById('btnGuardiaNo');
       if (btnGuardiaSi) {
-        btnGuardiaSi.textContent = conGuardia ? 'Sí 🟢' : 'Sí';
-        btnGuardiaSi.style.background = conGuardia ? '#0c4a6e' : '#334155';
-        btnGuardiaSi.style.boxShadow = conGuardia ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnGuardiaSi.style.background = conGuardia ? '#0c4a6e' : '#1e293b';
       }
       if (btnGuardiaNo) {
-        btnGuardiaNo.textContent = !conGuardia ? 'No 🟢' : 'No';
-        btnGuardiaNo.style.background = !conGuardia ? '#0c4a6e' : '#334155';
-        btnGuardiaNo.style.boxShadow = !conGuardia ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnGuardiaNo.style.background = !conGuardia ? '#0c4a6e' : '#1e293b';
       }
 
       const btnPresentenVoz = document.getElementById('btnPresentenVoz');
       const btnPresentenCorneta = document.getElementById('btnPresentenCorneta');
       if (btnPresentenVoz) {
-        btnPresentenVoz.textContent = modalidadPresenten === 'voz' ? '🗣️ A la Voz 🟢' : '🗣️ A la Voz';
-        btnPresentenVoz.style.background = modalidadPresenten === 'voz' ? '#0c4a6e' : '#334155';
-        btnPresentenVoz.style.boxShadow = modalidadPresenten === 'voz' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnPresentenVoz.style.background = modalidadPresenten === 'voz' ? '#0c4a6e' : '#1e293b';
       }
       if (btnPresentenCorneta) {
-        btnPresentenCorneta.textContent = modalidadPresenten === 'corneta' ? '📯 A Corneta 🟢' : '📯 A Corneta';
-        btnPresentenCorneta.style.background = modalidadPresenten === 'corneta' ? '#0c4a6e' : '#334155';
-        btnPresentenCorneta.style.boxShadow = modalidadPresenten === 'corneta' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnPresentenCorneta.style.background = modalidadPresenten === 'corneta' ? '#0c4a6e' : '#1e293b';
       }
 
       const btnAcompHimno = document.getElementById('btnAcompHimno');
@@ -597,24 +709,16 @@
       const btnAcompCorneta = document.getElementById('btnAcompCorneta');
       const btnAcompHimnoChifle = document.getElementById('btnAcompHimnoChifle');
       if (btnAcompHimno) {
-        btnAcompHimno.textContent = acompañamiento === 'himno' ? '🎺 Himno 🟢' : '🎺 Himno';
-        btnAcompHimno.style.background = acompañamiento === 'himno' ? '#0c4a6e' : '#334155';
-        btnAcompHimno.style.boxShadow = acompañamiento === 'himno' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnAcompHimno.style.background = acompañamiento === 'himno' ? '#0c4a6e' : '#1e293b';
       }
       if (btnAcompChifle) {
-        btnAcompChifle.textContent = acompañamiento === 'chifle' ? '🚪 Chifle 🟢' : '🚪 Chifle';
-        btnAcompChifle.style.background = acompañamiento === 'chifle' ? '#0c4a6e' : '#334155';
-        btnAcompChifle.style.boxShadow = acompañamiento === 'chifle' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnAcompChifle.style.background = acompañamiento === 'chifle' ? '#0c4a6e' : '#1e293b';
       }
       if (btnAcompCorneta) {
-        btnAcompCorneta.textContent = acompañamiento === 'corneta' ? '📯 Corneta 🟢' : '📯 Corneta';
-        btnAcompCorneta.style.background = acompañamiento === 'corneta' ? '#0c4a6e' : '#334155';
-        btnAcompCorneta.style.boxShadow = acompañamiento === 'corneta' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnAcompCorneta.style.background = acompañamiento === 'corneta' ? '#0c4a6e' : '#1e293b';
       }
       if (btnAcompHimnoChifle) {
-        btnAcompHimnoChifle.textContent = acompañamiento === 'himno_chifle' ? '🎺+🚪 Himno + Chifle 🟢' : '🎺+🚪 Himno + Chifle';
-        btnAcompHimnoChifle.style.background = acompañamiento === 'himno_chifle' ? '#0c4a6e' : '#334155';
-        btnAcompHimnoChifle.style.boxShadow = acompañamiento === 'himno_chifle' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnAcompHimnoChifle.style.background = acompañamiento === 'himno_chifle' ? '#0c4a6e' : '#1e293b';
       }
 
       const seccionOracion = document.getElementById('seccionOracion');
@@ -626,24 +730,16 @@
       const btnOracionLeida = document.getElementById('btnOracionLeida');
       const btnOracionNinguna = document.getElementById('btnOracionNinguna');
       if (btnOracionCorneta) {
-        btnOracionCorneta.textContent = oracion === 'corneta' ? '📯 Corneta 🟢' : '📯 Corneta';
-        btnOracionCorneta.style.background = oracion === 'corneta' ? '#0c4a6e' : '#334155';
-        btnOracionCorneta.style.boxShadow = oracion === 'corneta' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnOracionCorneta.style.background = oracion === 'corneta' ? '#0c4a6e' : '#1e293b';
       }
       if (btnOracionMusica) {
-        btnOracionMusica.textContent = oracion === 'musica' ? '🎼 Música 🟢' : '🎼 Música';
-        btnOracionMusica.style.background = oracion === 'musica' ? '#0c4a6e' : '#334155';
-        btnOracionMusica.style.boxShadow = oracion === 'musica' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnOracionMusica.style.background = oracion === 'musica' ? '#0c4a6e' : '#1e293b';
       }
       if (btnOracionLeida) {
-        btnOracionLeida.textContent = oracion === 'voz' ? '🗣️ Leída 🟢' : '🗣️ Leída';
-        btnOracionLeida.style.background = oracion === 'voz' ? '#0c4a6e' : '#334155';
-        btnOracionLeida.style.boxShadow = oracion === 'voz' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnOracionLeida.style.background = oracion === 'voz' ? '#0c4a6e' : '#1e293b';
       }
       if (btnOracionNinguna) {
-        btnOracionNinguna.textContent = oracion === 'ninguna' ? '❌ Ninguna 🟢' : '❌ Ninguna';
-        btnOracionNinguna.style.background = oracion === 'ninguna' ? '#0c4a6e' : '#334155';
-        btnOracionNinguna.style.boxShadow = oracion === 'ninguna' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnOracionNinguna.style.background = oracion === 'ninguna' ? '#0c4a6e' : '#1e293b';
       }
     }
 
@@ -651,9 +747,10 @@
     cerPuntosActivosManualIAA = [];
     calcularPuntos();
     updateUI();
-    setPosicion('gps');
+    setPosicion('base');
     setArriado('manual');
     setEjecucion('automatica');
+    setSituacion('tierra');
   </script>
 </body>
 </html>
