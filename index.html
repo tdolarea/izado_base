@@ -342,16 +342,39 @@ function updateUI() {
       updateUI();
     }
 
+function obtenerLabelPunto(p) {
+      const labels = {
+        1: '1. 🗣️ SEÑALES',
+        2: '2. 📯 FIRMES',
+        3: modalidadPresenten === 'voz' ? '3. 🗣️ PRESENTEN VOZ' : '3. 📯 PRESENTEN CORNETA',
+        4: '4. 📯 EJECUTIVA',
+        5: acompañamiento === 'himno' ? '5. 🎺 HIMNO' : acompañamiento === 'chifle' ? '5. 🚪 CHIFLE' : acompañamiento === 'corneta' ? '5. 📯 CORNETA' : '5. 🎺+🚪 HIMNO+CHIFLE',
+        6: '6. 📯 DESCANSEN',
+        7: '7. 📯 ENVAINEN',
+        8: oracion === 'corneta' ? '8. 📯 ORACIÓN' : oracion === 'musica' ? '8. 🎼 ORACIÓN' : oracion === 'leida' ? '8. 🗣️ ORACIÓN' : '8. ORACIÓN'
+      };
+      return labels[p] || `Punto ${p}`;
+    }
+
     function renderPuntos() {
       const grid = document.getElementById('puntosGrid');
+      if (!grid) {
+        console.error('Grid not found');
+        return;
+      }
       grid.innerHTML = '';
-      for (let p of puntosActivos) {
+      
+      // Usar cerPuntosActivosManualIAA (variable global con puntos activos)
+      for (let p of cerPuntosActivosManualIAA) {
         const btn = document.createElement('button');
         btn.className = 'punto-btn';
-        btn.textContent = puntosLabel[p];
+        btn.style.width = '100%';
+        btn.textContent = obtenerLabelPunto(p);
         btn.onclick = () => reproducirPunto(p);
         grid.appendChild(btn);
       }
+      
+      console.log('Puntos renderizados:', cerPuntosActivosManualIAA);
     }
 
     
