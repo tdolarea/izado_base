@@ -33,35 +33,59 @@
   </header>
 
   <main>
-    <!-- SELECTOR MODALIDAD -->
+    <!-- SELECTOR MODALIDAD Y GUARDIA -->
     <div class="card">
       <div class="card-title">⚙️ Configuración</div>
+      
+      <!-- Izado / Arriado - Botones permanentes resaltados -->
       <div class="btn-group">
-        <button class="btn" onclick="setModo('izado')">📌 Izado</button>
-        <button class="btn" onclick="setModo('arriado')">📖 Arriado</button>
+        <button id="btnIzado" class="btn" style="background:#0c4a6e;" onclick="setModo('izado')">📌 Izado</button>
+        <button id="btnArriado" class="btn" onclick="setModo('arriado')">📖 Arriado</button>
       </div>
-      <div class="btn-group">
-        <button class="btn" onclick="setGuardia(true)">💂 Con Guardia</button>
-        <button class="btn" onclick="setGuardia(false)">🚶 Sin Guardia</button>
+
+      <!-- Guardia Militar - Toggle Si/No -->
+      <div style="margin-top:12px; padding:10px; background:#1e293b; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:12px; font-weight:700; color:#cbd5e1;">💂 Guardia Militar:</span>
+        <div style="display:flex; gap:6px;">
+          <button id="btnGuardiaSi" class="btn" style="flex:1; background:#0c4a6e; padding:8px;" onclick="setGuardia(true)">Sí</button>
+          <button id="btnGuardiaNo" class="btn" style="flex:1; background:#334155; padding:8px;" onclick="setGuardia(false)">No</button>
+        </div>
       </div>
     </div>
 
-    <!-- SELECTOR OPCIONES -->
+    <!-- OPCIONES ESPECÍFICAS POR SECCIÓN -->
     <div class="card">
-      <div class="card-title">🎵 Opciones</div>
-      <div class="btn-group" id="opcionesPresenten" style="display:none;">
-        <button class="btn" onclick="setPresenten('voz')">🗣️ Voz</button>
-        <button class="btn" onclick="setPresenten('corneta')">📯 Corneta</button>
+      <div class="card-title">🎵 Opciones del Protocolo</div>
+
+      <!-- SECCIÓN 1: Orden de Presenten (Solo si hay Guardia) -->
+      <div id="seccionPresenten" style="display:none; margin-bottom:14px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #0284c7;">
+        <div style="font-size:11px; font-weight:700; color:#38bdf8; margin-bottom:8px;">🎙️ Orden de Presenten Armas:</div>
+        <div class="btn-group">
+          <button id="btnPresentenVoz" class="btn" style="background:#0c4a6e;" onclick="setPresenten('voz')">🗣️ A la Voz</button>
+          <button id="btnPresentenCorneta" class="btn" onclick="setPresenten('corneta')">📯 A Corneta</button>
+        </div>
       </div>
-      <div class="btn-group">
-        <button class="btn" onclick="setAcompañamiento('himno')">🎺 Himno</button>
-        <button class="btn" onclick="setAcompañamiento('chifle')">🚪 Chifle</button>
+
+      <!-- SECCIÓN 2: Tipo de Música/Acompañamiento -->
+      <div style="margin-bottom:14px; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #10b981;">
+        <div style="font-size:11px; font-weight:700; color:#6ee7b7; margin-bottom:8px;">🎵 Acompañamiento de la Bandera:</div>
+        <div class="btn-group">
+          <button id="btnAcompHimno" class="btn" style="background:#0c4a6e;" onclick="setAcompañamiento('himno')">🎺 Himno</button>
+          <button id="btnAcompChifle" class="btn" onclick="setAcompañamiento('chifle')">🚪 Chifle</button>
+        </div>
       </div>
-      <div class="btn-group" id="opcionesOracion" style="display:none;">
-        <button class="btn" onclick="setOracion('corneta')">📯 Corneta</button>
-        <button class="btn" onclick="setOracion('musica')">🎼 Música</button>
-        <button class="btn" onclick="setOracion('leida')">🗣️ Leída</button>
-        <button class="btn" onclick="setOracion('ninguna')">❌ Ninguna</button>
+
+      <!-- SECCIÓN 3: Tipo de Oración (Solo en Arriado) -->
+      <div id="seccionOracion" style="display:none; padding:10px; background:#1e293b; border-radius:8px; border-left:3px solid #f59e0b;">
+        <div style="font-size:11px; font-weight:700; color:#fcd34d; margin-bottom:8px;">✝️ Oración del Arriado:</div>
+        <div class="btn-group">
+          <button id="btnOracionCorneta" class="btn" style="background:#0c4a6e;" onclick="setOracion('corneta')">📯 Corneta</button>
+          <button id="btnOracionMusica" class="btn" onclick="setOracion('musica')">🎼 Música</button>
+        </div>
+        <div class="btn-group" style="margin-top:6px;">
+          <button id="btnOracionLeida" class="btn" onclick="setOracion('leida')">🗣️ Leída</button>
+          <button id="btnOracionNinguna" class="btn" onclick="setOracion('ninguna')">❌ Ninguna</button>
+        </div>
       </div>
     </div>
 
@@ -125,6 +149,36 @@
       8: '8. ✝️ Oración',
     };
 
+
+    function updateUI() {
+      // Resaltar Izado/Arriado
+      document.getElementById('btnIzado').style.background = modo === 'izado' ? '#0c4a6e' : '#334155';
+      document.getElementById('btnArriado').style.background = modo === 'arriado' ? '#0c4a6e' : '#334155';
+
+      // Resaltar Guardia Militar
+      document.getElementById('btnGuardiaSi').style.background = conGuardia ? '#0c4a6e' : '#334155';
+      document.getElementById('btnGuardiaNo').style.background = !conGuardia ? '#0c4a6e' : '#334155';
+
+      // Mostrar/ocultar secciones
+      document.getElementById('seccionPresenten').style.display = (conGuardia && puntosActivos.includes(3)) ? 'block' : 'none';
+      document.getElementById('seccionOracion').style.display = puntosActivos.includes(8) ? 'block' : 'none';
+
+      // Resaltar opciones Presenten
+      document.getElementById('btnPresentenVoz').style.background = modalidadPresenten === 'voz' ? '#0c4a6e' : '#334155';
+      document.getElementById('btnPresentenCorneta').style.background = modalidadPresenten === 'corneta' ? '#0c4a6e' : '#334155';
+
+      // Resaltar opciones Acompañamiento
+      document.getElementById('btnAcompHimno').style.background = acompañamiento === 'himno' ? '#0c4a6e' : '#334155';
+      document.getElementById('btnAcompChifle').style.background = acompañamiento === 'chifle' ? '#0c4a6e' : '#334155';
+
+      // Resaltar opciones Oración
+      document.getElementById('btnOracionCorneta').style.background = oracion === 'corneta' ? '#0c4a6e' : '#334155';
+      document.getElementById('btnOracionMusica').style.background = oracion === 'musica' ? '#0c4a6e' : '#334155';
+      document.getElementById('btnOracionLeida').style.background = oracion === 'leida' ? '#0c4a6e' : '#334155';
+      document.getElementById('btnOracionNinguna').style.background = oracion === 'ninguna' ? '#0c4a6e' : '#334155';
+    }
+
+
     function calcularPuntos() {
       puntosActivos = [];
       if (modo === 'izado') {
@@ -135,6 +189,7 @@
         else puntosActivos = [1, 4, 5, 8];
       }
       renderPuntos();
+      updateUI();
       document.getElementById('opcionesPresenten').style.display = conGuardia && puntosActivos.includes(3) ? 'grid' : 'none';
       document.getElementById('opcionesOracion').style.display = puntosActivos.includes(8) ? 'grid' : 'none';
     }
@@ -197,16 +252,17 @@
       siguiente();
     }
 
-    function setModo(m) { modo = m; calcularPuntos(); }
-    function setGuardia(g) { conGuardia = g; calcularPuntos(); }
-    function setPresenten(p) { modalidadPresenten = p; }
-    function setAcompañamiento(a) { acompañamiento = a; }
-    function setOracion(o) { oracion = o; }
+    function setModo(m) { modo = m; calcularPuntos(); updateUI(); }
+    function setGuardia(g) { conGuardia = g; calcularPuntos(); updateUI(); }
+    function setPresenten(p) { modalidadPresenten = p; updateUI(); }
+    function setAcompañamiento(a) { acompañamiento = a; updateUI(); }
+    function setOracion(o) { oracion = o; updateUI(); }
     function resetManual() { document.getElementById('status').textContent = 'Reiniciado'; }
     function stopAll() { document.getElementById('audioPlayer').pause(); document.getElementById('status').textContent = 'Detenido'; }
 
     // Inicializar
     calcularPuntos();
+    updateUI();
   </script>
 </body>
 </html>
