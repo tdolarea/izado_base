@@ -453,28 +453,26 @@ function obtenerLabelPunto(p) {
     }
 
     function iniciarAuto() {
-      if (puntosActivos.length === 0) {
+      // Usar cerPuntosActivosManualIAA (variable correcta con botones activos en pantalla)
+      if (!cerPuntosActivosManualIAA || cerPuntosActivosManualIAA.length === 0) {
         document.getElementById('status').textContent = '❌ No hay puntos activos';
         return;
       }
 
-      // Punto 1 (Señales a la Bandera) se ejecuta a T-5 (separado)
-      let puntosSecuencia = puntosActivos.filter(p => p !== 1);
+      // Filtrar: ejecutar TODOS EXCEPTO Punto 1 (Señales a la Bandera)
+      let puntosSecuencia = cerPuntosActivosManualIAA.filter(p => p !== 1);
       
-      if (puntosActivos.includes(1)) {
-        document.getElementById('status').textContent = '⏳ Ejecutando Punto 1 (T-5): Señales a la Bandera...';
-        reproducirPunto(1);
-        // Esperar a que termine Punto 1 + pausa de 2 segundos
-        setTimeout(() => {
-          iniciarSecuenciaContinua(puntosSecuencia);
-        }, 8000); // Aproximadamente 5-6 segundos de audio + 2 segundos de pausa
-      } else {
-        iniciarSecuenciaContinua(puntosSecuencia);
+      if (puntosSecuencia.length === 0) {
+        document.getElementById('status').textContent = '❌ Solo está activo Punto 1 (Señales)';
+        return;
       }
+
+      // Iniciar secuencia continua con todos los botones EXCEPTO Punto 1
+      iniciarSecuenciaContinua(puntosSecuencia);
     }
 
     function iniciarSecuenciaContinua(puntos) {
-      if (puntos.length === 0) {
+      if (!puntos || puntos.length === 0) {
         document.getElementById('status').textContent = '✅ Secuencia completada';
         return;
       }
@@ -483,15 +481,16 @@ function obtenerLabelPunto(p) {
       
       function reproducirSiguiente() {
         if (idx >= puntos.length) {
-          document.getElementById('status').textContent = '✅ Secuencia continua completada';
+          document.getElementById('status').textContent = '✅ Secuencia completada';
           return;
         }
 
         const puntoCurrent = puntos[idx];
+        document.getElementById('status').textContent = `Ejecutando Punto ${puntoCurrent}...`;
         reproducirPunto(puntoCurrent);
         idx++;
 
-        // Obtener duración aproximada del audio para esperar correctamente
+        // Obtener duración aproximada del audio
         let duracion = obtenerDuracionAproximada(puntoCurrent);
         
         // Siguiente punto: duración audio + pausa de 1.5 segundos
@@ -500,6 +499,7 @@ function obtenerLabelPunto(p) {
 
       reproducirSiguiente();
     }
+
 
     function obtenerDuracionAproximada(punto) {
       // Duraciones aproximadas de cada punto en ms
