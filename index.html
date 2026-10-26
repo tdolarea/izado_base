@@ -583,7 +583,82 @@
         </button>
       </div>
     </div>
-  </main>
+  
+        <!-- PANEL DE CONTROL MANUAL PASO A PASO (IAA) -->
+        <div id="panelModoManualIAA" class="card" style="margin-bottom:14px; background:#0b1329; border:2px solid #10b981; border-radius:12px; padding:14px; display:none;">
+          <div style="font-size:13px; font-weight:800; color:#10b981; text-transform:uppercase; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
+            <span>⏸️ MODO MANUAL - Paso a Paso</span>
+            <span id="badgeCountPuntosIAA" style="background:#10b981; color:#0b1329; font-size:11px; padding:4px 10px; border-radius:10px; font-weight:700;">0/8</span>
+          </div>
+
+          <!-- Status Actual -->
+          <div id="statusModoManualIAA" style="background:#0f172a; border:1px solid #10b981; border-radius:8px; padding:10px; margin-bottom:12px; font-size:11.5px; color:#cbd5e1; text-align:center; min-height:40px; display:flex; align-items:center; justify-content:center;">
+            Esperando inicio del protocolo...
+          </div>
+
+          <!-- Botones de Puntos (Dinámicos según modalidad) -->
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:12px;">
+            <!-- Punto 1: Voz de Señales (Siempre activo) -->
+            <button type="button" id="btnManualPunto1IAA" onclick="ejecutarPuntoManualIAA(1)" class="action-btn" style="padding:10px; font-size:11px; text-align:center; background:#0f172a; border:1px solid #334155; color:#cbd5e1;">
+              <div style="font-weight:700; color:#38bdf8;">1️⃣</div>
+              <div style="font-size:10px; margin-top:2px;">Voz Señales</div>
+            </button>
+
+            <!-- Punto 2: Firmes (Solo Con Guardia) -->
+            <button type="button" id="btnManualPunto2IAA" onclick="ejecutarPuntoManualIAA(2)" class="action-btn" style="padding:10px; font-size:11px; text-align:center; background:#0f172a; border:1px solid #334155; color:#cbd5e1; display:none;">
+              <div style="font-weight:700; color:#38bdf8;">2️⃣</div>
+              <div style="font-size:10px; margin-top:2px;">Firmes</div>
+            </button>
+
+            <!-- Punto 3: Presenten (Solo Con Guardia) -->
+            <button type="button" id="btnManualPunto3IAA" onclick="ejecutarPuntoManualIAA(3)" class="action-btn" style="padding:10px; font-size:11px; text-align:center; background:#0f172a; border:1px solid #334155; color:#cbd5e1; display:none;">
+              <div style="font-weight:700; color:#38bdf8;">3️⃣</div>
+              <div style="font-size:10px; margin-top:2px;">Presenten</div>
+            </button>
+
+            <!-- Punto 4: Ejecutiva Himno (Siempre activo) -->
+            <button type="button" id="btnManualPunto4IAA" onclick="ejecutarPuntoManualIAA(4)" class="action-btn" style="padding:10px; font-size:11px; text-align:center; background:#0f172a; border:1px solid #334155; color:#cbd5e1;">
+              <div style="font-weight:700; color:#38bdf8;">4️⃣</div>
+              <div style="font-size:10px; margin-top:2px;">Ejecutiva</div>
+            </button>
+
+            <!-- Punto 5: Himno/Chifle/Corneta (Siempre activo) -->
+            <button type="button" id="btnManualPunto5IAA" onclick="ejecutarPuntoManualIAA(5)" class="action-btn" style="padding:10px; font-size:11px; text-align:center; background:#0f172a; border:1px solid #334155; color:#cbd5e1;">
+              <div style="font-weight:700; color:#38bdf8;">5️⃣</div>
+              <div style="font-size:10px; margin-top:2px;">Himno/Chifle</div>
+            </button>
+
+            <!-- Punto 6: Descansen (Solo Con Guardia) -->
+            <button type="button" id="btnManualPunto6IAA" onclick="ejecutarPuntoManualIAA(6)" class="action-btn" style="padding:10px; font-size:11px; text-align:center; background:#0f172a; border:1px solid #334155; color:#cbd5e1; display:none;">
+              <div style="font-weight:700; color:#38bdf8;">6️⃣</div>
+              <div style="font-size:10px; margin-top:2px;">Descansen</div>
+            </button>
+
+            <!-- Punto 7: Envainen (Solo Con Guardia) -->
+            <button type="button" id="btnManualPunto7IAA" onclick="ejecutarPuntoManualIAA(7)" class="action-btn" style="padding:10px; font-size:11px; text-align:center; background:#0f172a; border:1px solid #334155; color:#cbd5e1; display:none;">
+              <div style="font-weight:700; color:#38bdf8;">7️⃣</div>
+              <div style="font-size:10px; margin-top:2px;">Envainen</div>
+            </button>
+
+            <!-- Punto 8: Oración (Solo Arriado) -->
+            <button type="button" id="btnManualPunto8IAA" onclick="ejecutarPuntoManualIAA(8)" class="action-btn" style="padding:10px; font-size:11px; text-align:center; background:#0f172a; border:1px solid #334155; color:#cbd5e1; display:none;">
+              <div style="font-weight:700; color:#38bdf8;">8️⃣</div>
+              <div style="font-size:10px; margin-top:2px;">Oración</div>
+            </button>
+          </div>
+
+          <!-- Controles globales -->
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+            <button type="button" onclick="resetModoManualIAA()" class="action-btn" style="background:#475569; border:1px solid #64748b; padding:8px;">
+              🔄 Reiniciar
+            </button>
+            <button type="button" onclick="cerrarModoManualIAA()" class="action-btn" style="background:#dc2626; border:1px solid #991b1b; padding:8px; color:#fca5a5;">
+              ✕ Cerrar Manual
+            </button>
+          </div>
+        </div>
+
+      </main>
 
   <footer style="text-align:center; padding:18px 12px; font-size:11px; color:#64748b; line-height:1.8;">
     <div>Honores de Ordenanza · Ceremonial Militar</div>
@@ -592,6 +667,183 @@
 </footer>
 
   <script>
+
+    // ============================================
+    // MODO MANUAL PASO A PASO (IAA)
+    // ============================================
+    
+    const EventAudioMap = {
+        'event01_01': 'VOZELENASENALES.mp3',
+        'event01_02': 'senalesalabandera.mp3',
+        'event02': 'cornetafirmes.wav',
+        'event03_01': 'voz_presenten_armas.mp3',
+        'event03_02': 'cornetapresentenarmas.wav',
+        'event04': 'cornetaordenhimnonacional.wav',
+        'event05_01': 'Espania_largo.mp3',
+        'event05_02': 'chiflecompletobanderalargo.mp3',
+        'event05_03': 'CornetaHimnonacionalacorneta-reducido.wav',
+        'event06': 'Cornetadescanso.wav',
+        'event07': 'CUBRIR.mp3',
+        'event08_01': 'CornetaToquedeOracion.wav',
+        'event08_02': 'OraciondelaNoche.mp3',
+        'event08_03': 'VOZORACION.mp3',
+    };
+
+    let cerPuntoActualManualIAA = 0; // Punto actual en modo manual
+    let cerAudioManualActualIAA = null;
+    let cerPuntosActivosManualIAA = []; // Lista de puntos activos según modalidad
+
+    // Determinar qué puntos están activos según modalidad
+    function calcularPuntosActivosIAA() {
+        cerPuntosActivosManualIAA = [];
+        
+        if (cerModoIAA === 'izado') {
+            if (cerTieneGuardiaIAA) {
+                // IZADO Con Guardia: 1, 2, 3, 4, 5, 6, 7
+                cerPuntosActivosManualIAA = [1, 2, 3, 4, 5, 6, 7];
+            } else {
+                // IZADO Sin Guardia: 1, 4, 5
+                cerPuntosActivosManualIAA = [1, 4, 5];
+            }
+        } else {
+            // ARRIADO
+            if (cerTieneGuardiaIAA) {
+                // ARRIADO Con Guardia: 1, 2, 3, 4, 5, 6, 7, 8
+                cerPuntosActivosManualIAA = [1, 2, 3, 4, 5, 6, 7, 8];
+            } else {
+                // ARRIADO Sin Guardia: 1, 4, 5, 8
+                cerPuntosActivosManualIAA = [1, 4, 5, 8];
+            }
+        }
+    }
+
+    // Ejecutar un punto específico en modo manual
+    function ejecutarPuntoManualIAA(numeroPunto) {
+        if (!cerPuntosActivosManualIAA.includes(numeroPunto)) {
+            actualizarStatusIAA(`❌ Punto ${numeroPunto} no está activo en esta modalidad.`);
+            return;
+        }
+
+        let audioFile = null;
+        let label = '';
+        let audioElement = null;
+
+        if (numeroPunto === 1) {
+            if (cerModoIAA === 'izado') {
+                audioFile = EventAudioMap['event01_01'];
+                label = '1. 🗣️ Voz de Señales a la Bandera (T-5)';
+            } else {
+                audioFile = EventAudioMap['event01_02'];
+                label = '1. 🗣️ Voz de Señales a la Bandera (Arriado)';
+            }
+        } else if (numeroPunto === 2) {
+            audioFile = EventAudioMap['event02'];
+            label = '2. 📯 Toque de Corneta: Firmes';
+        } else if (numeroPunto === 3) {
+            // Depende del selector Presenten (voz o corneta)
+            if (cerModalidadPresentenIAA === 'voz') {
+                audioFile = EventAudioMap['event03_01'];
+                label = '3. 🗣️ Orden de Presenten Armas (Voz)';
+            } else {
+                audioFile = EventAudioMap['event03_02'];
+                label = '3. 📯 Orden de Presenten Armas (Corneta)';
+            }
+        } else if (numeroPunto === 4) {
+            audioFile = EventAudioMap['event04'];
+            label = '4. 📯 Corneta Ejecutiva Himno';
+        } else if (numeroPunto === 5) {
+            // Depende del selector Acompañamiento (himno/chifle/corneta)
+            if (cerAcompBanderaIAA === 'himno') {
+                audioFile = EventAudioMap['event05_01'];
+                label = '5. 🎺 Himno Nacional';
+            } else if (cerAcompBanderaIAA === 'himno_chifle') {
+                // Reproducir himno + chifle simultáneos
+                audioFile = EventAudioMap['event05_01']; // Himno primero
+                label = '5. 🎺+🚪 Himno y Chifle Simultáneos';
+            } else if (cerAcompBanderaIAA === 'corneta') {
+                audioFile = EventAudioMap['event05_03'];
+                label = '5. 📯 Corneta Sola';
+            } else {
+                audioFile = EventAudioMap['event05_02'];
+                label = '5. 🚪 Chifle Solo';
+            }
+        } else if (numeroPunto === 6) {
+            audioFile = EventAudioMap['event06'];
+            label = '6. 📯 Descansen Armas';
+        } else if (numeroPunto === 7) {
+            audioFile = EventAudioMap['event07'];
+            label = '7. 📯 Envainen Armas';
+        } else if (numeroPunto === 8) {
+            // Depende del selector Oración
+            if (cerModalidadOracionIAA === 'corneta') {
+                audioFile = EventAudioMap['event08_01'];
+                label = '8. 📯 Oración (Corneta)';
+            } else if (cerModalidadOracionIAA === 'musica') {
+                audioFile = EventAudioMap['event08_02'];
+                label = '8. 🎼 Oración (Música)';
+            } else if (cerModalidadOracionIAA === 'leida') {
+                audioFile = EventAudioMap['event08_03'];
+                label = '8. 🗣️ Oración (Leída)';
+            } else {
+                actualizarStatusIAA('8. ✝️ Sin Oración.');
+                return;
+            }
+        }
+
+        if (!audioFile) {
+            actualizarStatusIAA(`❌ No hay archivo de audio para el punto ${numeroPunto}.`);
+            return;
+        }
+
+        // Reproducir audio
+        reproducirAudioManualIAA(audioFile, label);
+    }
+
+    function reproducirAudioManualIAA(audioFile, label) {
+        actualizarStatusIAA(label + ' (reproduciendo...)');
+        
+        const audioUrl = `audio/${audioFile}`;
+        const audio = new Audio(audioUrl);
+        
+        audio.onended = function() {
+            actualizarStatusIAA(label + ' ✅ Completado. Presione el siguiente punto.');
+        };
+
+        audio.onerror = function(e) {
+            actualizarStatusIAA(`❌ Error al reproducir: ${audioFile}`);
+            console.error('Audio error:', e);
+        };
+
+        try {
+            audio.play().catch(err => {
+                actualizarStatusIAA(`❌ No se pudo reproducir el audio: ${err.message}`);
+            });
+        } catch (err) {
+            actualizarStatusIAA(`❌ Error: ${err.message}`);
+        }
+    }
+
+    function mostrarPanelesManualIAA() {
+        calcularPuntosActivosIAA();
+        
+        // Mostrar/ocultar botones según puntos activos
+        const btnsPuntos = {
+            1: document.getElementById('btnManualPunto1IAA'),
+            2: document.getElementById('btnManualPunto2IAA'),
+            3: document.getElementById('btnManualPunto3IAA'),
+            4: document.getElementById('btnManualPunto4IAA'),
+            5: document.getElementById('btnManualPunto5IAA'),
+            6: document.getElementById('btnManualPunto6IAA'),
+            7: document.getElementById('btnManualPunto7IAA'),
+            8: document.getElementById('btnManualPunto8IAA'),
+        };
+
+        for (let i = 1; i <= 8; i++) {
+            if (btnsPuntos[i]) {
+                btnsPuntos[i].style.display = cerPuntosActivosManualIAA.includes(i) ? 'block' : 'none';
+            }
+        }
+    }
     // ==========================================
     // CATÁLOGO DE HIMNOS DE CORTESÍA INTERNACIONALES
     // ==========================================
@@ -1551,6 +1803,223 @@
         console.error('Error init ceremonial:', e);
       }
     });
-</script>
+
+    // ============================================
+    // LÓGICA MANUAL PASO A PASO (IAA)
+    // ============================================
+    
+    const EventAudioMap = {
+        'event01_01': 'VOZELENASENALES.mp3',
+        'event01_02': 'senalesalabandera.mp3',
+        'event02': 'cornetafirmes.wav',
+        'event03_01': 'voz_presenten_armas.mp3',
+        'event03_02': 'cornetapresentenarmas.wav',
+        'event04': 'cornetaordenhimnonacional.wav',
+        'event05_01': 'Espania_largo.mp3',
+        'event05_02': 'chiflecompletobanderalargo.mp3',
+        'event05_03': 'CornetaHimnonacionalacorneta-reducido.wav',
+        'event06': 'Cornetadescanso.wav',
+        'event07': 'CUBRIR.mp3',
+        'event08_01': 'CornetaToquedeOracion.wav',
+        'event08_02': 'OraciondelaNoche.mp3',
+        'event08_03': 'VOZORACION.mp3',
+    };
+
+    let cerPuntosActivosManualIAA = [];
+
+    // Calcular qué puntos están activos según modalidad (ESPECIFICACIÓN EXACTA DEL COMANDANTE)
+    function calcularPuntosActivosIAA() {
+        cerPuntosActivosManualIAA = [];
+        
+        if (cerModoIAA === 'izado') {
+            if (cerTieneGuardiaIAA) {
+                // IZADO "Con Guardia Militar": 1, 2, 3, 4, 5, 6, 7
+                cerPuntosActivosManualIAA = [1, 2, 3, 4, 5, 6, 7];
+            } else {
+                // IZADO "Sin Guardia Militar": 1, 4, 5
+                cerPuntosActivosManualIAA = [1, 4, 5];
+            }
+        } else {
+            // ARRIADO
+            if (cerTieneGuardiaIAA) {
+                // ARRIADO "Con Guardia Militar": 1, 2, 3, 4, 5, 6, 7, 8
+                cerPuntosActivosManualIAA = [1, 2, 3, 4, 5, 6, 7, 8];
+            } else {
+                // ARRIADO "Sin Guardia Militar": 1, 4, 5, 8
+                cerPuntosActivosManualIAA = [1, 4, 5, 8];
+            }
+        }
+        
+        actualizarVistaBotonesManualIAA();
+    }
+
+    // Mostrar/ocultar botones según puntos activos
+    function actualizarVistaBotonesManualIAA() {
+        const btnsPuntos = {
+            1: document.getElementById('btnManualPunto1IAA'),
+            2: document.getElementById('btnManualPunto2IAA'),
+            3: document.getElementById('btnManualPunto3IAA'),
+            4: document.getElementById('btnManualPunto4IAA'),
+            5: document.getElementById('btnManualPunto5IAA'),
+            6: document.getElementById('btnManualPunto6IAA'),
+            7: document.getElementById('btnManualPunto7IAA'),
+            8: document.getElementById('btnManualPunto8IAA'),
+        };
+
+        for (let i = 1; i <= 8; i++) {
+            if (btnsPuntos[i]) {
+                btnsPuntos[i].style.display = cerPuntosActivosManualIAA.includes(i) ? 'block' : 'none';
+                if (cerPuntosActivosManualIAA.includes(i)) {
+                    btnsPuntos[i].style.opacity = '1';
+                    btnsPuntos[i].style.pointerEvents = 'auto';
+                }
+            }
+        }
+
+        // Actualizar badge de contador
+        const badge = document.getElementById('badgeCountPuntosIAA');
+        if (badge) {
+            badge.textContent = cerPuntosActivosManualIAA.length + '/8';
+        }
+    }
+
+    // Ejecutar punto específico en modo manual
+    function ejecutarPuntoManualIAA(numeroPunto) {
+        if (!cerPuntosActivosManualIAA.includes(numeroPunto)) {
+            actualizarStatusIAA(`❌ Punto ${numeroPunto} no está activo en esta modalidad.`);
+            return;
+        }
+
+        let audioFile = null;
+        let label = '';
+
+        if (numeroPunto === 1) {
+            if (cerModoIAA === 'izado') {
+                audioFile = EventAudioMap['event01_01'];
+                label = '1. 🗣️ Voz de Señales a la Bandera (T-5)';
+            } else {
+                audioFile = EventAudioMap['event01_02'];
+                label = '1. 🗣️ Voz de Señales a la Bandera (Arriado)';
+            }
+        } else if (numeroPunto === 2) {
+            audioFile = EventAudioMap['event02'];
+            label = '2. 📯 Toque de Corneta: Firmes';
+        } else if (numeroPunto === 3) {
+            if (cerModalidadPresentenIAA === 'voz') {
+                audioFile = EventAudioMap['event03_01'];
+                label = '3. 🗣️ Orden de Presenten Armas (Voz)';
+            } else {
+                audioFile = EventAudioMap['event03_02'];
+                label = '3. 📯 Orden de Presenten Armas (Corneta)';
+            }
+        } else if (numeroPunto === 4) {
+            audioFile = EventAudioMap['event04'];
+            label = '4. 📯 Corneta Ejecutiva Himno';
+        } else if (numeroPunto === 5) {
+            if (cerAcompBanderaIAA === 'himno') {
+                audioFile = EventAudioMap['event05_01'];
+                label = '5. 🎺 Himno Nacional';
+            } else if (cerAcompBanderaIAA === 'himno_chifle') {
+                audioFile = EventAudioMap['event05_01'];
+                label = '5. 🎺+🚪 Himno y Chifle';
+            } else if (cerAcompBanderaIAA === 'corneta') {
+                audioFile = EventAudioMap['event05_03'];
+                label = '5. 📯 Corneta Sola';
+            } else {
+                audioFile = EventAudioMap['event05_02'];
+                label = '5. 🚪 Chifle Solo';
+            }
+        } else if (numeroPunto === 6) {
+            audioFile = EventAudioMap['event06'];
+            label = '6. 📯 Descansen Armas';
+        } else if (numeroPunto === 7) {
+            audioFile = EventAudioMap['event07'];
+            label = '7. 📯 Envainen Armas';
+        } else if (numeroPunto === 8) {
+            if (cerModalidadOracionIAA === 'corneta') {
+                audioFile = EventAudioMap['event08_01'];
+                label = '8. 📯 Oración (Corneta)';
+            } else if (cerModalidadOracionIAA === 'musica') {
+                audioFile = EventAudioMap['event08_02'];
+                label = '8. 🎼 Oración (Música)';
+            } else if (cerModalidadOracionIAA === 'leida') {
+                audioFile = EventAudioMap['event08_03'];
+                label = '8. 🗣️ Oración (Leída)';
+            } else {
+                actualizarStatusIAA('8. ✝️ Oración desactivada.');
+                return;
+            }
+        }
+
+        if (!audioFile) {
+            actualizarStatusIAA(`❌ Punto ${numeroPunto}: archivo no mapeado.`);
+            return;
+        }
+
+        reproducirAudioManualIAA(audioFile, label, numeroPunto);
+    }
+
+    function reproducirAudioManualIAA(audioFile, label, numeroPunto) {
+        const statusEl = document.getElementById('statusModoManualIAA');
+        if (statusEl) {
+            statusEl.textContent = label + ' (reproduciendo...)';
+        }
+        
+        const audioUrl = `audio/${audioFile}`;
+        const audio = new Audio(audioUrl);
+        
+        audio.onended = function() {
+            if (statusEl) {
+                statusEl.textContent = label + ' ✅ Completado. Siguiente paso →';
+            }
+        };
+
+        audio.onerror = function(err) {
+            if (statusEl) {
+                statusEl.textContent = `❌ Error: ${audioFile} no encontrado.`;
+            }
+            console.error('Audio error:', err, audioFile);
+        };
+
+        try {
+            audio.play().catch(err => {
+                if (statusEl) {
+                    statusEl.textContent = `❌ Reproducción bloqueada: ${err.message}`;
+                }
+            });
+        } catch (err) {
+            if (statusEl) {
+                statusEl.textContent = `❌ Error: ${err.message}`;
+            }
+        }
+    }
+
+    // Abrir/cerrar panel manual
+    function abrirModoManualIAA() {
+        calcularPuntosActivosIAA();
+        const panelManual = document.getElementById('panelModoManualIAA');
+        if (panelManual) {
+            panelManual.style.display = 'block';
+            actualizarStatusIAA(`✅ MODO MANUAL activado. Puntos activos: ${cerPuntosActivosManualIAA.join(', ')}`);
+        }
+    }
+
+    function cerrarModoManualIAA() {
+        const panelManual = document.getElementById('panelModoManualIAA');
+        if (panelManual) {
+            panelManual.style.display = 'none';
+        }
+        actualizarStatusIAA('Modo manual cerrado.');
+    }
+
+    function resetModoManualIAA() {
+        const statusEl = document.getElementById('statusModoManualIAA');
+        if (statusEl) {
+            statusEl.textContent = 'Esperando inicio del protocolo...';
+        }
+        actualizarStatusIAA('Modo manual reiniciado.');
+    }
+
+    </script>
 </body>
 </html>
