@@ -141,6 +141,7 @@
       'event08_01': 'audio/CornetaToquedeOracion.wav',
       'event08_02': 'audio/OraciondelaNoche.mp3',
       'event08_03': 'audio/VOZORACION.mp3',
+      'event05_04': 'audio/event05_04.mp3',
     };
 
     const puntosLabel = {
@@ -283,11 +284,7 @@
         if (acompañamiento === 'himno') audio = audioMap['event05_01'];
         else if (acompañamiento === 'chifle') audio = audioMap['event05_02'];
         else if (acompañamiento === 'corneta') audio = audioMap['event05_03'];
-        else if (acompañamiento === 'himno_chifle') {
-          // Reproducir Himno y Chifle EN PARALELO
-          reproducirDualAudio(audioMap['event05_01'], audioMap['event05_02']);
-          return;
-        }
+        else if (acompañamiento === 'himno_chifle') audio = audioMap['event05_04']; // Himno + Chifle mezclados
       }
       else if (p === 6) audio = audioMap['event06'];
       else if (p === 7) audio = audioMap['event07'];
