@@ -125,6 +125,15 @@
     let acompañamiento = 'himno';
     let oracion = 'corneta';
     let puntosActivos = [];
+    
+    // Variable para controlar qué opciones están seleccionadas
+    let seleccionesActuales = {
+      modo: 'izado',
+      guardia: true,
+      presenten: 'corneta',
+      acompañamiento: 'himno',
+      oracion: 'corneta'
+    };
 
     const audioMap = {
       'event01_01': 'audio/VOZELENASENALES.mp3',
@@ -156,55 +165,111 @@
     };
 
 
-    function updateUI() {
-      // Resaltar Izado/Arriado
-      document.getElementById('btnIzado').style.background = modo === 'izado' ? '#0c4a6e' : '#334155';
-      document.getElementById('btnArriado').style.background = modo === 'arriado' ? '#0c4a6e' : '#334155';
-
-      // Resaltar Guardia Militar
-      document.getElementById('btnGuardiaSi').style.background = conGuardia ? '#0c4a6e' : '#334155';
-      document.getElementById('btnGuardiaNo').style.background = !conGuardia ? '#0c4a6e' : '#334155';
-
-      // Mostrar/ocultar secciones
-      document.getElementById('seccionPresenten').style.display = (conGuardia && puntosActivos.includes(3)) ? 'block' : 'none';
-      document.getElementById('seccionOracion').style.display = puntosActivos.includes(8) ? 'block' : 'none';
-
-      // Resaltar opciones Presenten
-      document.getElementById('btnPresentenVoz').style.background = modalidadPresenten === 'voz' ? '#0c4a6e' : '#334155';
-      document.getElementById('btnPresentenCorneta').style.background = modalidadPresenten === 'corneta' ? '#0c4a6e' : '#334155';
-
-      // Resaltar opciones Acompañamiento con indicador visual
-      const acompBtns = {
-        'btnAcompHimno': acompañamiento === 'himno',
-        'btnAcompChifle': acompañamiento === 'chifle',
-        'btnAcompCorneta': acompañamiento === 'corneta',
-        'btnAcompHimnoChifle': acompañamiento === 'himno_chifle'
-      };
-      for (let [btnId, isSelected] of Object.entries(acompBtns)) {
-        const btn = document.getElementById(btnId);
-        if (btn) {
-          btn.style.background = isSelected ? '#0c4a6e' : '#334155';
-          btn.style.boxShadow = isSelected ? '0 0 12px rgba(16, 185, 129, 0.6), inset 0 0 8px rgba(16, 185, 129, 0.4)' : 'none';
-          // Añadir indicador visual (punto verde)
-          if (isSelected && !btn.querySelector('.indicator-dot')) {
-            const dot = document.createElement('span');
-            dot.className = 'indicator-dot';
-            dot.textContent = '●';
-            dot.style.cssText = 'color:#10b981; font-size:8px; margin-left:4px;';
-            btn.appendChild(dot);
-          } else if (!isSelected && btn.querySelector('.indicator-dot')) {
-            btn.querySelector('.indicator-dot').remove();
-          }
-        }
+function updateUI() {
+      // ===== GRUPO 1: Izado / Arriado =====
+      const btnIzado = document.getElementById('btnIzado');
+      const btnArriado = document.getElementById('btnArriado');
+      if (btnIzado) {
+        btnIzado.style.background = modo === 'izado' ? '#0c4a6e' : '#334155';
+        btnIzado.style.boxShadow = modo === 'izado' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnIzado.textContent = modo === 'izado' ? '📌 Izado ●' : '📌 Izado';
+      }
+      if (btnArriado) {
+        btnArriado.style.background = modo === 'arriado' ? '#0c4a6e' : '#334155';
+        btnArriado.style.boxShadow = modo === 'arriado' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnArriado.textContent = modo === 'arriado' ? '📖 Arriado ●' : '📖 Arriado';
       }
 
-      // Resaltar opciones Oración
-      document.getElementById('btnOracionCorneta').style.background = oracion === 'corneta' ? '#0c4a6e' : '#334155';
-      document.getElementById('btnOracionMusica').style.background = oracion === 'musica' ? '#0c4a6e' : '#334155';
-      document.getElementById('btnOracionLeida').style.background = oracion === 'leida' ? '#0c4a6e' : '#334155';
-      document.getElementById('btnOracionNinguna').style.background = oracion === 'ninguna' ? '#0c4a6e' : '#334155';
-    }
+      // ===== GRUPO 2: Guardia Si/No =====
+      const btnGuardiaSi = document.getElementById('btnGuardiaSi');
+      const btnGuardiaNo = document.getElementById('btnGuardiaNo');
+      if (btnGuardiaSi) {
+        btnGuardiaSi.style.background = conGuardia ? '#0c4a6e' : '#334155';
+        btnGuardiaSi.style.boxShadow = conGuardia ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnGuardiaSi.textContent = conGuardia ? 'Sí ●' : 'Sí';
+      }
+      if (btnGuardiaNo) {
+        btnGuardiaNo.style.background = !conGuardia ? '#0c4a6e' : '#334155';
+        btnGuardiaNo.style.boxShadow = !conGuardia ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnGuardiaNo.textContent = !conGuardia ? 'No ●' : 'No';
+      }
 
+      // ===== GRUPO 3: Orden de Presenten (solo si hay Guardia y Punto 3 activo) =====
+      const seccionPresenten = document.getElementById('seccionPresenten');
+      if (seccionPresenten) {
+        seccionPresenten.style.display = (conGuardia && cerPuntosActivosManualIAA.includes(3)) ? 'block' : 'none';
+      }
+      const btnPresentenVoz = document.getElementById('btnPresentenVoz');
+      const btnPresentenCorneta = document.getElementById('btnPresentenCorneta');
+      if (btnPresentenVoz) {
+        btnPresentenVoz.style.background = modalidadPresenten === 'voz' ? '#0c4a6e' : '#334155';
+        btnPresentenVoz.style.boxShadow = modalidadPresenten === 'voz' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnPresentenVoz.textContent = modalidadPresenten === 'voz' ? '🗣️ A la Voz ●' : '🗣️ A la Voz';
+      }
+      if (btnPresentenCorneta) {
+        btnPresentenCorneta.style.background = modalidadPresenten === 'corneta' ? '#0c4a6e' : '#334155';
+        btnPresentenCorneta.style.boxShadow = modalidadPresenten === 'corneta' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnPresentenCorneta.textContent = modalidadPresenten === 'corneta' ? '📯 A Corneta ●' : '📯 A Corneta';
+      }
+
+      // ===== GRUPO 4: Acompañamiento de la Bandera =====
+      const btnAcompHimno = document.getElementById('btnAcompHimno');
+      const btnAcompChifle = document.getElementById('btnAcompChifle');
+      const btnAcompCorneta = document.getElementById('btnAcompCorneta');
+      const btnAcompHimnoChifle = document.getElementById('btnAcompHimnoChifle');
+      
+      if (btnAcompHimno) {
+        btnAcompHimno.style.background = acompañamiento === 'himno' ? '#0c4a6e' : '#334155';
+        btnAcompHimno.style.boxShadow = acompañamiento === 'himno' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnAcompHimno.textContent = acompañamiento === 'himno' ? '🎺 Himno ●' : '🎺 Himno';
+      }
+      if (btnAcompChifle) {
+        btnAcompChifle.style.background = acompañamiento === 'chifle' ? '#0c4a6e' : '#334155';
+        btnAcompChifle.style.boxShadow = acompañamiento === 'chifle' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnAcompChifle.textContent = acompañamiento === 'chifle' ? '🚪 Chifle ●' : '🚪 Chifle';
+      }
+      if (btnAcompCorneta) {
+        btnAcompCorneta.style.background = acompañamiento === 'corneta' ? '#0c4a6e' : '#334155';
+        btnAcompCorneta.style.boxShadow = acompañamiento === 'corneta' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnAcompCorneta.textContent = acompañamiento === 'corneta' ? '📯 Corneta ●' : '📯 Corneta';
+      }
+      if (btnAcompHimnoChifle) {
+        btnAcompHimnoChifle.style.background = acompañamiento === 'himno_chifle' ? '#0c4a6e' : '#334155';
+        btnAcompHimnoChifle.style.boxShadow = acompañamiento === 'himno_chifle' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnAcompHimnoChifle.textContent = acompañamiento === 'himno_chifle' ? '🎺+🚪 Himno + Chifle ●' : '🎺+🚪 Himno + Chifle';
+      }
+
+      // ===== GRUPO 5: Oración (solo en ARRIADO) =====
+      const seccionOracion = document.getElementById('seccionOracion');
+      if (seccionOracion) {
+        seccionOracion.style.display = cerPuntosActivosManualIAA.includes(8) ? 'block' : 'none';
+      }
+      const btnOracionCorneta = document.getElementById('btnOracionCorneta');
+      const btnOracionMusica = document.getElementById('btnOracionMusica');
+      const btnOracionLeida = document.getElementById('btnOracionLeida');
+      const btnOracionNinguna = document.getElementById('btnOracionNinguna');
+      
+      if (btnOracionCorneta) {
+        btnOracionCorneta.style.background = oracion === 'corneta' ? '#0c4a6e' : '#334155';
+        btnOracionCorneta.style.boxShadow = oracion === 'corneta' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnOracionCorneta.textContent = oracion === 'corneta' ? '📯 Corneta ●' : '📯 Corneta';
+      }
+      if (btnOracionMusica) {
+        btnOracionMusica.style.background = oracion === 'musica' ? '#0c4a6e' : '#334155';
+        btnOracionMusica.style.boxShadow = oracion === 'musica' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnOracionMusica.textContent = oracion === 'musica' ? '🎼 Música ●' : '🎼 Música';
+      }
+      if (btnOracionLeida) {
+        btnOracionLeida.style.background = oracion === 'leida' ? '#0c4a6e' : '#334155';
+        btnOracionLeida.style.boxShadow = oracion === 'leida' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnOracionLeida.textContent = oracion === 'leida' ? '🗣️ Leída ●' : '🗣️ Leída';
+      }
+      if (btnOracionNinguna) {
+        btnOracionNinguna.style.background = oracion === 'ninguna' ? '#0c4a6e' : '#334155';
+        btnOracionNinguna.style.boxShadow = oracion === 'ninguna' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
+        btnOracionNinguna.textContent = oracion === 'ninguna' ? '❌ Ninguna ●' : '❌ Ninguna';
+      }
+    }
 
     
     function actualizarLabelPunto5() {
@@ -246,18 +311,35 @@
 
     
     function calcularPuntos() {
-      puntosActivos = [];
+      cerPuntosActivosManualIAA = [];
+      const tieneHimno = (acompañamiento === 'himno' || acompañamiento === 'himno_chifle');
+      
+      // Definir puntos según modalidad
       if (modo === 'izado') {
-        if (conGuardia) puntosActivos = [1, 2, 3, 4, 5, 6, 7];
-        else puntosActivos = [1, 4, 5];
+        if (conGuardia) {
+          // IZADO con guardia: 1,2,3,4,5,6,7
+          cerPuntosActivosManualIAA = [1, 2, 3, 5, 6, 7]; // SIN Punto 4 inicialmente
+          if (tieneHimno) cerPuntosActivosManualIAA.splice(3, 0, 4); // Insertar Punto 4 solo si hay Himno
+        } else {
+          // IZADO sin guardia: 1,4,5 (pero 4 solo si hay himno)
+          cerPuntosActivosManualIAA = [1, 5];
+          if (tieneHimno) cerPuntosActivosManualIAA.splice(1, 0, 4);
+        }
       } else {
-        if (conGuardia) puntosActivos = [1, 2, 3, 4, 5, 6, 7, 8];
-        else puntosActivos = [1, 4, 5, 8];
+        // ARRIADO
+        if (conGuardia) {
+          // ARRIADO con guardia: 1,2,3,4,5,6,7,8
+          cerPuntosActivosManualIAA = [1, 2, 3, 5, 6, 7, 8]; // SIN Punto 4 inicialmente
+          if (tieneHimno) cerPuntosActivosManualIAA.splice(3, 0, 4); // Insertar Punto 4 en posición correcta
+        } else {
+          // ARRIADO sin guardia: 1,4,5,8 (pero 4 solo si hay himno)
+          cerPuntosActivosManualIAA = [1, 5, 8];
+          if (tieneHimno) cerPuntosActivosManualIAA.splice(1, 0, 4);
+        }
       }
+      
       renderPuntos();
       updateUI();
-      document.getElementById('opcionesPresenten').style.display = conGuardia && puntosActivos.includes(3) ? 'grid' : 'none';
-      document.getElementById('opcionesOracion').style.display = puntosActivos.includes(8) ? 'grid' : 'none';
     }
 
     function renderPuntos() {
