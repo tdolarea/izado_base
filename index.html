@@ -172,12 +172,12 @@ function updateUI() {
       if (btnIzado) {
         btnIzado.style.background = modo === 'izado' ? '#0c4a6e' : '#334155';
         btnIzado.style.boxShadow = modo === 'izado' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnIzado.textContent = modo === 'izado' ? '📌 Izado ●' : '📌 Izado';
+        btnIzado.textContent = modo === 'izado' ? '📌 Izado 💚' : '📌 Izado';
       }
       if (btnArriado) {
         btnArriado.style.background = modo === 'arriado' ? '#0c4a6e' : '#334155';
         btnArriado.style.boxShadow = modo === 'arriado' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnArriado.textContent = modo === 'arriado' ? '📖 Arriado ●' : '📖 Arriado';
+        btnArriado.textContent = modo === 'arriado' ? '📖 Arriado 💚' : '📖 Arriado';
       }
 
       // ===== GRUPO 2: Guardia Si/No =====
@@ -186,12 +186,12 @@ function updateUI() {
       if (btnGuardiaSi) {
         btnGuardiaSi.style.background = conGuardia ? '#0c4a6e' : '#334155';
         btnGuardiaSi.style.boxShadow = conGuardia ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnGuardiaSi.textContent = conGuardia ? 'Sí ●' : 'Sí';
+        btnGuardiaSi.textContent = conGuardia ? 'Sí 💚' : 'Sí';
       }
       if (btnGuardiaNo) {
         btnGuardiaNo.style.background = !conGuardia ? '#0c4a6e' : '#334155';
         btnGuardiaNo.style.boxShadow = !conGuardia ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnGuardiaNo.textContent = !conGuardia ? 'No ●' : 'No';
+        btnGuardiaNo.textContent = !conGuardia ? 'No 💚' : 'No';
       }
 
       // ===== GRUPO 3: Orden de Presenten (solo si hay Guardia y Punto 3 activo) =====
@@ -204,12 +204,12 @@ function updateUI() {
       if (btnPresentenVoz) {
         btnPresentenVoz.style.background = modalidadPresenten === 'voz' ? '#0c4a6e' : '#334155';
         btnPresentenVoz.style.boxShadow = modalidadPresenten === 'voz' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnPresentenVoz.textContent = modalidadPresenten === 'voz' ? '🗣️ A la Voz ●' : '🗣️ A la Voz';
+        btnPresentenVoz.textContent = modalidadPresenten === 'voz' ? '🗣️ A la Voz 💚' : '🗣️ A la Voz';
       }
       if (btnPresentenCorneta) {
         btnPresentenCorneta.style.background = modalidadPresenten === 'corneta' ? '#0c4a6e' : '#334155';
         btnPresentenCorneta.style.boxShadow = modalidadPresenten === 'corneta' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnPresentenCorneta.textContent = modalidadPresenten === 'corneta' ? '📯 A Corneta ●' : '📯 A Corneta';
+        btnPresentenCorneta.textContent = modalidadPresenten === 'corneta' ? '📯 A Corneta 💚' : '📯 A Corneta';
       }
 
       // ===== GRUPO 4: Acompañamiento de la Bandera =====
@@ -221,22 +221,22 @@ function updateUI() {
       if (btnAcompHimno) {
         btnAcompHimno.style.background = acompañamiento === 'himno' ? '#0c4a6e' : '#334155';
         btnAcompHimno.style.boxShadow = acompañamiento === 'himno' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnAcompHimno.textContent = acompañamiento === 'himno' ? '🎺 Himno ●' : '🎺 Himno';
+        btnAcompHimno.textContent = acompañamiento === 'himno' ? '🎺 Himno 💚' : '🎺 Himno';
       }
       if (btnAcompChifle) {
         btnAcompChifle.style.background = acompañamiento === 'chifle' ? '#0c4a6e' : '#334155';
         btnAcompChifle.style.boxShadow = acompañamiento === 'chifle' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnAcompChifle.textContent = acompañamiento === 'chifle' ? '🚪 Chifle ●' : '🚪 Chifle';
+        btnAcompChifle.textContent = acompañamiento === 'chifle' ? '🚪 Chifle 💚' : '🚪 Chifle';
       }
       if (btnAcompCorneta) {
         btnAcompCorneta.style.background = acompañamiento === 'corneta' ? '#0c4a6e' : '#334155';
         btnAcompCorneta.style.boxShadow = acompañamiento === 'corneta' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnAcompCorneta.textContent = acompañamiento === 'corneta' ? '📯 Corneta ●' : '📯 Corneta';
+        btnAcompCorneta.textContent = acompañamiento === 'corneta' ? '📯 Corneta 💚' : '📯 Corneta';
       }
       if (btnAcompHimnoChifle) {
         btnAcompHimnoChifle.style.background = acompañamiento === 'himno_chifle' ? '#0c4a6e' : '#334155';
         btnAcompHimnoChifle.style.boxShadow = acompañamiento === 'himno_chifle' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnAcompHimnoChifle.textContent = acompañamiento === 'himno_chifle' ? '🎺+🚪 Himno + Chifle ●' : '🎺+🚪 Himno + Chifle';
+        btnAcompHimnoChifle.textContent = acompañamiento === 'himno_chifle' ? '🎺+🚪 Himno + Chifle 💚' : '🎺+🚪 Himno + Chifle';
       }
 
       // ===== GRUPO 5: Oración (solo en ARRIADO) =====
@@ -252,22 +252,22 @@ function updateUI() {
       if (btnOracionCorneta) {
         btnOracionCorneta.style.background = oracion === 'corneta' ? '#0c4a6e' : '#334155';
         btnOracionCorneta.style.boxShadow = oracion === 'corneta' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnOracionCorneta.textContent = oracion === 'corneta' ? '📯 Corneta ●' : '📯 Corneta';
+        btnOracionCorneta.textContent = oracion === 'corneta' ? '📯 Corneta 💚' : '📯 Corneta';
       }
       if (btnOracionMusica) {
         btnOracionMusica.style.background = oracion === 'musica' ? '#0c4a6e' : '#334155';
         btnOracionMusica.style.boxShadow = oracion === 'musica' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnOracionMusica.textContent = oracion === 'musica' ? '🎼 Música ●' : '🎼 Música';
+        btnOracionMusica.textContent = oracion === 'musica' ? '🎼 Música 💚' : '🎼 Música';
       }
       if (btnOracionLeida) {
         btnOracionLeida.style.background = oracion === 'leida' ? '#0c4a6e' : '#334155';
         btnOracionLeida.style.boxShadow = oracion === 'leida' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnOracionLeida.textContent = oracion === 'leida' ? '🗣️ Leída ●' : '🗣️ Leída';
+        btnOracionLeida.textContent = oracion === 'leida' ? '🗣️ Leída 💚' : '🗣️ Leída';
       }
       if (btnOracionNinguna) {
         btnOracionNinguna.style.background = oracion === 'ninguna' ? '#0c4a6e' : '#334155';
         btnOracionNinguna.style.boxShadow = oracion === 'ninguna' ? '0 0 15px rgba(16, 185, 129, 0.8)' : 'none';
-        btnOracionNinguna.textContent = oracion === 'ninguna' ? '❌ Ninguna ●' : '❌ Ninguna';
+        btnOracionNinguna.textContent = oracion === 'ninguna' ? '❌ Ninguna 💚' : '❌ Ninguna';
       }
     }
 
