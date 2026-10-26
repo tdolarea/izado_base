@@ -528,6 +528,7 @@ function obtenerLabelPunto(p) {
     function stopAll() { document.getElementById('audioPlayer').pause(); document.getElementById('status').textContent = 'Detenido'; }
 
     // Inicializar
+    cerPuntosActivosManualIAA = [];
     calcularPuntos();
     actualizarLabelPunto5();
     actualizarVisibilidadPunto4();
