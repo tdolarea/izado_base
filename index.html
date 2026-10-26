@@ -173,11 +173,30 @@
       document.getElementById('btnPresentenVoz').style.background = modalidadPresenten === 'voz' ? '#0c4a6e' : '#334155';
       document.getElementById('btnPresentenCorneta').style.background = modalidadPresenten === 'corneta' ? '#0c4a6e' : '#334155';
 
-      // Resaltar opciones Acompañamiento
-      document.getElementById('btnAcompHimno').style.background = acompañamiento === 'himno' ? '#0c4a6e' : '#334155';
-      document.getElementById('btnAcompChifle').style.background = acompañamiento === 'chifle' ? '#0c4a6e' : '#334155';
-      document.getElementById('btnAcompCorneta').style.background = acompañamiento === 'corneta' ? '#0c4a6e' : '#334155';
-      document.getElementById('btnAcompHimnoChifle').style.background = acompañamiento === 'himno_chifle' ? '#0c4a6e' : '#334155';
+      // Resaltar opciones Acompañamiento con indicador visual
+      const acompBtns = {
+        'btnAcompHimno': acompañamiento === 'himno',
+        'btnAcompChifle': acompañamiento === 'chifle',
+        'btnAcompCorneta': acompañamiento === 'corneta',
+        'btnAcompHimnoChifle': acompañamiento === 'himno_chifle'
+      };
+      for (let [btnId, isSelected] of Object.entries(acompBtns)) {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+          btn.style.background = isSelected ? '#0c4a6e' : '#334155';
+          btn.style.boxShadow = isSelected ? '0 0 12px rgba(16, 185, 129, 0.6), inset 0 0 8px rgba(16, 185, 129, 0.4)' : 'none';
+          // Añadir indicador visual (punto verde)
+          if (isSelected && !btn.querySelector('.indicator-dot')) {
+            const dot = document.createElement('span');
+            dot.className = 'indicator-dot';
+            dot.textContent = '●';
+            dot.style.cssText = 'color:#10b981; font-size:8px; margin-left:4px;';
+            btn.appendChild(dot);
+          } else if (!isSelected && btn.querySelector('.indicator-dot')) {
+            btn.querySelector('.indicator-dot').remove();
+          }
+        }
+      }
 
       // Resaltar opciones Oración
       document.getElementById('btnOracionCorneta').style.background = oracion === 'corneta' ? '#0c4a6e' : '#334155';
