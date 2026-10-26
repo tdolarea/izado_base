@@ -109,7 +109,7 @@
     <!-- MODO AUTOMÁTICO -->
     <div class="card">
       <div class="btn-group">
-        <button class="btn" onclick="iniciarAuto()" style="grid-column:1/3; padding:16px; font-size:14px;">▶️ INICIAR SECUENCIA AUTOMÁTICA</button>
+        <button class="btn" onclick="iniciarAuto()" style="grid-column:1/3; padding:16px; font-size:14px;">▶️ INICIAR SECUENCIA CONTINUA</button>
       </div>
     </div>
   </main>
@@ -247,17 +247,63 @@
         document.getElementById('status').textContent = '❌ No hay puntos activos';
         return;
       }
+
+      // Punto 1 (Señales a la Bandera) se ejecuta a T-5 (separado)
+      let puntosSecuencia = puntosActivos.filter(p => p !== 1);
+      
+      if (puntosActivos.includes(1)) {
+        document.getElementById('status').textContent = '⏳ Ejecutando Punto 1 (T-5): Señales a la Bandera...';
+        reproducirPunto(1);
+        // Esperar a que termine Punto 1 + pausa de 2 segundos
+        setTimeout(() => {
+          iniciarSecuenciaContinua(puntosSecuencia);
+        }, 8000); // Aproximadamente 5-6 segundos de audio + 2 segundos de pausa
+      } else {
+        iniciarSecuenciaContinua(puntosSecuencia);
+      }
+    }
+
+    function iniciarSecuenciaContinua(puntos) {
+      if (puntos.length === 0) {
+        document.getElementById('status').textContent = '✅ Secuencia completada';
+        return;
+      }
+
       let idx = 0;
-      function siguiente() {
-        if (idx >= puntosActivos.length) {
-          document.getElementById('status').textContent = '✅ Secuencia completada';
+      
+      function reproducirSiguiente() {
+        if (idx >= puntos.length) {
+          document.getElementById('status').textContent = '✅ Secuencia continua completada';
           return;
         }
-        reproducirPunto(puntosActivos[idx]);
+
+        const puntoCurrent = puntos[idx];
+        reproducirPunto(puntoCurrent);
         idx++;
-        setTimeout(siguiente, 4000);
+
+        // Obtener duración aproximada del audio para esperar correctamente
+        let duracion = obtenerDuracionAproximada(puntoCurrent);
+        
+        // Siguiente punto: duración audio + pausa de 1.5 segundos
+        setTimeout(reproducirSiguiente, duracion + 1500);
       }
-      siguiente();
+
+      reproducirSiguiente();
+    }
+
+    function obtenerDuracionAproximada(punto) {
+      // Duraciones aproximadas de cada punto en ms
+      const duraciones = {
+        1: 5000,  // Señales
+        2: 3000,  // Firmes
+        3: 4000,  // Presenten
+        4: 3500,  // Ejecutiva
+        5: 60000, // Himno (ajustar si es chifle o corneta)
+        6: 3000,  // Descansen
+        7: 3000,  // Envainen
+        8: 60000, // Oración
+      };
+      return duraciones[punto] || 4000;
     }
 
     function setModo(m) { modo = m; calcularPuntos(); updateUI(); }
