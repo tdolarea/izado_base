@@ -112,6 +112,7 @@
     let acompañamiento = 'himno';
     let oracion = 'corneta';
     let cerPuntosActivosManualIAA = [];
+    let secuenciaEnCurso = false;
 
     const audioURLs = {
       '1_izado': 'audios/01_01_senales_izado.mp3',
@@ -154,7 +155,11 @@
     function setPresenten(p) { modalidadPresenten = p; updateUI(); }
     function setAcompañamiento(a) { acompañamiento = a; calcularPuntos(); updateUI(); }
     function setOracion(o) { oracion = o; updateUI(); }
-    function stopAll() { document.getElementById('audioPlayer').pause(); document.getElementById('status').innerHTML = '<span>Detenido</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>'; }
+    function stopAll() { 
+      secuenciaEnCurso = false;
+      document.getElementById('audioPlayer').pause(); 
+      document.getElementById('status').innerHTML = '<span>Detenido</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>'; 
+    }
 
     function calcularPuntos() {
       const tieneHimno = (acompañamiento === 'himno' || acompañamiento === 'himno_chifle');
@@ -236,6 +241,7 @@
         return;
       }
       
+      secuenciaEnCurso = true;
       iniciarSecuenciaContinua(puntosSecuencia);
     }
 
@@ -244,8 +250,9 @@
       const audio = document.getElementById('audioPlayer');
       
       function reproducirSiguiente() {
-        if (idx >= puntos.length) {
+        if (!secuenciaEnCurso || idx >= puntos.length) {
           document.getElementById('status').innerHTML = '<span>✅ Secuencia completada</span><button class="status-btn" onclick="stopAll()">⏹️ Detener</button>';
+          secuenciaEnCurso = false;
           return;
         }
         
@@ -258,12 +265,21 @@
         audio.src = audioURL;
         audio.play().catch(err => {
           console.error('Error reproduciendo audio:', err);
+          if (secuenciaEnCurso) {
+            idx++;
+            setTimeout(reproducirSiguiente, 1500);
+          }
         });
         
         idx++;
         
-        // PAUSA DE 4 SEGUNDOS entre cada audio
-        setTimeout(reproducirSiguiente, 4000);
+        // ESPERAR a que el audio TERMINE antes de lanzar el siguiente
+        audio.onended = () => {
+          if (secuenciaEnCurso) {
+            // Pausa de 1.5 segundos entre audios DESPUÉS de que termine el anterior
+            setTimeout(reproducirSiguiente, 1500);
+          }
+        };
       }
       
       reproducirSiguiente();
