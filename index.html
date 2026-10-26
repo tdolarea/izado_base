@@ -672,22 +672,7 @@
     // MODO MANUAL PASO A PASO (IAA)
     // ============================================
     
-    const EventAudioMap = {
-        'event01_01': 'VOZELENASENALES.mp3',
-        'event01_02': 'senalesalabandera.mp3',
-        'event02': 'cornetafirmes.wav',
-        'event03_01': 'voz_presenten_armas.mp3',
-        'event03_02': 'cornetapresentenarmas.wav',
-        'event04': 'cornetaordenhimnonacional.wav',
-        'event05_01': 'Espania_largo.mp3',
-        'event05_02': 'chiflecompletobanderalargo.mp3',
-        'event05_03': 'CornetaHimnonacionalacorneta-reducido.wav',
-        'event06': 'Cornetadescanso.wav',
-        'event07': 'CUBRIR.mp3',
-        'event08_01': 'CornetaToquedeOracion.wav',
-        'event08_02': 'OraciondelaNoche.mp3',
-        'event08_03': 'VOZORACION.mp3',
-    };
+    
 
     let cerPuntoActualManualIAA = 0; // Punto actual en modo manual
     let cerAudioManualActualIAA = null;
@@ -1626,62 +1611,166 @@
     }
 
     // EJECUCIÓN SECUENCIAL COMPLETA DE ACUARTELAMIENTO
+    // ============================================
+    // MODO AUTOMÁTICO REFACTORIZADO (SIGUE SECUENCIA EXACTA)
+    // ============================================
+    
     function iniciarSecuenciaCompletaAutoIAA() {
-      // 1. Si hay Guardia Militar: 
-      // Paso 2: Firmes -> Paso 3: Presenten armas -> Paso 4 y 5: Himno / Acompañamiento -> Paso 6: Descansen -> Paso 7: Envainen -> (Paso 8: Oración si es Arriado)
-      // 2. Si NO hay Guardia Militar:
-      // Se omiten 2, 3, 6 y 7 -> Ejecuta directamente Paso 4 y 5: Himno / Acompañamiento -> (Paso 8: Oración si es Arriado)
-
-      const audFirmes = document.getElementById('audCornetaFirmesIAA');
-      const audPresenten = (cerModalidadPresentenIAA === 'voz') ? document.getElementById('audVozPresentenIAA') : document.getElementById('audCornetaPresentenIAA');
-      const audEjecutiva = document.getElementById('audCornetaEjecutivaIAA');
-      const audDescansen = document.getElementById('audCornetaDescansoIAA');
-      const audEnvainen = document.getElementById('audCornetaEnvainenIAA');
-
-      function faseAcompanamientoYFin() {
-        actualizarStatusIAA('4 y 5. 🇪🇸 Rindiendo Honores a la Bandera Nacional...');
-        ejecutarMovimientoBanderaCompletoIAA(() => {
-          if (cerTieneGuardiaIAA) {
-            // Paso 6: Descansen armas
-            reproducirElementoCeremonialIAA(audDescansen, '6. 📯 Descansen armas', () => {
-              // Paso 7: Envainen armas
-              reproducirElementoCeremonialIAA(audEnvainen, '7. 📯 Envainen armas', () => {
-                comprobarOracionYFinalizar();
-              });
-            });
-          } else {
-            comprobarOracionYFinalizar();
-          }
-        });
-      }
-
-      function comprobarOracionYFinalizar() {
-        if (cerModoIAA === 'arriado' && cerModalidadOracionIAA !== 'ninguna') {
-          actualizarStatusIAA('8. ✝️ Oración al Ocaso...');
-          ejecutarOracionIAA(() => {
-            finalizarSecuenciaAutoCompletaIAA('✅ Ceremonial de Arriado en Acuartelamiento completado con éxito.');
-          });
-        } else {
-          finalizarSecuenciaAutoCompletaIAA(`✅ Ceremonial de ' + cerModoIAA.toUpperCase() + ' en Acuartelamiento completado con éxito.`);
+        // Calcular puntos activos según modalidad (MISMO CÁLCULO QUE MODO MANUAL)
+        calcularPuntosActivosIAA();
+        
+        // Mostrar status
+        actualizarStatusIAA(`🔄 Iniciando secuencia automática. Puntos activos: ${cerPuntosActivosManualIAA.join(', ')}`);
+        
+        // Crear cola de ejecución basada en puntos activos
+        const colaEjecucion = [];
+        for (let punto of cerPuntosActivosManualIAA) {
+            colaEjecucion.push(punto);
         }
-      }
-
-      // INICIO DE LA SECUENCIA SEGÚN MODALIDAD
-      if (cerTieneGuardiaIAA) {
-        // Con Guardia Militar: arranca con Firmes (Hora T)
-        reproducirElementoCeremonialIAA(audFirmes, '2. 📯 Toque de corneta: Firmes', () => {
-          // Paso 3: Presenten armas (Voz o Corneta)
-          const tagPresenten = (cerModalidadPresentenIAA === 'voz') ? '3. 🗣️ Voz: Presenten armas' : '3. 📯 Toque de corneta: Presenten armas';
-          reproducirElementoCeremonialIAA(audPresenten, tagPresenten, () => {
-            faseAcompanamientoYFin();
-          });
-        });
-      } else {
-        // Sin Guardia Militar: salta directamente a la Bandera
-        faseAcompanamientoYFin();
-      }
+        
+        console.log('Cola de ejecución:', colaEjecucion);
+        
+        // Ejecutar cola secuencialmente
+        let indiceActual = 0;
+        
+        function ejecutarSiguientePunto() {
+            if (indiceActual >= colaEjecucion.length) {
+                // Fin de secuencia
+                const tipoModo = cerModoIAA === 'izado' ? 'IZADO' : 'ARRIADO';
+                actualizarStatusIAA(`✅ Ceremonial automático de ${tipoModo} completado.`);
+                return;
+            }
+            
+            const punto = colaEjecucion[indiceActual];
+            indiceActual++;
+            
+            // Ejecutar punto y esperar a que termine
+            reproducirAudioAutoIAA(punto, ejecutarSiguientePunto);
+        }
+        
+        // Iniciar ejecución
+        ejecutarSiguientePunto();
     }
 
+    function reproducirAudioAutoIAA(numeroPunto, onFinished) {
+        let audioFile = null;
+        let label = '';
+        let duracionAproximada = 3000; // ms por defecto
+
+        if (numeroPunto === 1) {
+            if (cerModoIAA === 'izado') {
+                audioFile = EventAudioMap['event01_01'];
+                label = '1. 🗣️ Voz de Señales a la Bandera';
+                duracionAproximada = 5000;
+            } else {
+                audioFile = EventAudioMap['event01_02'];
+                label = '1. 🗣️ Voz de Señales a la Bandera (Arriado)';
+                duracionAproximada = 5000;
+            }
+        } else if (numeroPunto === 2) {
+            audioFile = EventAudioMap['event02'];
+            label = '2. 📯 Toque de Corneta: Firmes';
+            duracionAproximada = 3000;
+        } else if (numeroPunto === 3) {
+            if (cerModalidadPresentenIAA === 'voz') {
+                audioFile = EventAudioMap['event03_01'];
+                label = '3. 🗣️ Orden de Presenten Armas (Voz)';
+                duracionAproximada = 4000;
+            } else {
+                audioFile = EventAudioMap['event03_02'];
+                label = '3. 📯 Orden de Presenten Armas (Corneta)';
+                duracionAproximada = 3000;
+            }
+        } else if (numeroPunto === 4) {
+            audioFile = EventAudioMap['event04'];
+            label = '4. 📯 Corneta Ejecutiva Himno';
+            duracionAproximada = 3500;
+        } else if (numeroPunto === 5) {
+            if (cerAcompBanderaIAA === 'himno') {
+                audioFile = EventAudioMap['event05_01'];
+                label = '5. 🎺 Himno Nacional';
+                duracionAproximada = 60000; // Himno largo
+            } else if (cerAcompBanderaIAA === 'himno_chifle') {
+                audioFile = EventAudioMap['event05_01'];
+                label = '5. 🎺+🚪 Himno y Chifle';
+                duracionAproximada = 85000; // Himno + retardo + chifle
+            } else if (cerAcompBanderaIAA === 'corneta') {
+                audioFile = EventAudioMap['event05_03'];
+                label = '5. 📯 Corneta Sola';
+                duracionAproximada = 4000;
+            } else {
+                audioFile = EventAudioMap['event05_02'];
+                label = '5. 🚪 Chifle Solo';
+                duracionAproximada = 25000; // Pitada + retardo 20s + chifle
+            }
+        } else if (numeroPunto === 6) {
+            audioFile = EventAudioMap['event06'];
+            label = '6. 📯 Descansen Armas';
+            duracionAproximada = 3000;
+        } else if (numeroPunto === 7) {
+            audioFile = EventAudioMap['event07'];
+            label = '7. 📯 Envainen Armas';
+            duracionAproximada = 3000;
+        } else if (numeroPunto === 8) {
+            if (cerModalidadOracionIAA === 'corneta') {
+                audioFile = EventAudioMap['event08_01'];
+                label = '8. 📯 Oración (Corneta)';
+                duracionAproximada = 4000;
+            } else if (cerModalidadOracionIAA === 'musica') {
+                audioFile = EventAudioMap['event08_02'];
+                label = '8. 🎼 Oración (Música)';
+                duracionAproximada = 120000; // Música larga
+            } else if (cerModalidadOracionIAA === 'leida') {
+                audioFile = EventAudioMap['event08_03'];
+                label = '8. 🗣️ Oración (Leída)';
+                duracionAproximada = 60000;
+            } else {
+                if (onFinished) onFinished();
+                return;
+            }
+        }
+
+        if (!audioFile) {
+            actualizarStatusIAA(`❌ Punto ${numeroPunto}: archivo no mapeado.`);
+            if (onFinished) onFinished();
+            return;
+        }
+
+        // Reproducir y esperar
+        const audioUrl = `audio/${audioFile}`;
+        const audio = new Audio(audioUrl);
+        
+        let finalizadoOnceCalled = false;
+        
+        const finalizarRepro = function() {
+            if (finalizadoOnceCalled) return;
+            finalizadoOnceCalled = true;
+            actualizarStatusIAA(label + ' ✅');
+            if (onFinished) onFinished();
+        };
+        
+        audio.onended = finalizarRepro;
+        audio.onerror = function(err) {
+            console.error('Auto audio error:', err, audioFile);
+            // Continuar aunque haya error (usar timeout aproximado)
+            setTimeout(finalizarRepro, duracionAproximada);
+        };
+
+        actualizarStatusIAA(label + ' (reproduciendo...)');
+        
+        try {
+            audio.play().catch(err => {
+                console.warn('Play blocked:', err);
+                // Usar timeout como fallback
+                setTimeout(finalizarRepro, duracionAproximada);
+            });
+        } catch (err) {
+            console.error('Audio error:', err);
+            setTimeout(finalizarRepro, duracionAproximada);
+        }
+    }
+
+    
     function ejecutarMovimientoBanderaCompletoIAA(callbackFin) {
       pararAudioCeremonialIAA();
 
@@ -1825,7 +1914,7 @@
         'event08_03': 'VOZORACION.mp3',
     };
 
-    let cerPuntosActivosManualIAA = [];
+    
 
     // Calcular qué puntos están activos según modalidad (ESPECIFICACIÓN EXACTA DEL COMANDANTE)
     function calcularPuntosActivosIAA() {
