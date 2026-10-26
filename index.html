@@ -313,211 +313,54 @@ function updateUI() {
 
     
     function calcularPuntos() {
-      cerPuntosActivosManualIAA = [];
       const tieneHimno = (acompañamiento === 'himno' || acompañamiento === 'himno_chifle');
+      
+      // Reinicializar la lista
+      cerPuntosActivosManualIAA = [];
       
       // Definir puntos según modalidad
       if (modo === 'izado') {
         if (conGuardia) {
-          // IZADO con guardia: 1,2,3,4,5,6,7
-          cerPuntosActivosManualIAA = [1, 2, 3, 5, 6, 7]; // SIN Punto 4 inicialmente
-          if (tieneHimno) cerPuntosActivosManualIAA.splice(3, 0, 4); // Insertar Punto 4 solo si hay Himno
+          // IZADO con guardia: 1,2,3,5,6,7 (sin 4 inicialmente)
+          cerPuntosActivosManualIAA = [1, 2, 3, 5, 6, 7];
+          // Insertar Punto 4 en posición 3 SOLO si hay Himno
+          if (tieneHimno) {
+            cerPuntosActivosManualIAA.splice(3, 0, 4);
+          }
         } else {
-          // IZADO sin guardia: 1,4,5 (pero 4 solo si hay himno)
+          // IZADO sin guardia: 1,5 (sin 4 inicialmente)
           cerPuntosActivosManualIAA = [1, 5];
-          if (tieneHimno) cerPuntosActivosManualIAA.splice(1, 0, 4);
+          // Insertar Punto 4 en posición 1 SOLO si hay Himno
+          if (tieneHimno) {
+            cerPuntosActivosManualIAA.splice(1, 0, 4);
+          }
         }
       } else {
         // ARRIADO
         if (conGuardia) {
-          // ARRIADO con guardia: 1,2,3,4,5,6,7,8
-          cerPuntosActivosManualIAA = [1, 2, 3, 5, 6, 7, 8]; // SIN Punto 4 inicialmente
-          if (tieneHimno) cerPuntosActivosManualIAA.splice(3, 0, 4); // Insertar Punto 4 en posición correcta
+          // ARRIADO con guardia: 1,2,3,5,6,7,8 (sin 4 inicialmente)
+          cerPuntosActivosManualIAA = [1, 2, 3, 5, 6, 7, 8];
+          // Insertar Punto 4 en posición 3 SOLO si hay Himno
+          if (tieneHimno) {
+            cerPuntosActivosManualIAA.splice(3, 0, 4);
+          }
         } else {
-          // ARRIADO sin guardia: 1,4,5,8 (pero 4 solo si hay himno)
+          // ARRIADO sin guardia: 1,5,8 (sin 4 inicialmente)
           cerPuntosActivosManualIAA = [1, 5, 8];
-          if (tieneHimno) cerPuntosActivosManualIAA.splice(1, 0, 4);
+          // Insertar Punto 4 en posición 1 SOLO si hay Himno
+          if (tieneHimno) {
+            cerPuntosActivosManualIAA.splice(1, 0, 4);
+          }
         }
       }
+      
+      // DEBUG: Verificar que la lista está correcta
+      console.log('cerPuntosActivosManualIAA:', cerPuntosActivosManualIAA);
       
       renderPuntos();
       updateUI();
     }
 
-function obtenerLabelPunto(p) {
-      const labels = {
-        1: '1. 🗣️ SEÑALES A LA BANDERA',
-        2: '2. 📯 FIRMES',
-        3: modalidadPresenten === 'voz' ? '3. 🗣️ PRESENTEN VOZ' : '3. 📯 PRESENTEN CORNETA',
-        4: '4. 📯 EJECUTIVA',
-        5: acompañamiento === 'himno' ? '5. 🎺 HIMNO' : acompañamiento === 'chifle' ? '5. 🚪 CHIFLE' : acompañamiento === 'corneta' ? '5. 📯 CORNETA' : '5. 🎺+🚪 HIMNO+CHIFLE',
-        6: '6. 📯 DESCANSEN',
-        7: '7. 📯 ENVAINEN',
-        8: oracion === 'corneta' ? '8. 📯 ORACIÓN' : oracion === 'musica' ? '8. 🎼 ORACIÓN' : oracion === 'leida' ? '8. 🗣️ ORACIÓN' : '8. ORACIÓN'
-      };
-      return labels[p] || `Punto ${p}`;
-    }
-
-    function renderPuntos() {
-      const grid = document.getElementById('puntosGrid');
-      if (!grid) {
-        console.error('Grid not found');
-        return;
-      }
-      grid.innerHTML = '';
-      
-      // Usar cerPuntosActivosManualIAA (variable global con puntos activos)
-      for (let p of cerPuntosActivosManualIAA) {
-        const btn = document.createElement('button');
-        btn.className = 'punto-btn';
-        btn.style.width = '100%';
-        btn.textContent = obtenerLabelPunto(p);
-        btn.onclick = () => reproducirPunto(p);
-        grid.appendChild(btn);
-      }
-      
-      console.log('Puntos renderizados:', cerPuntosActivosManualIAA);
-    }
-
-    
-    function reproducirDualAudio(audio1Url, audio2Url) {
-      document.getElementById('status').textContent = '5. 🎺 HIMNO + CHIFLE (reproduciendo en paralelo...)';
-      
-      const player1 = document.getElementById('audioPlayer');
-      const player2 = document.getElementById('audioPlayer2');
-      
-      player1.src = audio1Url;
-      player2.src = audio2Url;
-      
-      let completados = 0;
-      const finalizarDual = function() {
-        completados++;
-        if (completados >= 2) {
-          document.getElementById('status').textContent = '5. 🎺 HIMNO + CHIFLE ✅';
-        }
-      };
-      
-      player1.onended = finalizarDual;
-      player2.onended = finalizarDual;
-      
-      player1.onerror = function(err) {
-        console.error('Player1 error:', err);
-        finalizarDual();
-      };
-      
-      player2.onerror = function(err) {
-        console.error('Player2 error:', err);
-        finalizarDual();
-      };
-      
-      // Reproducir ambos simultáneamente
-      Promise.all([player1.play(), player2.play()]).then(() => {
-        console.log('Ambos audios reproduciendo');
-      }).catch(err => {
-        console.warn('Play bloqueado, intentando solo player1:', err);
-        player1.play().catch(e => console.error('Player1 error:', e));
-        player2.play().catch(e => console.error('Player2 error:', e));
-      });
-    }
-
-    
-    function reproducirPunto(p) {
-      // Pausar cualquier audio en reproducción
-      document.getElementById('audioPlayer').pause();
-      document.getElementById('audioPlayer2').pause();
-      
-      let audio = null;
-      let label = puntosLabel[p];
-      
-      if (p === 1) audio = audioMap[modo === 'izado' ? 'event01_01' : 'event01_02'];
-      else if (p === 2) audio = audioMap['event02'];
-      else if (p === 3) audio = audioMap[modalidadPresenten === 'voz' ? 'event03_01' : 'event03_02'];
-      else if (p === 4) audio = audioMap['event04'];
-      else if (p === 5) {
-        if (acompañamiento === 'himno') audio = audioMap['event05_01'];
-        else if (acompañamiento === 'chifle') audio = audioMap['event05_02'];
-        else if (acompañamiento === 'corneta') audio = audioMap['event05_03'];
-        else if (acompañamiento === 'himno_chifle') audio = audioMap['event05_04']; // Himno + Chifle mezclados
-      }
-      else if (p === 6) audio = audioMap['event06'];
-      else if (p === 7) audio = audioMap['event07'];
-      else if (p === 8) {
-        if (oracion === 'corneta') audio = audioMap['event08_01'];
-        else if (oracion === 'musica') audio = audioMap['event08_02'];
-        else if (oracion === 'leida') audio = audioMap['event08_03'];
-      }
-
-      if (audio) {
-        document.getElementById('status').textContent = label + ' (reproduciendo...)';
-        const player = document.getElementById('audioPlayer');
-        player.src = audio;
-        player.play();
-      }
-    }
-
-    function iniciarAuto() {
-      // Usar cerPuntosActivosManualIAA (variable correcta con botones activos en pantalla)
-      if (!cerPuntosActivosManualIAA || cerPuntosActivosManualIAA.length === 0) {
-        document.getElementById('status').textContent = '❌ No hay puntos activos';
-        return;
-      }
-
-      // Filtrar: ejecutar TODOS EXCEPTO Punto 1 (Señales a la Bandera)
-      let puntosSecuencia = cerPuntosActivosManualIAA.filter(p => p !== 1);
-      
-      if (puntosSecuencia.length === 0) {
-        document.getElementById('status').textContent = '❌ Solo está activo Punto 1 (Señales)';
-        return;
-      }
-
-      // Iniciar secuencia continua con todos los botones EXCEPTO Punto 1
-      iniciarSecuenciaContinua(puntosSecuencia);
-    }
-
-    function iniciarSecuenciaContinua(puntos) {
-      if (!puntos || puntos.length === 0) {
-        document.getElementById('status').textContent = '✅ Secuencia completada';
-        return;
-      }
-
-      let idx = 0;
-      
-      function reproducirSiguiente() {
-        if (idx >= puntos.length) {
-          document.getElementById('status').textContent = '✅ Secuencia completada';
-          return;
-        }
-
-        const puntoCurrent = puntos[idx];
-        document.getElementById('status').textContent = `Ejecutando Punto ${puntoCurrent}...`;
-        reproducirPunto(puntoCurrent);
-        idx++;
-
-        // Obtener duración aproximada del audio
-        let duracion = obtenerDuracionAproximada(puntoCurrent);
-        
-        // Siguiente punto: duración audio + pausa de 1.5 segundos
-        setTimeout(reproducirSiguiente, duracion + 1500);
-      }
-
-      reproducirSiguiente();
-    }
-
-
-    function obtenerDuracionAproximada(punto) {
-      // Duraciones aproximadas de cada punto en ms
-      const duraciones = {
-        1: 5000,  // Señales
-        2: 3000,  // Firmes
-        3: 4000,  // Presenten
-        4: 3500,  // Ejecutiva
-        5: acompañamiento === 'himno_chifle' ? 85000 : (acompañamiento === 'himno' ? 60000 : 25000), // Ajustar por acompañamiento
-        6: 3000,  // Descansen
-        7: 3000,  // Envainen
-        8: 60000, // Oración
-      };
-      return duraciones[punto] || 4000;
-    }
 
     function setModo(m) { modo = m; calcularPuntos(); updateUI(); }
     function setGuardia(g) { conGuardia = g; calcularPuntos(); updateUI(); }
