@@ -147,7 +147,7 @@
       2: '2. 📯 Firmes',
       3: '3. ⚔️ Presenten',
       4: '4. 📯 Ejecutiva',
-      5: '5. 🎺 Himno/ Chifle/ Corneta',
+      5: '5. 🎺 Acompañamiento',
       6: '6. 📯 Descansen',
       7: '7. 📯 Envainen',
       8: '8. ✝️ Oración',
@@ -184,6 +184,18 @@
       document.getElementById('btnOracionNinguna').style.background = oracion === 'ninguna' ? '#0c4a6e' : '#334155';
     }
 
+
+    
+    function actualizarLabelPunto5() {
+      let labelPunto5 = '5. 🎺 ';
+      if (acompañamiento === 'himno') labelPunto5 += 'Himno';
+      else if (acompañamiento === 'chifle') labelPunto5 += 'Chifle';
+      else if (acompañamiento === 'corneta') labelPunto5 += 'Corneta';
+      else if (acompañamiento === 'himno_chifle') labelPunto5 += 'Himno + Chifle';
+      
+      puntosLabel[5] = labelPunto5;
+      renderPuntos(); // Re-renderizar botones con nuevo label
+    }
 
     function calcularPuntos() {
       puntosActivos = [];
@@ -309,13 +321,14 @@
     function setModo(m) { modo = m; calcularPuntos(); updateUI(); }
     function setGuardia(g) { conGuardia = g; calcularPuntos(); updateUI(); }
     function setPresenten(p) { modalidadPresenten = p; updateUI(); }
-    function setAcompañamiento(a) { acompañamiento = a; updateUI(); }
+    function setAcompañamiento(a) { acompañamiento = a; actualizarLabelPunto5(); updateUI(); }
     function setOracion(o) { oracion = o; updateUI(); }
     function resetManual() { document.getElementById('status').textContent = 'Reiniciado'; }
     function stopAll() { document.getElementById('audioPlayer').pause(); document.getElementById('status').textContent = 'Detenido'; }
 
     // Inicializar
     calcularPuntos();
+    actualizarLabelPunto5();
     updateUI();
   </script>
 </body>
