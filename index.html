@@ -116,6 +116,7 @@
 
   <!-- AUDIOS -->
   <audio id="audioPlayer"></audio>
+  <audio id="audioPlayer2"></audio>
 
   <script>
     let modo = 'izado';
@@ -224,6 +225,51 @@
       }
     }
 
+    
+    function reproducirDualAudio(audio1Url, audio2Url) {
+      document.getElementById('status').textContent = '5. 🎺 HIMNO + CHIFLE (reproduciendo en paralelo...)';
+      
+      const player1 = document.getElementById('audioPlayer');
+      const player2 = document.getElementById('audioPlayer2');
+      
+      player1.src = audio1Url;
+      player2.src = audio2Url;
+      
+      // Reproducir ambos simultáneamente
+      let playing = 0;
+      let maxDuration = 0;
+      
+      player1.onloadedmetadata = function() {
+        if (player1.duration > maxDuration) maxDuration = player1.duration;
+      };
+      
+      player2.onloadedmetadata = function() {
+        if (player2.duration > maxDuration) maxDuration = player2.duration;
+      };
+      
+      player1.onerror = player2.onerror = function() {
+        console.error('Error loading audio');
+        setTimeout(() => {
+          document.getElementById('status').textContent = '5. 🎺 HIMNO + CHIFLE ✅';
+        }, 2000);
+      };
+      
+      // Reproducir
+      Promise.all([player1.play(), player2.play()]).then(() => {
+        // Ambos reproduciendo exitosamente
+      }).catch(err => {
+        console.warn('Play error:', err);
+        // Fallback: reproducir solo player1
+        player1.play();
+      });
+      
+      // Esperar a que terminen ambos
+      setTimeout(() => {
+        document.getElementById('status').textContent = '5. 🎺 HIMNO + CHIFLE ✅';
+      }, Math.max(player1.duration, player2.duration) * 1000 + 1000);
+    }
+
+
     function reproducirPunto(p) {
       let audio = null;
       let label = puntosLabel[p];
@@ -236,7 +282,11 @@
         if (acompañamiento === 'himno') audio = audioMap['event05_01'];
         else if (acompañamiento === 'chifle') audio = audioMap['event05_02'];
         else if (acompañamiento === 'corneta') audio = audioMap['event05_03'];
-        else if (acompañamiento === 'himno_chifle') audio = audioMap['event05_01']; // Himno + Chifle
+        else if (acompañamiento === 'himno_chifle') {
+          // Reproducir Himno y Chifle EN PARALELO
+          reproducirDualAudio(audioMap['event05_01'], audioMap['event05_02']);
+          return;
+        }
       }
       else if (p === 6) audio = audioMap['event06'];
       else if (p === 7) audio = audioMap['event07'];
@@ -310,7 +360,7 @@
         2: 3000,  // Firmes
         3: 4000,  // Presenten
         4: 3500,  // Ejecutiva
-        5: 60000, // Himno (ajustar si es chifle o corneta)
+        5: acompañamiento === 'himno_chifle' ? 85000 : (acompañamiento === 'himno' ? 60000 : 25000), // Ajustar por acompañamiento
         6: 3000,  // Descansen
         7: 3000,  // Envainen
         8: 60000, // Oración
