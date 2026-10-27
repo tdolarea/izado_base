@@ -430,28 +430,41 @@
       calcularOcaso();
     }
 
+function calcularOcaso() {
+  if (!posicion.lat || !posicion.lon) return;
+
+  const ahora = new Date();
+  const dia = ahora.getDate();
+  const mes = ahora.getMonth() + 1;
+  const diaDelAño = Math.floor((mes - 1) * 30.44 + dia);
+  const latRad = posicion.lat * Math.PI / 180;
+  const lonRad = posicion.lon * Math.PI / 180;
+  const declinacion = 23.44 * Math.sin((284 + diaDelAño) * Math.PI / 180) * Math.PI / 180;
+  
+  const cosH = -Math.tan(latRad) * Math.tan(declinacion);
+  const h = cosH >= -1 && cosH <= 1 ? Math.acos(cosH) : 0;
+  
+  let minutosUTC = (12 + h * 180 / Math.PI / 15) * 60;
+  minutosUTC -= (posicion.lon * 4);
+  
+  const offsetHuso = huso === 'auto' ? 0 : parseInt(huso);
+  const husoLocal = -(ahora.getTimezoneOffset() / 60);
+  const offsetAplicar = huso === 'auto' ? husoLocal : offsetHuso;
+  minutosUTC += (offsetAplicar * 60);
+  
+  while (minutosUTC >= 1440) minutosUTC -= 1440;
+  while (minutosUTC < 0) minutosUTC += 1440;
+  
+  const horas = Math.floor(minutosUTC / 60);
+  const mins = Math.floor(minutosUTC % 60);
+  
+  document.getElementById('horaOcaso').textContent = 
+    `${String(horas).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+}
+
+
     // ALGORITMO DE OCASO (Ecuación de Cooper simplificada)
-    function calcularOcaso() {
-      if (!posicion.lat || !posicion.lon) return;
-
-      const ahora = new Date();
-      const dia = ahora.getDate();
-      const mes = ahora.getMonth() + 1;
-      const diaDelAño = Math.floor((mes - 1) * 30.44 + dia);
-      const latRad = posicion.lat * Math.PI / 180;
-      const declinacion = 23.44 * Math.sin((284 + diaDelAño) * Math.PI / 180) * Math.PI / 180;
-      
-      const cosH = -Math.tan(latRad) * Math.tan(declinacion);
-      const h = cosH >= -1 && cosH <= 1 ? Math.acos(cosH) : 0;
-      const minutos = (12 + h * 180 / Math.PI / 15) * 60;
-      
-      const horas = Math.floor(minutos / 60);
-      const mins = Math.floor(minutos % 60);
-      
-      document.getElementById('horaOcaso').textContent = 
-        `${String(horas).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
-    }
-
+   
     // ARRIADO
     function setArriado(tipo) {
       arriado = tipo;
