@@ -17,18 +17,7 @@ if (p === 8) {
   if (oracion === 'leida') return audioURLs['8_leida'];
 }
 
-  function iniciarAuto() {
-  if (cerPuntosActivosManualIAA.length > 1) {
-    let idx = 1;
-    const siguiente = () => {
-      if (idx >= cerPuntosActivosManualIAA.length) return;
-      reproducirPunto(cerPuntosActivosManualIAA[idx]);
-      idx++;
-      setTimeout(siguiente, 2000);
-    };
-    siguiente();
-  }
-}
+
                       
                         
                         
