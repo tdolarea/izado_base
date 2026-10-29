@@ -18,7 +18,21 @@ document.getElementById('dotArriado').style.opacity = modo === 'arriado' ? '1' :
   
 
 
-    function setModo(m) { modo = m; calcularPuntos(); updateUI(); if (m === 'izado') { document.getElementById('secHoraIzado').style.display = 'block'; document.getElementById('secHoraArriado').style.display = 'none'; } else { document.getElementById('secHoraIzado').style.display = 'none'; document.getElementById('secHoraArriado').style.display = 'block'; setArriado('manual'); } document.getElementById('cardProgramacion').style.display = 'block'; updateDots(); }
+    function setModo(m) { 
+  modo = m; 
+  calcularPuntos(); 
+  updateUI(); 
+  document.getElementById('cardProgramacion').style.display = 'block';  // ← ANTES del if
+  if (m === 'izado') { 
+    document.getElementById('secHoraIzado').style.display = 'block'; 
+    document.getElementById('secHoraArriado').style.display = 'none'; 
+  } else { 
+    document.getElementById('secHoraIzado').style.display = 'none'; 
+    document.getElementById('secHoraArriado').style.display = 'block'; 
+    setArriado('manual'); 
+  } 
+  updateDots(); 
+}
 
    
 function setGuardia(g) { conGuardia = g; calcularPuntos(); updateUI(); updateDots(); }    
