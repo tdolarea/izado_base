@@ -105,8 +105,17 @@ function getAudioURL(p)   { if (p === 1) return modo === 'izado' ? audioURLs['1_
     setArriado('manual');    
     setEjecucion('automatica');    
     setModo('izado'); 
-    setModo('arriado');
-    setModo('izado');  
+calcularPuntos();   
+    updateUI();    
+    updateDots();    
+    setPosicion('base');    
+    setArriado('manual');    
+    setEjecucion('automatica');    
+    setModo('izado');    
+    document.getElementById('cardProgramacion').style.display = 'block';
+
+
+    
     document.getElementById('cardProgramacion').style.display = 'block';
   
   </script></body></html>
