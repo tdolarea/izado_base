@@ -80,5 +80,4 @@ function getAudioURL(p)   { if (p === 1) return modo === 'izado' ? audioURLs['1_
 
     
     function updateUI() { document.getElementById('seccionPresenten').style.display = (conGuardia && cerPuntosActivosManualIAA.includes(3)) ? 'flex' : 'none'; document.getElementById('seccionOracion').style.display = cerPuntosActivosManualIAA.includes(8) ? 'block' : 'none'; }   
-    
-    calcularPuntos();    updateUI();    updateDots();    setPosicion('base');    setArriado('manual');    setEjecucion('automatica');    setModo('izado');  </script></body></html>
+    calcularPuntos();    updateUI();    updateDots();    setPosicion('base');    setArriado('manual');    setEjecucion('automatica');    setModo('izado');    document.getElementById('cardProgramacion').style.display = 'block';
