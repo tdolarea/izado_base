@@ -54,7 +54,31 @@ function getAudioURL(p)   { if (p === 1) return modo === 'izado' ? audioURLs['1_
     function iniciarAutomatica() { const hora = document.getElementById('horaIzado').value; if (hora) { const [h,m] = hora.split(':'); const t = new Date(); t.setHours(parseInt(h), parseInt(m), 0); const interval = setInterval(() => { const diff = t - new Date(); if (diff <= 0) { clearInterval(interval); reproducirPunto(1); } else { const mins = Math.floor(diff/60000), segs = Math.floor((diff%60000)/1000); } }, 1000); } }    
     function reproducirManualT5() { reproducirPunto(1); }    
     
-    function iniciarAuto() { if (cerPuntosActivosManualIAA.length > 1) { let idx = 1; const siguiente = () => { if (idx >= cerPuntosActivosManualIAA.length) return; reproducirPunto(cerPuntosActivosManualIAA[idx]); idx++; setTimeout(siguiente, 2000); }; siguiente(); } }    
+    function iniciarAuto() {
+  if (cerPuntosActivosManualIAA.length > 1) {
+    let idx = 1;
+    const audio = document.getElementById('audioPlayer');
+    
+    const siguiente = () => {
+      if (idx >= cerPuntosActivosManualIAA.length) {
+        document.getElementById('status').textContent = '✅ SECUENCIA COMPLETADA';
+        return;
+      }
+      
+      reproducirPunto(cerPuntosActivosManualIAA[idx]);
+      idx++;
+      
+      audio.addEventListener('ended', () => {
+        setTimeout(siguiente, 500);
+      }, { once: true });
+    };
+    
+    siguiente();
+  }
+}
+
+
+    
     function updateUI() { document.getElementById('seccionPresenten').style.display = (conGuardia && cerPuntosActivosManualIAA.includes(3)) ? 'flex' : 'none'; document.getElementById('seccionOracion').style.display = cerPuntosActivosManualIAA.includes(8) ? 'block' : 'none'; }   
     
     calcularPuntos();    updateUI();    updateDots();    setPosicion('base');    setArriado('manual');    setEjecucion('automatica');    setModo('izado');  </script></body></html>
