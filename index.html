@@ -46,8 +46,24 @@
   audioEjecucion = a; 
   updateDots(); 
 }
-    function updateDots() { document.getElementById('dotIzado').style.opacity = modo === 'izado' ? '1' : '0.2';document.getElementById('dotArriado').style.opacity = modo === 'arriado' ? '1' : '0.2';     document.getElementById('dotGuardiaSi').style.opacity = conGuardia ? '1' : '0.2';      document.getElementById('dotGuardiaNo').style.opacity = conGuardia ? '0.2' : '1';      document.getElementById('dotPresentenVoz').style.opacity = modalidadPresenten === 'voz' ? '1' : '0.2';      document.getElementById('dotPresentenCorneta').style.opacity = modalidadPresenten === 'corneta' ? '1' : '0.2';      document.getElementById('dotArriadoManual').style.opacity = arriado === 'manual' ? '1' : '0.2';      document.getElementById('dotArriadoOcaso').style.opacity = arriado === 'ocaso' ? '1' : '0.2';      document.getElementById('dotAcompHimno').style.opacity = acompañamiento === 'himno' ? '1' : '0.2';      document.getElementById('dotAcompChifle').style.opacity = acompañamiento === 'chifle' ? '1' : '0.2';      document.getElementById('dotAcompCorneta').style.opacity = acompañamiento === 'corneta' ? '1' : '0.2';      document.getElementById('dotAcompHimnoChifle').style.opacity = acompañamiento === 'himno_chifle' ? '1' : '0.2';      document.getElementById('dotOracionCorneta').style.opacity = oracion === 'corneta' ? '1' : '0.2';      document.getElementById('dotOracionCantada').style.opacity = oracion === 'Cantada' ? '1' : '0.2';      document.getElementById('dotOracionLeida').style.opacity = oracion === 'leida' ? '1' : '0.2';      document.getElementById('dotOracionNinguno').style.opacity = oracion === 'ninguno' ? '1' : '0.2';   document.getElementById('dotEjecAuto').style.opacity = ejecucion === 'automatica' ? '1' : '0.2';
-document.getElementById('dotEjecManual').style.opacity = ejecucion === 'manual' ? '1' : '0.2';document.getElementById('dotAudioAuto').style.opacity = audioEjecucion === 'automatico' ? '1' : '0.2';
+    function updateDots() { 
+document.getElementById('dotIzado').style.opacity = modo === 'izado' ? '1' : '0.2';
+document.getElementById('dotArriado').style.opacity = modo === 'arriado' ? '1' : '0.2';     document.getElementById('dotGuardiaSi').style.opacity = conGuardia ? '1' : '0.2';      document.getElementById('dotGuardiaNo').style.opacity = conGuardia ? '0.2' : '1';      document.getElementById('dotPresentenVoz').style.opacity = modalidadPresenten === 'voz' ? '1' : '0.2';      
+document.getElementById('dotPresentenCorneta').style.opacity = modalidadPresenten === 'corneta' ? '1' : '0.2';      
+document.getElementById('dotArriadoManual').style.opacity = arriado === 'manual' ? '1' : '0.2';      
+document.getElementById('dotArriadoOcaso').style.opacity = arriado === 'ocaso' ? '1' : '0.2';      document.getElementById('dotAcompHimno').style.opacity = acompañamiento === 'himno' ? '1' : '0.2'; document.getElementById('dotAcompChifle').style.opacity = acompañamiento === 'chifle' ? '1' : '0.2';      
+document.getElementById('dotAcompCorneta').style.opacity = acompañamiento === 'corneta' ? '1' : '0.2';
+document.getElementById('dotAcompHimnoChifle').style.opacity = acompañamiento === 'himno_chifle' ? '1' : '0.2';      
+      document.getElementById('dotOracionCorneta').style.opacity = oracion === 'corneta' ? '1' : '0.2';      
+      document.getElementById('dotOracionCantada').style.opacity = oracion === 'Cantada' ? '1' : '0.2';      
+      document.getElementById('dotOracionLeida').style.opacity = oracion === 'leida' ? '1' : '0.2';      
+      document.getElementById('dotOracionNinguno').style.opacity = oracion === 'ninguno' ? '1' : '0.2';   
+      document.getElementById('dotAudioAuto').style.opacity = audioEjecucion === 'automatico' ? '1' : '0.2';
+document.getElementById('dotAudioManual').style.opacity = audioEjecucion === 'manual' ? '1' : '0.2';
+
+      document.getElementById('dotEjecAuto').style.opacity = ejecucion === 'automatica' ? '1' : '0.2';
+document.getElementById('dotEjecManual').style.opacity = ejecucion === 'manual' ? '1' : '0.2';
+      document.getElementById('dotAudioAuto').style.opacity = audioEjecucion === 'automatico' ? '1' : '0.2';
 document.getElementById('dotAudioManual').style.opacity = audioEjecucion === 'manual' ? '1' : '0.2';
  }  
     
